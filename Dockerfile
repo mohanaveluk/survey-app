@@ -2,7 +2,7 @@
 FROM node:20-alpine as node
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install --legacy-peer-deps
 RUN export NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build-prod
 COPY ./web.config /app/dist/survey-app

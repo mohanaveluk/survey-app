@@ -11,7 +11,7 @@ steps:
   args:
   - 'run'
   - 'deploy'
-  - 'survey-appservice'
+  - 'survey-app'
   - '--image'
   - 'gcr.io/$PROJECT_ID/survey-app:$COMMIT_SHA'
   - '--port'
@@ -38,7 +38,7 @@ steps:
   # args: ['tar', '-czvf', 'artifacts.tar.gz', 'app', 'requirement.txt', '/angularfoxpvolume/buildlog.log']
   waitFor: ['fetch-build-log']
   id: 'create-artifacts-zip'
-logsBucket: 'gs://logs-codebuild-webapp-$PROJECT_ID/$BUILD_ID'
+logsBucket: 'gs://logs-codebuild-survey-app-$PROJECT_ID/$BUILD_ID'
 
 
 images:

@@ -1,0 +1,345 @@
+.vote-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+
+  .mat-mdc-raised-button:not(:disabled) {
+    background: var(--indigo, #4f46e5) !important;
+    color: white;
+  }
+}
+
+.vote-card {
+  margin-bottom: 20px;
+
+  .mat-mdc-card-header {
+    .mat-mdc-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.5rem;
+      color: var(--indigo, #4f46e5);
+    }
+  }
+
+  .mat-mdc-card-content {
+    padding: 12px 16px;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Form sections
+// ─────────────────────────────────────────────
+.form-section {
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-weight: 500;
+
+    .optional {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #9ca3af;
+    }
+  }
+
+  .section-subtitle {
+    margin: 0 0 16px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.full-width { width: 100%; }
+
+// ─────────────────────────────────────────────
+//  Already voted message
+// ─────────────────────────────────────────────
+.already-voted-message {
+  margin: 20px 0;
+
+  .info-card {
+    background-color: #f8f9fa;
+    border-left: 4px solid #4caf50;
+
+    .message-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+
+      mat-icon {
+        color: #4caf50;
+        font-size: 2rem; height: 2rem; width: 2rem;
+        flex-shrink: 0;
+      }
+
+      div { flex: 1; min-width: 0; }
+
+      h3 { margin: 0 0 8px 0; color: #333; font-weight: 500; }
+      p  { margin: 0; color: #666; line-height: 1.5; }
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Thank-you state
+// ─────────────────────────────────────────────
+.thankyou-state {
+  text-align: center;
+  padding: 32px 16px 16px;
+  animation: fadeUp 0.5s ease-out both;
+}
+
+.thankyou-icon {
+  position: relative;
+  width: 88px; height: 88px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--indigo, #4f46e5), #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 12px 32px rgba(79,70,229,0.35);
+  animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  mat-icon {
+    font-size: 2.4rem; width: 2.4rem; height: 2.4rem;
+    color: white; position: relative; z-index: 1;
+  }
+
+  .thankyou-burst {
+    position: absolute;
+    inset: -10px;
+    border-radius: 34px;
+    border: 3px solid rgba(79,70,229,0.25);
+    animation: burstPulse 1.8s ease-out infinite;
+  }
+}
+
+@keyframes iconPop {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes burstPulse {
+  0%   { opacity: 1; transform: scale(1); }
+  70%  { opacity: 0; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+.thankyou-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--ink, #1e1b4b);
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+  animation: fadeUp 0.5s 0.2s ease-out both;
+}
+
+.thankyou-sub {
+  font-size: 0.95rem;
+  color: #6b7280;
+  line-height: 1.7;
+  margin: 0 0 24px;
+  animation: fadeUp 0.5s 0.3s ease-out both;
+}
+
+.thankyou-party {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 14px;
+  padding: 16px 28px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s 0.4s ease-out both;
+
+  .tp-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3af;
+  }
+
+  .tp-party {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .tp-swatch {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+    }
+
+    .tp-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--indigo, #4f46e5);
+    }
+  }
+}
+
+.thankyou-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  animation: fadeUp 0.5s 0.5s ease-out both;
+
+  mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─────────────────────────────────────────────
+//  Party list
+// ─────────────────────────────────────────────
+.parties-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.party-option {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.selected {
+    border-color: var(--indigo, #4f46e5);
+    background-color: #eef2ff;
+  }
+
+  .party-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+
+    .party-color {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .party-info {
+      flex: 1;
+      h4 { margin: 0; font-size: 1rem; font-weight: 500; color: #333; }
+    }
+
+    .check-icon { color: var(--indigo, #4f46e5); }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Selected preview
+// ─────────────────────────────────────────────
+.selected-preview {
+  margin-top: 20px;
+
+  .preview-card {
+    background-color: #eef2ff;
+    border-left: 4px solid var(--indigo, #4f46e5);
+
+    .preview-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      h4 { margin: 0 0 8px 0; color: #333; font-weight: 500; }
+
+      .selected-party {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        color: var(--indigo, #4f46e5);
+
+        .party-color { width: 16px; height: 16px; border-radius: 50%; }
+      }
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Survey info card
+// ─────────────────────────────────────────────
+.survey-info {
+  .mat-mdc-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+
+    mat-icon { color: #999; font-size: 1.2rem; height: 1.2rem; width: 1.2rem; }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Loading
+// ─────────────────────────────────────────────
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 16px;
+
+  p { color: #666; margin: 0; }
+}
+
+// ─────────────────────────────────────────────
+//  Actions
+// ─────────────────────────────────────────────
+.mat-mdc-card-actions {
+  padding: 16px 24px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    
+    mat-spinner {
+      display: inline-flex !important;
+      align-items: center;
+      
+      ::ng-deep circle { stroke: white; }
+      
+      // Override the default block sizing that breaks inline flow
+      ::ng-deep svg {
+        display: block;
+      }
+    }
+    
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Responsive
+// ─────────────────────────────────────────────
+@media (max-width: 600px) {
+  .vote-container { margin: 10px; padding: 10px; }
+}

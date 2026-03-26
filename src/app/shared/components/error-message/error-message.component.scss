@@ -1,0 +1,18 @@
+.error-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit);
+  padding: calc(var(--spacing-unit) * 2);
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin: calc(var(--spacing-unit) * 2) 0;
+
+  mat-icon {
+    color: var(--error-color);
+  }
+
+  p {
+    color: var(--error-color);
+    margin: 0;
+  }
+}

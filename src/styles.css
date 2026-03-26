@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  --white:         #ffffff;
+  --surface:       #f8f7ff;
+  --surface-2:     #f1f0fe;
+  --border:        #e5e3f8;
+  --border-light:  #eeecfd;
+
+  --indigo:        #4f46e5;
+  --indigo-dark:   #3730a3;
+  --indigo-light:  #eef2ff;
+  --indigo-mid:    #818cf8;
+
+  --amber:         #f59e0b;
+  --amber-light:   #fffbeb;
+  --amber-dark:    #d97706;
+
+  --teal:          #0d9488;
+  --teal-light:    #f0fdfa;
+
+  --rose:          #e11d48;
+  --rose-light:    #fff1f2;
+
+  --orange:        #ea580c;
+  --orange-light:  #fff7ed;
+
+  --green:         #059669;
+  --green-light:   #ecfdf5;
+
+  --ink:           #1e1b4b;
+  --ink-2:         #4338ca;
+  --body:          #374151;
+  --muted:         #6b7280;
+  --light-muted:   #9ca3af;
+
+  --radius-sm:     8px;
+  --radius-md:     14px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+  --radius-2xl:    36px;
+
+  --shadow-sm:  0 1px 3px rgba(79,70,229,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 16px rgba(79,70,229,0.1), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:  0 12px 40px rgba(79,70,229,0.14), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-xl:  0 24px 64px rgba(79,70,229,0.18), 0 8px 24px rgba(0,0,0,0.08);
+
+  --mat-button-filled-container-color: #4f46e5;
+    --mat-button-filled-label-text-color: white;
+    --mat-button-filled-ripple-color: color-mix(in srgb, white 12%, transparent);
+    --mat-button-filled-state-layer-color: white;
+    --mat-button-outlined-label-text-color: #4f46e5;
+    --mat-button-outlined-outline-color: rgba(0, 0, 0, 0.12);
+    --mat-button-outlined-ripple-color: 
+color-mix(in srgb, #4f46e5 12%, transparent);
+    --mat-button-outlined-state-layer-color: #4f46e5;
+    --mat-button-protected-container-color: #4f46e5 !important;
+    --mat-button-protected-label-text-color: white;
+    --mat-button-protected-ripple-color: 
+color-mix(in srgb, white 12%, transparent);
+    --mat-button-protected-state-layer-color: white;
+    --mat-button-text-label-text-color: #4f46e5;
+    --mat-button-text-ripple-color: 
+color-mix(in srgb, #4f46e5 12%, transparent);
+    --mat-button-text-state-layer-color: #4f46e5;
+    --mat-button-tonal-container-color: #4f46e5;
+    --mat-button-tonal-label-text-color: white;
+    --mat-button-tonal-ripple-color: 
+color-mix(in srgb, white 12%, transparent);
+    --mat-button-tonal-state-layer-color: white;
+
+
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container {
+  padding: 20px;
+}
+
+.mat-typography {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Custom Snackbar Styles */
+.success-snackbar {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%) !important;
+  color: white !important;
+}
+
+.error-snackbar {
+  background: linear-gradient(135deg, #f44336 0%, #ef5350 100%) !important;
+  color: white !important;
+}
+
+.mat-mdc-snack-bar-container .success-snackbar,
+.mat-mdc-snack-bar-container .error-snackbar {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}

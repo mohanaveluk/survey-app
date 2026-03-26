@@ -1,0 +1,89 @@
+<div class="dialog-shell">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="dialog-icon">
+      <mat-icon>verified_user</mat-icon>
+      <div class="icon-pulse"></div>
+    </div>
+    <h2 mat-dialog-title class="dialog-title">Verify Your Vote</h2>
+    <p class="dialog-subtitle">
+      We sent a 6-digit code to<br>
+      <strong>{{ data.email }}</strong>
+    </p>
+  </div>
+
+  <mat-dialog-content class="dialog-body">
+
+    <!-- Error banner -->
+    <div class="error-banner" *ngIf="errorMessage">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+      <button class="close-error" (click)="errorMessage = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- 6-box OTP input -->
+    <div class="otp-label">Enter verification code</div>
+    <div class="otp-boxes">
+      <input
+        *ngFor="let box of otpBoxes; let i = index"
+        #otpInput
+        class="otp-box"
+        [class.filled]="otpValues[i]"
+        [class.error]="hasError"
+        type="text"
+        inputmode="numeric"
+        maxlength="1"
+        [value]="otpValues[i]"
+        (keydown)="onKeyDown($event, i)"
+        (input)="onInput($event, i)"
+        (paste)="onPaste($event)"
+        autocomplete="one-time-code"
+      />
+    </div>
+
+    <p class="otp-hint">
+      <mat-icon>schedule</mat-icon>
+      Code expires in
+      <span class="countdown" [class.urgent]="timeLeft <= 60">{{ formatTime(timeLeft) }}</span>
+    </p>
+
+    <!-- Resend -->
+    <div class="resend-row">
+      <span>Didn't receive the code?</span>
+      <button class="resend-btn"
+              (click)="resend()"
+              [disabled]="isResending || resendCooldown > 0">
+        <mat-spinner *ngIf="isResending" diameter="14"></mat-spinner>
+        <span *ngIf="!isResending && resendCooldown === 0">Resend</span>
+        <span *ngIf="!isResending && resendCooldown > 0">Resend in {{ resendCooldown }}s</span>
+      </button>
+    </div>
+
+    <div class="resend-success" *ngIf="resendSuccess">
+      <mat-icon>check_circle</mat-icon>
+      <span>New code sent to your email!</span>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button
+            class="btn-cancel"
+            (click)="cancel()"
+            [disabled]="isVerifying">
+      Cancel
+    </button>
+    <button mat-raised-button
+            class="btn-verify"
+            (click)="verify()"
+            [disabled]="!isCodeComplete || isVerifying">
+      <mat-spinner *ngIf="isVerifying" diameter="18"></mat-spinner>
+      <mat-icon *ngIf="!isVerifying">check_circle</mat-icon>
+      <span>{{ isVerifying ? 'Verifying…' : 'Verify & Submit Vote' }}</span>
+    </button>
+  </mat-dialog-actions>
+
+</div>

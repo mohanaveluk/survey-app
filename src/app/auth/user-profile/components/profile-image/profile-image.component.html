@@ -1,0 +1,21 @@
+<div class="profile-image-container">
+    <div class="image-preview" [class.has-image]="currentImage">
+      <img *ngIf="currentImage" [src]="currentImage" alt="Profile picture">
+      <mat-icon *ngIf="!currentImage">account_circle</mat-icon>
+    </div>
+    
+    <div class="image-actions">
+      <button type="button" mat-stroked-button (click)="fileInput.click()">
+        <mat-icon>add_photo_alternate</mat-icon>
+        Change Photo
+      </button>
+      <button type="button" mat-icon-button color="warn" 
+              *ngIf="currentImage" 
+              (click)="removeImage()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    
+    <input #fileInput type="file" hidden accept="image/jpeg,image/png" 
+           (change)="onFileSelected($event)">
+  </div>

@@ -1,0 +1,81 @@
+<div class="party-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>groups</mat-icon>
+        Party Management
+      </mat-card-title>
+      <mat-card-subtitle>
+        Manage political parties and leaders
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="actions-bar">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search</mat-label>
+          <input matInput [(ngModel)]="searchTerm" placeholder="Search by name or leader">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="openPartyDialog()">
+          <mat-icon>add</mat-icon>
+          Add Party
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="parties-grid" *ngIf="!isLoading && getFilteredParties().length > 0">
+    <mat-card *ngFor="let party of getFilteredParties()" class="party-card">
+      <div class="party-header">
+        <div class="party-color-bar" [style.background-color]="party.color || '#000000'"></div>
+        <div class="party-badge" [style.background-color]="party.color || '#000000'">
+          <mat-icon>groups</mat-icon>
+        </div>
+      </div>
+
+      <mat-card-content>
+        <div class="party-content">
+          <h3 class="party-name">{{ party.name }}</h3>
+
+          <div class="party-details" *ngIf="party.leader_name">
+            <mat-icon>person</mat-icon>
+            <span>{{ party.leader_name }}</span>
+          </div>
+
+          <div class="party-logo" *ngIf="party.logo_url">
+            <img [src]="party.logo_url" [alt]="party.name">
+          </div>
+
+          <div class="party-color-info">
+            <div class="color-box" [style.background-color]="party.color || '#000000'"></div>
+            <span class="color-code">{{ party.color }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-icon-button color="primary" (click)="openPartyDialog(party)" matTooltip="Edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteParty(party.id || '', party.name)" matTooltip="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-card class="empty-state" *ngIf="!isLoading && getFilteredParties().length === 0">
+    <mat-card-content>
+      <mat-icon class="empty-icon">group_off</mat-icon>
+      <h3>No parties found</h3>
+      <p *ngIf="searchTerm">Try adjusting your search criteria</p>
+      <p *ngIf="!searchTerm">Add your first party to get started</p>
+    </mat-card-content>
+  </mat-card>
+</div>

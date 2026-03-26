@@ -1,0 +1,284 @@
+<div class="profile-page">
+
+  <!-- ── Page header ── -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <h1 class="page-title">My Profile</h1>
+      <p class="page-subtitle">Manage your personal information, address and profile photo</p>
+    </div>
+  </div>
+
+  <!-- ── Loading skeleton ── -->
+  <div class="profile-layout" *ngIf="isLoading">
+    <div class="skeleton-sidebar">
+      <div class="skel skel-circle"></div>
+      <div class="skel skel-line wide"></div>
+      <div class="skel skel-line medium"></div>
+    </div>
+    <div class="skeleton-form">
+      <div class="skel skel-line full"></div>
+      <div class="skel skel-line full"></div>
+      <div class="skel skel-line half"></div>
+    </div>
+  </div>
+
+  <!-- ── Main layout ── -->
+  <div class="profile-layout" *ngIf="!isLoading">
+
+    <!-- ══ LEFT sidebar ══ -->
+    <aside class="profile-sidebar">
+
+      <!-- Avatar uploader -->
+      <div class="avatar-uploader">
+
+        <!-- Hidden file input -->
+        <input #fileInput type="file" accept="image/jpeg,image/png,image/webp"
+               class="file-input-hidden"
+               (change)="onFileSelected($event)" />
+
+        <!-- Avatar display + overlay -->
+        <div class="avatar-outer"
+             [class.has-image]="avatarPreview || currentAvatarUrl"
+             (click)="fileInput.click()">
+
+          <!-- Actual image -->
+          <img *ngIf="avatarPreview || currentAvatarUrl"
+               [src]="avatarPreview || currentAvatarUrl"
+               class="avatar-img"
+               alt="Profile photo" />
+
+          <!-- Initials fallback -->
+          <div *ngIf="!avatarPreview && !currentAvatarUrl" class="avatar-initials-wrap">
+            <span class="avatar-initials">{{ initials }}</span>
+          </div>
+
+          <!-- Hover overlay -->
+          <div class="avatar-overlay">
+            <mat-icon>photo_camera</mat-icon>
+            <span>Change photo</span>
+          </div>
+        </div>
+
+        <!-- Action chips below avatar -->
+        <div class="avatar-actions">
+          <button class="avatar-chip upload-chip" type="button" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>
+            {{ avatarPreview || currentAvatarUrl ? 'Change' : 'Upload' }}
+          </button>
+
+          <button class="avatar-chip delete-chip" type="button"
+                  *ngIf="avatarPreview || currentAvatarUrl"
+                  [disabled]="isDeletingAvatar"
+                  (click)="onDeleteAvatar()">
+            <mat-spinner *ngIf="isDeletingAvatar" diameter="12"></mat-spinner>
+            <mat-icon *ngIf="!isDeletingAvatar">delete</mat-icon>
+            {{ isDeletingAvatar ? '…' : 'Remove' }}
+          </button>
+        </div>
+
+        <!-- File validation error -->
+        <p class="avatar-error" *ngIf="avatarError">{{ avatarError }}</p>
+
+        <!-- Pending upload badge -->
+        <div class="avatar-pending" *ngIf="avatarPreview && !avatarSaved">
+          <mat-icon>info_outline</mat-icon>
+          <span>Save profile to apply</span>
+        </div>
+
+        <p class="avatar-hint">JPG, PNG or WebP · Max 2 MB</p>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Quick info -->
+      <div class="sidebar-name">
+        {{ profileForm.get('firstname')?.value }} {{ profileForm.get('lastname')?.value }}
+      </div>
+      <div class="sidebar-email">{{ profileForm.get('email')?.value }}</div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-info-list">
+        <div class="sidebar-info-item" *ngIf="profileForm.get('mobile')?.value">
+          <mat-icon>phone</mat-icon>
+          <span>{{ profileForm.get('mobile')?.value }}</span>
+        </div>
+        <div class="sidebar-info-item"
+             *ngIf="profileForm.get('city')?.value || profileForm.get('country')?.value">
+          <mat-icon>location_on</mat-icon>
+          <span>
+            {{ profileForm.get('city')?.value }}
+            {{ profileForm.get('city')?.value && profileForm.get('country')?.value ? ', ' : '' }}
+            {{ profileForm.get('country')?.value }}
+          </span>
+        </div>
+        <div class="sidebar-info-item sidebar-info-muted"
+             *ngIf="!profileForm.get('mobile')?.value && !profileForm.get('city')?.value">
+          <mat-icon>info_outline</mat-icon>
+          <span>Complete your profile below</span>
+        </div>
+      </div>
+
+      <!-- Desktop save button -->
+      <button mat-raised-button class="sidebar-save-btn"
+              [disabled]="profileForm.invalid || isSaving || (profileForm.pristine && !avatarFile)"
+              (click)="onSave()">
+        <mat-spinner *ngIf="isSaving" diameter="16"></mat-spinner>
+        <mat-icon *ngIf="!isSaving">save</mat-icon>
+        <span>{{ isSaving ? 'Saving…' : 'Save Changes' }}</span>
+      </button>
+    </aside>
+
+    <!-- ══ RIGHT form area ══ -->
+    <div class="profile-form-area">
+
+      <!-- Success banner -->
+      <div class="alert-banner success-banner" *ngIf="successMessage">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ successMessage }}</span>
+        <button class="alert-close" (click)="successMessage = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Error banner -->
+      <div class="alert-banner error-banner" *ngIf="errorMessage">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+        <button class="alert-close" (click)="errorMessage = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSave()" novalidate>
+
+        <!-- ── Section 1: Personal info ── -->
+        <div class="form-panel">
+          <div class="panel-header">
+            <div class="panel-icon">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div>
+              <h2 class="panel-title">Personal Information</h2>
+              <p class="panel-subtitle">Your name, email and contact number</p>
+            </div>
+          </div>
+
+          <div class="form-grid two-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstname" placeholder="John">
+              <mat-icon matPrefix>badge</mat-icon>
+              <mat-error *ngIf="profileForm.get('firstname')?.hasError('required')">
+                First name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastname" placeholder="Smith">
+              <mat-icon matPrefix>badge</mat-icon>
+              <mat-error *ngIf="profileForm.get('lastname')?.hasError('required')">
+                Last name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-grid two-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Email Address</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="john@example.com">
+              <mat-icon matPrefix>email</mat-icon>
+              <mat-hint>Used for login and notifications</mat-hint>
+              <mat-error *ngIf="profileForm.get('email')?.hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="profileForm.get('email')?.hasError('email')">Enter a valid email address</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Mobile Number</mat-label>
+              <input matInput formControlName="mobile" type="tel" placeholder="+15550000000">
+              <mat-icon matPrefix>phone</mat-icon>
+              <mat-error *ngIf="profileForm.get('mobile')?.hasError('pattern')">Enter a valid mobile number</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- ── Section 2: Address ── -->
+        <div class="form-panel">
+          <div class="panel-header">
+            <div class="panel-icon panel-icon-amber">
+              <mat-icon>location_on</mat-icon>
+            </div>
+            <div>
+              <h2 class="panel-title">Address Details (Optional)</h2>
+              <p class="panel-subtitle">Your residential or mailing address</p>
+            </div>
+          </div>
+
+          <div class="form-grid one-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Address Line 1</mat-label>
+              <input matInput formControlName="address_line1" placeholder="Street number and name">
+              <mat-icon matPrefix>home</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-grid one-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Address Line 2 <span class="optional-tag">optional</span></mat-label>
+              <input matInput formControlName="address_line2" placeholder="Apartment, suite, unit, floor…">
+              <mat-icon matPrefix>apartment</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-grid two-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>City</mat-label>
+              <input matInput formControlName="city" placeholder="City">
+              <mat-icon matPrefix>location_city</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>State / Province</mat-label>
+              <input matInput formControlName="state" placeholder="State">
+              <mat-icon matPrefix>map</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-grid two-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Postal Code</mat-label>
+              <input matInput formControlName="postal_code" placeholder="000000">
+              <mat-icon matPrefix>markunread_mailbox</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Country</mat-label>
+              <input matInput formControlName="country" placeholder="Country">
+              <mat-icon matPrefix>public</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- ── Bottom actions ── -->
+        <div class="form-actions">
+          <button mat-button type="button" class="btn-reset"
+                  (click)="onReset()"
+                  [disabled]="isSaving || (profileForm.pristine && !avatarFile)">
+            <mat-icon>restart_alt</mat-icon>
+            Discard Changes
+          </button>
+
+          <button mat-raised-button type="submit" class="btn-save"
+                  [disabled]="profileForm.invalid || isSaving || (profileForm.pristine && !avatarFile)">
+            <mat-spinner *ngIf="isSaving" diameter="18"></mat-spinner>
+            <mat-icon *ngIf="!isSaving">save</mat-icon>
+            <span>{{ isSaving ? 'Saving…' : 'Save Changes' }}</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,236 @@
+.app-header {
+  position: relative;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+
+  .header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 1;
+
+    .gradient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.3;
+      animation: float 8s ease-in-out infinite;
+
+      &.orb-1 {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, #ff6b6b, #feca57);
+        top: -100px;
+        right: -100px;
+        animation-delay: 0s;
+      }
+
+      &.orb-2 {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, #48cae4, #023e8a);
+        bottom: -75px;
+        left: -75px;
+        animation-delay: 3s;
+      }
+
+      &.orb-3 {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(45deg, #06ffa5, #3d5a80);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-delay: 6s;
+      }
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+      transform: translateY(-20px) rotate(120deg);
+    }
+    66% {
+      transform: translateY(10px) rotate(240deg);
+    }
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 24px;
+
+    .hero-section {
+      text-align: center;
+
+      .hero-text {
+        margin-bottom: 40px;
+
+        h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          margin: 0 0 16px 0;
+          background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          animation: slideInUp 0.8s ease-out;
+        }
+
+        p {
+          font-size: 1.2rem;
+          margin: 0;
+          opacity: 0.9;
+          max-width: 600px;
+          margin: 0 auto;
+          line-height: 1.6;
+          animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+      }
+
+      .hero-features {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        animation: slideInUp 0.8s ease-out 0.4s both;
+
+        .feature-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          padding: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          transition: all 0.3s ease;
+          min-width: 140px;
+
+          &:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          }
+
+          mat-icon {
+            font-size: 2rem;
+            width: 2rem;
+            height: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+          }
+
+          span {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .app-header {
+    min-height: 250px;
+
+    .header-content {
+      padding: 40px 16px;
+
+      .hero-section {
+        .hero-text {
+          h1 {
+            font-size: 2.2rem;
+          }
+
+          p {
+            font-size: 1rem;
+          }
+        }
+
+        .hero-features {
+          gap: 20px;
+
+          .feature-item {
+            min-width: 120px;
+            padding: 16px;
+
+            mat-icon {
+              font-size: 1.5rem;
+              width: 1.5rem;
+              height: 1.5rem;
+            }
+
+            span {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    min-height: 200px;
+
+    .header-content {
+      padding: 30px 16px;
+
+      .hero-section {
+        .hero-text {
+          h1 {
+            font-size: 1.8rem;
+          }
+
+          p {
+            font-size: 0.9rem;
+          }
+        }
+
+        .hero-features {
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+
+          .feature-item {
+            flex-direction: row;
+            min-width: auto;
+            width: 100%;
+            max-width: 200px;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}

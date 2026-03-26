@@ -1,0 +1,24 @@
+<div class="success-overlay" [@fadeInOut]>
+    <div class="success-dialog">
+      <div class="success-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      
+      <div class="success-content">
+        <h2>Profile Updated Successfully!</h2>
+        
+        @if (profileImage) {
+          <div class="profile-preview">
+            <img [src]="profileImage" alt="Updated profile picture">
+          </div>
+        }
+        
+        <p>Your profile has been updated with the latest information.</p>
+      </div>
+  
+      <button mat-button color="primary" (click)="close()">
+        <mat-icon>close</mat-icon>
+        Close
+      </button>
+    </div>
+  </div>

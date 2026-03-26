@@ -1,0 +1,269 @@
+.dialog-shell {
+  min-width: 420px;
+  max-width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+// ─── Header ─────────────────────────────────────────────────────────────────
+.dialog-header {
+    background: linear-gradient(135deg, var(--indigo, #4f46e5), #7c3aed);
+    padding: 48px 32px 28px;
+    text-align: center;
+    //margin: -24px -40px 0; // bleed to mat-dialog edges
+}
+
+.dialog-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px; height: 64px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 18px;
+  margin-bottom: 14px;
+
+  mat-icon {
+    font-size: 2rem;
+    width: 2rem; height: 2rem;
+    color: white;
+  }
+
+  .icon-pulse {
+    position: absolute;
+    inset: -6px;
+    border-radius: 24px;
+    border: 2px solid rgba(255,255,255,0.25);
+    animation: pulseBorder 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulseBorder {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.08); }
+}
+
+.dialog-title {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  color: white !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+}
+
+.dialog-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.8);
+  margin: 0;
+  line-height: 1.6;
+
+  strong { color: white; }
+}
+
+// ─── Body ────────────────────────────────────────────────────────────────────
+.dialog-body {
+  padding: 24px 24px 8px !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+// Error banner
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: #be123c;
+  animation: slideDown 0.25s ease-out;
+
+  mat-icon {
+    font-size: 1.1rem; width: 1.1rem; height: 1.1rem;
+    color: #e11d48; flex-shrink: 0;
+  }
+
+  span { flex: 1; font-weight: 500; }
+
+  .close-error {
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: #e11d48; display: flex; align-items: center;
+
+    mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
+    &:hover { opacity: 0.7; }
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─── OTP boxes ───────────────────────────────────────────────────────────────
+.otp-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+}
+
+.otp-boxes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.otp-box {
+  width: 48px; height: 56px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink, #1e1b4b);
+  background: #f9fafb;
+  outline: none;
+  transition: all 0.18s ease;
+  caret-color: transparent;
+
+  &:focus {
+    border-color: var(--indigo, #4f46e5);
+    background: #eef2ff;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+  }
+
+  &.filled {
+    border-color: var(--indigo, #4f46e5);
+    background: #eef2ff;
+    color: var(--indigo, #4f46e5);
+  }
+
+  &.error {
+    border-color: #e11d48;
+    background: #fff1f2;
+    animation: shake 0.4s ease;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+// ─── Countdown hint ──────────────────────────────────────────────────────────
+.otp-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0 0 20px;
+
+  mat-icon { font-size: 0.9rem; width: 0.9rem; height: 0.9rem; }
+
+  .countdown {
+    font-weight: 700;
+    color: #6b7280;
+
+    &.urgent { color: #e11d48; }
+  }
+}
+
+// ─── Resend ──────────────────────────────────────────────────────────────────
+.resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #9ca3af;
+  margin-bottom: 8px;
+
+  .resend-btn {
+    background: none; border: none; padding: 0;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--indigo, #4f46e5);
+    display: inline-flex; align-items: center; gap: 4px;
+    text-decoration: underline; text-underline-offset: 2px;
+    transition: opacity 0.15s;
+
+    &:disabled { color: #d1d5db; cursor: not-allowed; text-decoration: none; }
+    &:not(:disabled):hover { opacity: 0.75; }
+  }
+}
+
+.resend-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #059669;
+  animation: slideDown 0.25s ease-out;
+
+  mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+}
+
+// ─── Actions ─────────────────────────────────────────────────────────────────
+.dialog-actions {
+  padding: 16px 24px 24px !important;
+  display: flex !important;
+  gap: 12px !important;
+  justify-content: flex-end !important;
+
+  .btn-cancel {
+    border-color: #e5e7eb !important;
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    border-radius: 10px !important;
+    height: 44px !important;
+
+    &:hover { border-color: #d1d5db !important; }
+  }
+
+  .btn-verify {
+    background: linear-gradient(135deg, var(--indigo, #4f46e5), #7c3aed) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    border-radius: 10px !important;
+    height: 44px !important;
+    padding: 0 24px !important;
+    box-shadow: 0 4px 14px rgba(79,70,229,0.35) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.2s ease !important;
+
+    mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
+    mat-spinner ::ng-deep circle { stroke: white; }
+
+    &:not(:disabled):hover {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 8px 20px rgba(79,70,229,0.45) !important;
+    }
+
+    &:disabled { opacity: 0.55 !important; cursor: not-allowed !important; }
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+@media (max-width: 480px) {
+  .dialog-shell { width: 100%; }
+  .otp-box { width: 40px; height: 48px; font-size: 1.3rem; }
+  .otp-boxes { gap: 7px; }
+  .dialog-actions { flex-direction: column-reverse !important; .btn-cancel, .btn-verify { width: 100% !important; justify-content: center !important; } }
+}

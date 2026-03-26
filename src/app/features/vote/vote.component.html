@@ -1,0 +1,184 @@
+<div class="vote-container" *ngIf="!isLoading">
+  <mat-card class="vote-card" *ngIf="survey">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>how_to_vote</mat-icon>
+        {{ survey.name }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="survey.description">
+        {{ survey.description }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="voteForm" (ngSubmit)="onSubmit()">
+        <!-- Voter Email -->
+        <div class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Your Email Address</mat-label>
+            <input matInput 
+                   formControlName="voterEmail" 
+                   type="email"
+                   placeholder="Enter your email"
+                   (blur)="onEmailChange()">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-section">
+          <h3>Demographic Information (Optional)</h3>
+          <p class="section-subtitle">Help us understand voting patterns better</p>
+        
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="">Prefer not to say</mat-option>
+              <mat-option value="male">Male</mat-option>
+              <mat-option value="female">Female</mat-option>
+              <mat-option value="other">Other</mat-option>
+            </mat-select>
+            <mat-icon matPrefix>wc</mat-icon>
+          </mat-form-field>
+        
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Age</mat-label>
+            <input matInput formControlName="age" type="number" min="18" max="120">
+            <mat-icon matPrefix>cake</mat-icon>
+            <mat-error *ngIf="voteForm.get('age')?.hasError('min')">
+              Age must be at least 18
+            </mat-error>
+            <mat-error *ngIf="voteForm.get('age')?.hasError('max')">
+              Please enter a valid age
+            </mat-error>
+          </mat-form-field>
+        
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location" placeholder="City, State">
+            <mat-icon matPrefix>location_on</mat-icon>
+          </mat-form-field>
+        </div>
+
+
+        <!-- Already Voted Message -->
+        <div class="already-voted-message" *ngIf="hasVotedAlready">
+          <mat-card class="info-card">
+            <mat-card-content>
+              <div class="message-content">
+                <mat-icon color="accent">check_circle</mat-icon>
+                <div>
+                  <h3>Thank you for participating!</h3>
+                  <p>You have already cast your vote in this survey. Each participant can vote only once per survey.</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- initial vote message -->
+        <div class="already-voted-message" *ngIf="hasVoted && !hasVotedAlready">
+          <mat-card class="info-card">
+            <mat-card-content>
+              <div class="message-content">
+                <mat-icon color="accent">check_circle</mat-icon>
+                <div>
+                  <h3>Vote Recorded</h3>
+                  <p>Thank you for participating! Your vote has been successfully recorded.</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>        
+
+        <!-- Party Selection -->
+        <div class="form-section" *ngIf="!hasVoted && !hasVotedAlready">
+          <h3>Choose Your Preferred Party</h3>
+          <p class="section-subtitle">Select the party you want to vote for</p>
+          
+          <div class="parties-list">
+            <mat-card *ngFor="let party of survey.surveyParties" 
+                      class="party-option"
+                      [class.selected]="selectedParty?.id === party.party.id"
+                      (click)="onPartySelect(party.party)">
+              <div class="party-content">
+                <mat-radio-button 
+                  [value]="party.party.id"
+                  [checked]="selectedParty?.id === party.party.id"
+                  (change)="onPartySelect(party.party)">
+                </mat-radio-button>
+                <div class="party-color" [style.background-color]="party.party.color"></div>
+                <div class="party-info">
+                  <h4>{{ party.party.name }}</h4>
+                </div>
+                <mat-icon *ngIf="selectedParty?.id === party.party.id" class="check-icon">
+                  check_circle
+                </mat-icon>
+              </div>
+            </mat-card>
+          </div>
+
+          <mat-error *ngIf="voteForm.get('selectedPartyId')?.hasError('required') && voteForm.get('selectedPartyId')?.touched">
+            Please select a party to vote for
+          </mat-error>
+        </div>
+
+        <!-- Selected Party Preview -->
+        <div class="selected-preview" *ngIf="selectedParty && !hasVoted">
+          <mat-card class="preview-card">
+            <mat-card-content>
+              <div class="preview-content">
+                <mat-icon color="primary">how_to_vote</mat-icon>
+                <div>
+                  <h4>Your Vote</h4>
+                  <div class="selected-party">
+                    <div class="party-color" [style.background-color]="selectedParty.color"></div>
+                    <span>{{ selectedParty.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end" *ngIf="!hasVoted">
+      <button mat-raised-button 
+              color="primary" 
+              [disabled]="voteForm.invalid || isSubmitting"
+              (click)="onSubmit()">
+        <mat-icon *ngIf="isSubmitting">hourglass_empty</mat-icon>
+        <mat-icon *ngIf="!isSubmitting">how_to_vote</mat-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Cast Your Vote' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Survey Info -->
+  <div class="survey-info" *ngIf="survey">
+    <mat-card>
+      <mat-card-content>
+        <div class="info-item">
+          <mat-icon>groups</mat-icon>
+          <span>{{ survey.surveyParties?.length }} parties participating</span>
+        </div>
+        <div class="info-item">
+          <mat-icon>poll</mat-icon>
+          <span>{{ survey.totalVotes }} total votes cast</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+  <p>Loading survey...</p>
+</div>

@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>
+  <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+  {{ isEditMode ? 'Edit Party' : 'Add New Party' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="partyForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Party Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter party name" required>
+      <mat-error *ngIf="partyForm.get('name')?.hasError('required')">
+        Party name is required
+      </mat-error>
+      <mat-error *ngIf="partyForm.get('name')?.hasError('minlength')">
+        Name must be at least 2 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Party Leader (Optional)</mat-label>
+      <input matInput formControlName="leader_name" placeholder="Enter leader name">
+    </mat-form-field>
+
+    <div class="color-selection">
+      <label>Party Color</label>
+      <div class="color-palette">
+        <button *ngFor="let color of presetColors"
+                type="button"
+                class="color-option"
+                [style.background-color]="color"
+                [class.selected]="selectedColor === color"
+                (click)="selectColor(color)"
+                [title]="color">
+          <mat-icon *ngIf="selectedColor === color">check</mat-icon>
+        </button>
+      </div>
+      <div class="color-custom">
+        <mat-form-field appearance="outline">
+          <mat-label>Custom Color</mat-label>
+          <input matInput type="color" formControlName="color">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Logo URL (Optional)</mat-label>
+      <input matInput formControlName="logo_url" placeholder="https://example.com/logo.png">
+    </mat-form-field>
+
+    <div class="preview" *ngIf="partyForm.get('color')?.value">
+      <h4>Preview</h4>
+      <div class="preview-card">
+        <div class="preview-color" [style.background-color]="partyForm.get('color')?.value"></div>
+        <div class="preview-info">
+          <h5>{{ partyForm.get('name')?.value || 'Party Name' }}</h5>
+          <p *ngIf="partyForm.get('leader_name')?.value">{{ partyForm.get('leader_name')?.value }}</p>
+          <img *ngIf="partyForm.get('logo_url')?.value"
+               [src]="partyForm.get('logo_url')?.value"
+               alt="Party logo"
+               class="preview-logo">
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="partyForm.invalid" (click)="onSubmit()">
+    {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

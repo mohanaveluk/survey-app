@@ -1,0 +1,72 @@
+<div class="survey-list-container">
+  <div class="header-section">
+    <h2>My Surveys</h2>
+    <button mat-raised-button color="primary" (click)="createNewSurvey()">
+      <mat-icon>add</mat-icon>
+      Create New Survey
+    </button>
+  </div>
+
+  <div class="surveys-grid" *ngIf="!isLoading">
+    <mat-card *ngFor="let survey of mySurveys" 
+              class="survey-card"
+              (click)="manageSurvey(survey.id)">
+      <mat-card-header>
+        <mat-card-title>{{ survey.name }}</mat-card-title>
+        <mat-card-subtitle>
+          Created {{ survey.createdAt | date:'short' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p *ngIf="survey.description" class="survey-description">
+          {{ survey.description }}
+        </p>
+        
+        <div class="survey-stats">
+          <div class="stat-item">
+            <mat-icon>groups</mat-icon>
+            <span>{{ survey.surveyParties?.length }} parties</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon>how_to_vote</mat-icon>
+            <span>{{ survey.totalVotes }} votes</span>
+          </div>
+          <div class="stat-item">
+            <mat-icon [class]="survey.isActive ? 'active' : 'inactive'">
+              {{ survey.isActive ? 'radio_button_checked' : 'radio_button_unchecked' }}
+            </mat-icon>
+            <span>{{ survey.isActive ? 'Active' : 'Inactive' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="manageSurvey(survey.id)">
+          <mat-icon>settings</mat-icon>
+          Manage
+        </button>
+        <button mat-icon-button 
+                (click)="copyUrl(survey.id, $event)"
+                matTooltip="Copy Survey URL">
+          <mat-icon>link</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="empty-state" *ngIf="mySurveys.length === 0">
+      <mat-icon>poll</mat-icon>
+      <h3>No surveys yet</h3>
+      <p>Create your first election survey to get started</p>
+      <button mat-raised-button color="primary" (click)="createNewSurvey()">
+        <mat-icon>add</mat-icon>
+        Create Survey
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+    <p>Loading your surveys...</p>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo/Brand -->
+    <div class="navbar-brand" (click)="navigateTo('/')">
+      <div class="brand-icon">
+        <mat-icon>how_to_vote</mat-icon>
+      </div>
+      <span class="brand-text">Survey</span>
+    </div>
+
+    <!-- Navigation Links (Desktop) -->
+    <div class="navbar-nav" *ngIf="currentUser">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a mat-button routerLink="/party" routerLinkActive="active" class="nav-link">
+        <mat-icon>groups2</mat-icon>
+        <span>Party</span>
+      </a>
+      
+      <a mat-button routerLink="/survey/list" routerLinkActive="active" class="nav-link">
+        <mat-icon>poll</mat-icon>
+        <span>My Surveys</span>
+      </a>
+      <a mat-button routerLink="/survey/create" routerLinkActive="active" class="nav-link">
+        <mat-icon>add_circle</mat-icon>
+        <span>Create Survey</span>
+      </a>
+    </div>
+
+    <!-- User Menu -->
+    <div class="navbar-user">
+      <div class="user-menu" *ngIf="currentUser; else guestMenu">
+        <button mat-icon-button [matMenuTriggerFor]="userDropdown" class="user-avatar-button">
+          <div class="user-avatar">
+            <span class="user-initials">{{ getUserInitials() }}</span>
+          </div>
+        </button>
+        
+        <mat-menu #userDropdown="matMenu" class="user-dropdown">
+          <div class="user-info">
+            <div class="user-avatar-large">
+              <span class="user-initials">{{ getUserInitials() }}</span>
+            </div>
+            <div class="user-details">
+              <h4>{{ currentUser.username }}</h4>
+              <p>{{ currentUser.email }}</p>
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <button mat-menu-item (click)="navigateTo('/profile')">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          
+          <button mat-menu-item (click)="navigateTo('/settings')">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          
+          <mat-divider></mat-divider>
+          
+          <button mat-menu-item (click)="logout()" class="logout-item">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      <ng-template #guestMenu>
+        <div class="guest-actions">
+          <button mat-button (click)="navigateTo('/login')" class="login-btn">
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+          </button>
+          <button mat-raised-button color="primary" (click)="navigateTo('/register')" class="register-btn">
+            <mat-icon>person_add</mat-icon>
+            <span>Register</span>
+          </button>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button mat-icon-button class="mobile-menu-toggle" (click)="toggleMenu()" *ngIf="currentUser">
+      <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav" [class.open]="isMenuOpen" *ngIf="currentUser">
+    <div class="mobile-nav-content">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active" class="mobile-nav-link" (click)="closeMenu()">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a mat-button routerLink="/survey/list" routerLinkActive="active" class="mobile-nav-link" (click)="closeMenu()">
+        <mat-icon>poll</mat-icon>
+        <span>My Surveys</span>
+      </a>
+      <a mat-button routerLink="/survey/create" routerLinkActive="active" class="mobile-nav-link" (click)="closeMenu()">
+        <mat-icon>add_circle</mat-icon>
+        <span>Create Survey</span>
+      </a>
+      
+      <mat-divider class="mobile-divider"></mat-divider>
+      
+      <button mat-button class="mobile-nav-link" (click)="navigateTo('/profile')">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-button class="mobile-nav-link" (click)="navigateTo('/settings')">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <button mat-button class="mobile-nav-link logout-mobile" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+</nav>

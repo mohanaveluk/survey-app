@@ -1,0 +1,168 @@
+<div class="auth-container">
+  <div class="auth-background">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+  </div>
+  
+  <div class="auth-card" *ngIf="!registrationSuccess">
+    <div class="auth-header">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <mat-icon>person_add</mat-icon>
+        </div>
+        <h1>Join Ayala Web</h1>
+        <p>Create your account to get started</p>
+      </div>
+    </div>
+
+    <div class="auth-content">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <!-- Error Alert -->
+        <div class="error-alert" *ngIf="errorMessage">
+          <mat-icon>error_outline</mat-icon>
+          <div class="error-content">
+            <span>{{ errorMessage }}</span>
+            <button type="button" class="close-error" (click)="clearError()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="modern-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstname" required>
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="registerForm.get('firstname')?.hasError('required')">
+              First name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="modern-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastname" required>
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="registerForm.get('lastname')?.hasError('required')">
+              Last name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="modern-field">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" type="email" required>
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="modern-field">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
+              Password must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="password-strength" *ngIf="registerForm.get('password')?.value">
+          <div class="strength-indicator">
+            <div class="strength-bar" [class]="getPasswordStrength()"></div>
+          </div>
+          <span class="strength-text">{{ getPasswordStrengthText() }}</span>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button 
+                  type="submit" 
+                  class="auth-button primary-button"
+                  [disabled]="registerForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Create Account</span>
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          </button>
+        </div>
+      </form>
+
+      <div class="auth-footer">
+        <div class="divider">
+          <span>Already have an account?</span>
+        </div>
+        <button mat-stroked-button 
+                routerLink="/login" 
+                class="auth-button secondary-button">
+          Sign In
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Email verification success panel ── -->
+  <div class="auth-card verify-card" *ngIf="registrationSuccess">
+
+    <div class="verify-icon-wrap">
+      <div class="verify-icon">
+        <mat-icon>mark_email_read</mat-icon>
+      </div>
+      <div class="verify-pulse-ring"></div>
+    </div>
+
+    <h2 class="verify-title">Check your inbox!</h2>
+
+    <p class="verify-sub">
+      We sent a verification link to<br>
+      <strong>{{ registeredEmail }}</strong>
+    </p>
+
+    <p class="verify-hint">
+      Click the link in the email to activate your account.<br>
+      Can't find it? Check your spam folder.
+    </p>
+
+    <!-- Resend feedback banners -->
+    <div class="resend-feedback success" *ngIf="resendSuccess">
+      <mat-icon>check_circle</mat-icon>
+      <span>Verification email resent successfully!</span>
+    </div>
+    <div class="resend-feedback error" *ngIf="resendError">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ resendError }}</span>
+    </div>
+
+    <div class="verify-actions">
+      <button mat-raised-button
+              class="auth-button primary-button"
+              (click)="resendVerification()"
+              [disabled]="isResending || resendCooldown > 0">
+        <mat-spinner *ngIf="isResending" diameter="18"></mat-spinner>
+        <mat-icon *ngIf="!isResending">refresh</mat-icon>
+        <span *ngIf="!isResending && resendCooldown === 0">Resend Link</span>
+        <span *ngIf="!isResending && resendCooldown > 0">Resend in {{ resendCooldown }}s</span>
+      </button>
+
+      <button mat-stroked-button
+              routerLink="/login"
+              class="auth-button secondary-button">
+        <mat-icon>login</mat-icon>
+        Go to Login
+      </button>
+    </div>
+
+  </div>  
+</div>

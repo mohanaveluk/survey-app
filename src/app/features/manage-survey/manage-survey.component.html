@@ -1,0 +1,178 @@
+<div class="manage-survey-container" *ngIf="!isLoading && survey">
+  <!-- Survey Header -->
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>poll</mat-icon>
+        {{ survey.name }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        Created on {{ survey.createdAt | date:'medium' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <p *ngIf="survey.description">{{ survey.description }}</p>
+      
+      <div class="survey-meta">
+        <div class="meta-item">
+          <mat-icon>schedule</mat-icon>
+          <span>Status: <strong>{{ survey.status | titlecase }}</strong></span>
+        </div>
+        <div class="meta-item">
+          <mat-icon>date_range</mat-icon>
+          <span>{{ survey.startDate | date:'short' }} to {{ survey.endDate | date:'short' }}</span>
+        </div>
+        <div class="meta-item" *ngIf="survey.isAnonymous">
+          <mat-icon>privacy_tip</mat-icon>
+          <span>Anonymous Survey</span>
+        </div>
+      </div>
+
+      <div class="survey-stats">
+        <div class="stat-item">
+          <mat-icon>groups</mat-icon>
+          <span>{{ survey.surveyParties?.length }} Parties</span>
+        </div>
+        <div class="stat-item">
+          <mat-icon>how_to_vote</mat-icon>
+          <span>{{ survey.totalVotes }} Total Votes</span>
+        </div>
+        <div class="stat-item">
+          <mat-icon [class]="survey.isActive ? 'active' : 'inactive'">
+            {{ survey.isActive ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </mat-icon>
+          <span>{{ survey.isActive ? 'Active' : 'Inactive' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="actions-group">
+        <ng-container *ngIf="isDraft()">
+          <button mat-raised-button color="primary" (click)="publishSurvey()">
+            <mat-icon>publish</mat-icon>
+            Publish Survey
+          </button>
+          <button mat-button (click)="editSurvey()">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="isPublished()">
+          <button mat-raised-button (click)="copyUrl()">
+            <mat-icon>link</mat-icon>
+            Copy Survey Link
+          </button>
+          <button mat-button
+                  [color]="survey.isActive ? 'warn' : 'accent'"
+                  (click)="toggleSurveyStatus()">
+            <mat-icon>{{ survey.isActive ? 'pause' : 'play_arrow' }}</mat-icon>
+            {{ survey.isActive ? 'Deactivate' : 'Activate' }}
+          </button>
+          <button mat-button color="warn" (click)="closeSurvey()">
+            <mat-icon>close</mat-icon>
+            Close Survey
+          </button>
+        </ng-container>
+      </div>
+
+      <button mat-button (click)="refreshResults()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </mat-card-actions>    
+  </mat-card>
+
+  <!-- Survey URL -->
+  <mat-card class="url-card" *ngIf="survey.status === 'published'">
+    <mat-card-content>
+      <div class="url-section">
+        <h3>Survey URL</h3>
+        <div class="url-container">
+          <mat-form-field appearance="outline" class="url-field">
+            <input matInput [value]="surveyUrl" readonly>
+          </mat-form-field>
+          <button mat-icon-button (click)="copyUrl()" matTooltip="Copy URL">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+        <p class="url-help">Share this URL with participants to collect votes</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Results -->
+  <mat-card class="results-card" *ngIf="surveyResult">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>bar_chart</mat-icon>
+        Voting Results
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="getWinningParty()">
+        Leading: {{ getWinningParty() }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="results-summary" *ngIf="surveyResult.totalVotes > 0">
+        <div class="summary-item">
+          <h4>{{ surveyResult.totalVotes }}</h4>
+          <span>Total Votes</span>
+        </div>
+        <div class="summary-item">
+          <h4>{{ survey.surveyParties?.length }}</h4>
+          <span>Parties</span>
+        </div>
+        <div class="summary-item" *ngIf="getWinningParty()">
+          <h4>{{ getVotePercentage(survey.surveyParties?.find(p => p.party.name === getWinningParty())?.id || '') }}%</h4>
+          <span>Leading</span>
+        </div>
+      </div>
+
+      <div class="no-votes" *ngIf="surveyResult.totalVotes === 0">
+        <mat-icon>inbox</mat-icon>
+        <h3>No votes yet</h3>
+        <p>Share your survey URL to start collecting votes</p>
+      </div>
+
+      <div class="results-list" *ngIf="surveyResult.totalVotes > 0">
+        <div *ngFor="let party of survey.surveyParties" class="result-item">
+          <div class="party-info">
+            <div class="party-color" [style.background-color]="party.party.color"></div>
+            <div class="party-details">
+              <h4>{{ party.party.name }}</h4>
+              <div class="vote-stats">
+                <span class="vote-count">{{ getVoteCount(party.party.id!) }} votes</span>
+                <span class="vote-percentage">{{ getVotePercentage(party.party.id!) }}%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="progress-container">
+            <mat-progress-bar 
+              mode="determinate" 
+              [value]="getVotePercentage(party.party.id!)"
+              [color]="isWinningParty(party.party.id!) ? 'primary' : 'accent'">
+            </mat-progress-bar>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Back Button -->
+  <div class="back-section">
+    <button mat-stroked-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+  <p>Loading survey...</p>
+</div>

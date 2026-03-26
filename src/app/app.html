@@ -1,0 +1,34 @@
+<!-- <mat-toolbar color="primary">
+  <span>Ayala Web</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/survey/list" *ngIf="currentUser">
+    <mat-icon>poll</mat-icon>
+    My Surveys
+  </button>
+  <button mat-button routerLink="/survey/create" *ngIf="currentUser">
+    <mat-icon>add</mat-icon>
+    Create Survey
+  </button>
+  <button mat-button routerLink="/login" *ngIf="!currentUser">Login</button>
+  <button mat-button routerLink="/register" *ngIf="!currentUser">Register</button>
+  <button mat-button (click)="logout()" *ngIf="currentUser">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-toolbar>
+<div class="container">
+  <router-outlet />
+</div> -->
+
+<div class="app-container">
+  <app-navbar></app-navbar>
+  
+  <main class="main-content">
+    <!-- <app-header *ngIf="shouldShowHeader()"></app-header> -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  
+  <app-footer></app-footer>
+</div>

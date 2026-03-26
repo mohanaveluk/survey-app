@@ -1,0 +1,38 @@
+import { Routes } from '@angular/router';
+import { CreateSurveyComponent } from './features/create-survey/create-survey.component';
+import { SurveyListComponent } from './features/survey-list/survey-list.component';
+import { ManageSurveyComponent } from './features/manage-survey/manage-survey.component';
+import { VoteComponent } from './features/vote/vote.component';
+import { DashboardSurveyComponent } from './features/dashboard-survey/dashboard-survey.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { LoginV2Component } from './auth/login-v2/login-v2.component';
+import { PartyComponent } from './features/party/party.component';
+import { VerifyEmailComponent } from './auth/verify/verify-email.component';
+import { HomeComponent } from './features/home/home.component';
+import { Homev2Component } from './features/home/homev2.component';
+import { Vote2Component } from './features/vote/vote2.component';
+import { UserProfileComponent } from './auth/user-profile/user-profile.component';
+import { ProfileComponent } from './auth/user-profile-v2/user-profile-v2.component';
+import { ForgotPasswordComponent } from './auth/forgot/forgot-password.component';
+
+export const routes: Routes = [
+  { path: '', component: Homev2Component },
+  { path: 'home', component: Homev2Component },
+  { path: 'home2', component: HomeComponent },
+  { path: 'login', component: LoginV2Component },
+  { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardSurveyComponent },
+  { path: 'party', component: PartyComponent },
+  { path: 'survey/create', component: CreateSurveyComponent },
+  { path: 'survey/edit/:id', component: CreateSurveyComponent },  
+  { path: 'survey/list', component: SurveyListComponent },
+  { path: 'survey/manage/:id', component: ManageSurveyComponent },
+  { path: 'vote/:id', component: Vote2Component },
+  { path: 'vote1/:id', component: VoteComponent },
+  { path: 'profile_old', component: UserProfileComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'fp', component: ForgotPasswordComponent },
+  
+  { path: 'auth/verifyemail/:userGuid/:verificationCode', component: VerifyEmailComponent }
+];

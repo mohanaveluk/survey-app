@@ -1,0 +1,6 @@
+                                                  <div class="loading-overlay" *ngIf="show">
+  <div class="loading-container">
+    <mat-spinner [diameter]="50"></mat-spinner>
+    <p class="loading-text" *ngIf="message">{{message ? message : "Processing..."}}</p>
+  </div>
+</div>

@@ -1,0 +1,340 @@
+.app-footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  margin-top: auto;
+
+  .footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 40px;
+
+    .footer-section {
+      h4 {
+        margin: 0 0 20px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ecf0f1;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+
+        .brand-icon {
+          width: 50px;
+          height: 50px;
+          //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--indigo) !important;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+          flex-shrink: 0;
+
+          mat-icon {
+            color: white;
+            font-size: 1.8rem;
+            width: 1.8rem;
+            height: 1.8rem;
+          }
+        }
+
+        .brand-info {
+          h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            //background: var(--indigo) !important;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+
+          p {
+            margin: 0;
+            color: #bdc3c7;
+            line-height: 1.5;
+            font-size: 0.95rem;
+          }
+        }
+      }
+
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        li {
+          a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            padding-left: 0;
+            justify-content: flex-start;
+
+            &:hover {
+              color: #667eea;
+              background: rgba(102, 126, 234, 0.1);
+              padding-left: 12px;
+            }
+          }
+        }
+      }
+
+      .social-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+
+        .social-btn {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          color: #bdc3c7;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+
+          &:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+          }
+
+          mat-icon {
+            font-size: 1.3rem;
+            width: 1.3rem;
+            height: 1.3rem;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+
+    .footer-bottom-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      .copyright {
+        p {
+          margin: 0;
+          color: #95a5a6;
+          font-size: 0.9rem;
+        }
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        .footer-link {
+          color: #95a5a6;
+          font-size: 0.9rem;
+          padding: 8px 12px;
+          border-radius: 6px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .app-footer {
+    .footer-content {
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+
+      .footer-section:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    .footer-content {
+      grid-template-columns: 1fr;
+      padding: 40px 16px 30px;
+      gap: 30px;
+
+      .footer-section {
+        .footer-brand {
+          flex-direction: column;
+          text-align: center;
+          gap: 12px;
+
+          .brand-info {
+            h3 {
+              font-size: 1.3rem;
+            }
+
+            p {
+              font-size: 0.9rem;
+            }
+          }
+        }
+
+        .social-links {
+          justify-content: center;
+        }
+      }
+    }
+
+    .footer-bottom {
+      .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 16px;
+
+        .footer-bottom-links {
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .app-footer {
+    .footer-content {
+      padding: 30px 16px 20px;
+
+      .footer-section {
+        .footer-brand {
+          .brand-icon {
+            width: 40px;
+            height: 40px;
+
+            mat-icon {
+              font-size: 1.5rem;
+              width: 1.5rem;
+              height: 1.5rem;
+            }
+          }
+
+          .brand-info {
+            h3 {
+              font-size: 1.2rem;
+            }
+          }
+        }
+
+        .social-links {
+          .social-btn {
+            width: 40px;
+            height: 40px;
+
+            mat-icon {
+              font-size: 1.1rem;
+              width: 1.1rem;
+              height: 1.1rem;
+            }
+          }
+        }
+      }
+    }
+
+    .footer-bottom {
+      .footer-bottom-content {
+        .footer-bottom-links {
+          flex-direction: column;
+          gap: 4px;
+        }
+      }
+    }
+  }
+}
+
+// Dark mode enhancements
+@media (prefers-color-scheme: dark) {
+  .app-footer {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+
+    .footer-content {
+      .footer-section {
+        .footer-brand {
+          .brand-info {
+            p {
+              color: #a0a0a0;
+            }
+          }
+        }
+
+        .footer-links {
+          li a {
+            color: #a0a0a0;
+
+            &:hover {
+              color: #8fa7ff;
+              background: rgba(102, 126, 234, 0.15);
+            }
+          }
+        }
+
+        .social-links {
+          .social-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #a0a0a0;
+
+            &:hover {
+              background: linear-gradient(135deg, #8fa7ff 0%, #9d7bc8 100%);
+            }
+          }
+        }
+      }
+    }
+
+    .footer-bottom {
+      background: rgba(0, 0, 0, 0.4);
+
+      .footer-bottom-content {
+        .copyright p {
+          color: #808080;
+        }
+
+        .footer-bottom-links .footer-link {
+          color: #808080;
+
+          &:hover {
+            color: #8fa7ff;
+            background: rgba(102, 126, 234, 0.15);
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+<div class="create-survey-container">
+  <mat-card class="survey-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>poll</mat-icon>
+        Create New Election Survey
+      </mat-card-title>
+      <mat-card-subtitle>
+        Create a survey to collect votes from participants
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
+        <!-- Survey Details -->
+        <div class="form-section">
+          <h3>Survey Details</h3>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Survey Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter survey name">
+            <mat-error *ngIf="surveyForm.get('name')?.hasError('required')">
+              Survey name is required
+            </mat-error>
+            <mat-error *ngIf="surveyForm.get('name')?.hasError('minlength')">
+              Survey name must be at least 3 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (Optional)</mat-label>
+            <textarea matInput formControlName="description" 
+                      placeholder="Describe your survey" 
+                      rows="3"></textarea>
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-error *ngIf="surveyForm.get('startDate')?.hasError('required')">
+                Start date is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+              <mat-error *ngIf="surveyForm.get('endDate')?.hasError('required')">
+                End date is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-error *ngIf="surveyForm.hasError('endDateInvalid')">
+            End date must be after start date
+          </mat-error>
+
+          <div class="checkbox-section">
+            <mat-checkbox formControlName="isAnonymous">
+              <span>Anonymous Survey (Voter information kept private)</span>
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- Party Selection -->
+        <div class="form-section">
+          <h3>Select Parties</h3>
+          <p class="section-subtitle">Choose at least 2 parties for your survey</p>
+          
+          <div class="parties-grid">
+            <mat-card *ngFor="let party of availableParties" 
+                      class="party-card"
+                      [class.selected]="isPartySelected(party)"
+                      (click)="onPartyToggle(party)">
+              <div class="party-content">
+                <div class="party-color" [style.background-color]="party.color"></div>
+                <div class="party-info">
+                  <h4>{{ party.name }}</h4>
+                </div>
+                <mat-icon *ngIf="isPartySelected(party)" class="selected-icon">check_circle</mat-icon>
+              </div>
+            </mat-card>
+          </div>
+
+          <mat-error *ngIf="surveyForm.get('selectedPartyIds')?.hasError('required') && surveyForm.get('selectedPartyIds')?.touched">
+            Please select at least 2 parties
+          </mat-error>
+          <mat-error *ngIf="surveyForm.get('selectedPartyIds')?.hasError('minlength') && surveyForm.get('selectedPartyIds')?.touched">
+            Please select at least 2 parties
+          </mat-error>
+        </div>
+
+        <!-- Selected Parties Preview -->
+        <div class="form-section" *ngIf="selectedParties.length > 0">
+          <h3>Selected Parties ({{ selectedParties.length }})</h3>
+          <div class="selected-parties">
+            <mat-chip-set>
+              <mat-chip *ngFor="let party of selectedParties" 
+                        [style.background-color]="party.color"
+                        [style.color]="'white'"
+                        (removed)="onPartyToggle(party)">
+                {{ party.name }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">
+        Cancel
+      </button>
+      <button mat-raised-button 
+              color="primary" 
+              [disabled]="surveyForm.invalid || isCreating"
+              (click)="onSubmit()">
+        <mat-icon *ngIf="isCreating">hourglass_empty</mat-icon>
+        <mat-icon *ngIf="!isCreating && pageTitle === 'Edit Survey'">save</mat-icon>
+        <mat-icon *ngIf="!isCreating && pageTitle !== 'Edit Survey'">create</mat-icon>
+        {{ isCreating ? (pageTitle === 'Edit Survey' ? 'Updating...' : 'Creating...') : (pageTitle === 'Edit Survey' ? 'Save Changes' : 'Create Survey') }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

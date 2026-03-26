@@ -1,0 +1,471 @@
+<div class="homev2">
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <!-- <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="nav-logo">
+          <mat-icon>how_to_vote</mat-icon>
+        </div>
+        <span class="nav-name">Ayala<strong>Vote</strong></span>
+      </div>
+      <div class="nav-links">
+        <a class="nav-link" routerLink="/home">Features</a>
+        <a class="nav-link" routerLink="/home">How it works</a>
+        <a class="nav-link" routerLink="/home">Security</a>
+      </div>
+      <div class="nav-actions">
+        <button mat-button routerLink="/login" class="nav-signin">Sign In</button>
+        <button mat-raised-button routerLink="/register" class="nav-cta">
+          Get Started
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </nav> -->
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-decoration">
+      <div class="deco-circle deco-c1"></div>
+      <div class="deco-circle deco-c2"></div>
+      <div class="deco-strip"></div>
+      <div class="deco-dots"></div>
+    </div>
+
+    <div class="hero-container">
+      <!-- Left content -->
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <div class="eyebrow-dot"></div>
+          <span>Election Survey Platform · Free to use</span>
+        </div>
+
+        <h1 class="hero-headline">
+          Run elections.<br>
+          Collect votes.<br>
+          <span class="headline-stroke">See the truth.</span>
+        </h1>
+
+        <p class="hero-body">
+          Build powerful election surveys with real-time analytics, gender-wise
+          breakdowns, and party-level insights. From setup to results in minutes.
+        </p>
+
+        <div class="hero-ctas">
+          <button mat-raised-button routerLink="/register" class="cta-primary">
+            <mat-icon>rocket_launch</mat-icon>
+            Create Free Account
+          </button>
+          <button mat-button routerLink="/login" class="cta-text">
+            Already a member? Sign in
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <mat-icon>verified</mat-icon>
+            <span>One vote per user</span>
+          </div>
+          <div class="trust-sep">·</div>
+          <div class="trust-item">
+            <mat-icon>schedule</mat-icon>
+            <span>Auto-expiry</span>
+          </div>
+          <div class="trust-sep">·</div>
+          <div class="trust-item">
+            <mat-icon>lock</mat-icon>
+            <span>Secure &amp; private</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right visual -->
+      <div class="hero-visual">
+        <div class="visual-card main-card">
+          <div class="vc-header">
+            <span class="vc-label">Live Results</span>
+            <span class="vc-live"><span class="live-dot"></span>Live</span>
+          </div>
+          <div class="vc-title">General Election Survey 2025</div>
+
+          <div class="vc-parties">
+            <div class="vc-party">
+              <div class="party-info">
+                <div class="party-swatch" style="background:#4f46e5"></div>
+                <span>National Party</span>
+              </div>
+              <div class="party-bar-wrap">
+                <div class="party-bar" style="width:62%;background:#4f46e5"></div>
+              </div>
+              <span class="party-pct">62%</span>
+            </div>
+            <div class="vc-party">
+              <div class="party-info">
+                <div class="party-swatch" style="background:#f59e0b"></div>
+                <span>Alliance Front</span>
+              </div>
+              <div class="party-bar-wrap">
+                <div class="party-bar" style="width:27%;background:#f59e0b"></div>
+              </div>
+              <span class="party-pct">27%</span>
+            </div>
+            <div class="vc-party">
+              <div class="party-info">
+                <div class="party-swatch" style="background:#10b981"></div>
+                <span>Green United</span>
+              </div>
+              <div class="party-bar-wrap">
+                <div class="party-bar" style="width:11%;background:#10b981"></div>
+              </div>
+              <span class="party-pct">11%</span>
+            </div>
+          </div>
+
+          <div class="vc-gender-row">
+            <div class="vc-gender male">
+              <mat-icon>male</mat-icon>
+              <div>
+                <span class="g-pct">54%</span>
+                <span class="g-label">Male</span>
+              </div>
+            </div>
+            <div class="vc-gender-divider"></div>
+            <div class="vc-gender female">
+              <mat-icon>female</mat-icon>
+              <div>
+                <span class="g-pct">46%</span>
+                <span class="g-label">Female</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="vc-footer">
+            <div class="vc-votes">
+              <mat-icon>how_to_vote</mat-icon>
+              <strong>1,284</strong> votes cast
+            </div>
+            <div class="vc-expiry">Closes in 3 days</div>
+          </div>
+        </div>
+
+        <!-- Floating accent cards -->
+        <div class="visual-card mini-card mini-card-1">
+          <mat-icon>bar_chart</mat-icon>
+          <div>
+            <div class="mini-num">98%</div>
+            <div class="mini-label">Accuracy</div>
+          </div>
+        </div>
+
+        <div class="visual-card mini-card mini-card-2">
+          <mat-icon>people</mat-icon>
+          <div>
+            <div class="mini-num">10K+</div>
+            <div class="mini-label">Votes cast</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-num">500+</span>
+          <span class="stat-desc">Surveys published</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">10K+</span>
+          <span class="stat-desc">Votes recorded</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-desc">Free to use</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">0</span>
+          <span class="stat-desc">Duplicate votes allowed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FEATURES
+  ══════════════════════════════════════════ -->
+  <section class="features">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Platform features</div>
+        <h2 class="section-h2">Everything your election<br>survey needs</h2>
+        <p class="section-lead">A complete toolkit — from party setup to live results — built for transparency and ease.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feat-card feat-large">
+          <div class="feat-icon-wrap indigo">
+            <mat-icon>bar_chart</mat-icon>
+          </div>
+          <h3>Live Analytics Dashboard</h3>
+          <p>Real-time vote counts, gender-wise breakdowns, and party performance charts update as each vote arrives. Filter, compare and export at any time.</p>
+          <div class="feat-visual-strip">
+            <div class="strip-bar" style="width:68%;background:#4f46e5;"></div>
+            <div class="strip-bar" style="width:22%;background:#f59e0b;"></div>
+            <div class="strip-bar" style="width:10%;background:#10b981;"></div>
+          </div>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon-wrap amber">
+            <mat-icon>how_to_vote</mat-icon>
+          </div>
+          <h3>Survey Builder</h3>
+          <p>Create surveys with custom party selections, open or restricted voting, and precise date windows — then publish instantly.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon-wrap teal">
+            <mat-icon>account_balance</mat-icon>
+          </div>
+          <h3>Party Master</h3>
+          <p>Maintain a private registry of political parties for your region. Each party is linked to your account only.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon-wrap rose">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <h3>One Vote Guarantee</h3>
+          <p>Our system enforces one vote per user per survey. No duplicates, no manipulation — ever.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon-wrap orange">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <h3>Auto Expiry</h3>
+          <p>Set start and end dates. Voting locks automatically when the window closes — no manual intervention needed.</p>
+        </div>
+
+        <div class="feat-card feat-highlight">
+          <div class="feat-icon-wrap white">
+            <mat-icon>rocket_launch</mat-icon>
+          </div>
+          <h3>Ready in minutes</h3>
+          <p>Sign up, add parties, build your survey and publish — the entire flow takes under five minutes.</p>
+          <button mat-raised-button routerLink="/register" class="feat-cta-btn">
+            Start now <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════ -->
+  <section class="hiw">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Simple process</div>
+        <h2 class="section-h2">Up and running<br>in four steps</h2>
+      </div>
+
+      <div class="hiw-grid">
+
+        <div class="hiw-step">
+          <div class="hiw-num">01</div>
+          <div class="hiw-icon">
+            <mat-icon>person_add</mat-icon>
+          </div>
+          <h3>Create Your Account</h3>
+          <p>Register for free, verify your email, and your personal workspace is ready immediately.</p>
+        </div>
+
+        <div class="hiw-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+        <div class="hiw-step">
+          <div class="hiw-num">02</div>
+          <div class="hiw-icon">
+            <mat-icon>account_balance</mat-icon>
+          </div>
+          <h3>Register Parties</h3>
+          <p>Add the political parties for your election to your private Party Master.</p>
+        </div>
+
+        <div class="hiw-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+        <div class="hiw-step">
+          <div class="hiw-num">03</div>
+          <div class="hiw-icon">
+            <mat-icon>edit_note</mat-icon>
+          </div>
+          <h3>Build Your Survey</h3>
+          <p>Pick parties, define the voting window, configure options, and preview before going live.</p>
+        </div>
+
+        <div class="hiw-arrow">
+          <mat-icon>arrow_forward</mat-icon>
+        </div>
+
+        <div class="hiw-step hiw-step-final">
+          <div class="hiw-num">04</div>
+          <div class="hiw-icon hiw-icon-final">
+            <mat-icon>rocket_launch</mat-icon>
+          </div>
+          <h3>Publish &amp; Analyse</h3>
+          <p>Go live and watch real-time results arrive. Filter by gender, party, and date on your dashboard.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       INTEGRITY SECTION
+  ══════════════════════════════════════════ -->
+  <section class="integrity">
+    <div class="section-container">
+      <div class="integrity-inner">
+
+        <div class="integrity-content">
+          <div class="section-tag">Built-in trust</div>
+          <h2 class="section-h2 left">Survey rules that<br>protect every vote</h2>
+          <p class="section-lead left">
+            Every survey runs on strict rules to deliver fair, verifiable results
+            you can share with full confidence.
+          </p>
+
+          <div class="rules-grid">
+            <div class="rule-item">
+              <div class="rule-icon"><mat-icon>how_to_vote</mat-icon></div>
+              <div>
+                <strong>One vote per user</strong>
+                <span>No duplicate entries, ever</span>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-icon"><mat-icon>swap_horiz</mat-icon></div>
+              <div>
+                <strong>Multi-survey voting</strong>
+                <span>Users may vote in multiple surveys</span>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-icon"><mat-icon>timer_off</mat-icon></div>
+              <div>
+                <strong>Auto vote lock</strong>
+                <span>Closes the moment the end date passes</span>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-icon"><mat-icon>lock_person</mat-icon></div>
+              <div>
+                <strong>Account isolation</strong>
+                <span>Parties &amp; surveys are private to you</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="integrity-visual">
+          <div class="iv-card">
+            <div class="iv-header">
+              <div class="iv-header-left">
+                <mat-icon>gavel</mat-icon>
+                <span>Integrity Report</span>
+              </div>
+              <span class="iv-badge">All Clear</span>
+            </div>
+
+            <div class="iv-check pass">
+              <div class="iv-check-icon"><mat-icon>check</mat-icon></div>
+              <span class="iv-check-label">Duplicate vote check</span>
+              <span class="iv-status pass">Passed</span>
+            </div>
+            <div class="iv-check pass">
+              <div class="iv-check-icon"><mat-icon>check</mat-icon></div>
+              <span class="iv-check-label">Survey window active</span>
+              <span class="iv-status pass">Valid</span>
+            </div>
+            <div class="iv-check pass">
+              <div class="iv-check-icon"><mat-icon>check</mat-icon></div>
+              <span class="iv-check-label">User identity verified</span>
+              <span class="iv-status pass">Confirmed</span>
+            </div>
+            <div class="iv-check warn">
+              <div class="iv-check-icon warn"><mat-icon>schedule</mat-icon></div>
+              <span class="iv-check-label">Survey expiry</span>
+              <span class="iv-status warn">3 days left</span>
+            </div>
+
+            <div class="iv-footer">
+              <mat-icon>shield</mat-icon>
+              <span>All critical checks passed · Safe to cast vote</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CTA BANNER
+  ══════════════════════════════════════════ -->
+  <section class="cta-banner">
+    <div class="cta-bg-shape"></div>
+    <div class="section-container">
+      <div class="cta-inner">
+        <div class="cta-left">
+          <h2 class="cta-h2">Ready to launch your<br>first election survey?</h2>
+          <p class="cta-sub">Free forever. No credit card. Up and running in minutes.</p>
+        </div>
+        <div class="cta-right">
+          <button mat-raised-button routerLink="/register" class="cta-primary-large">
+            <mat-icon>rocket_launch</mat-icon>
+            Create Free Account
+          </button>
+          <button mat-button routerLink="/login" class="cta-link-btn">
+            Sign in to existing account
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="v2-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <mat-icon>how_to_vote</mat-icon>
+        </div>
+        <div>
+          <div class="footer-name">Ayala<strong>Vote</strong></div>
+          <div class="footer-tagline">Election Survey Platform</div>
+        </div>
+      </div>
+      <div class="footer-copy">© {{ currentYear }} Ayala Web. All rights reserved.</div>
+    </div>
+  </footer>
+
+</div>

@@ -1,0 +1,293 @@
+.manage-survey-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+
+  .mat-mdc-raised-button:not(:disabled) {
+    background: var(--indigo) !important;
+    color: white;
+  }    
+}
+
+.header-card {
+  margin-bottom: 20px;
+
+  .mat-mdc-card-header {
+    .mat-mdc-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.5rem;
+      color: #1976d2;
+    }
+  }
+
+  .survey-meta {
+    display: grid;
+    gap: 6px;
+    color: #666;
+    font-size: 1rem;
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      mat-icon {
+        font-size: 1.4rem;
+        height: 1.4rem;
+        width: 1.4rem;
+        color: #666;
+      }
+    }
+  }
+
+
+  .survey-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+
+      mat-icon {
+        font-size: 1.2rem;
+        height: 1.2rem;
+        width: 1.2rem;
+
+        &.active {
+          color: #4caf50;
+        }
+
+        &.inactive {
+          color: #f44336;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .actions-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+.url-card {
+  margin-bottom: 20px;
+
+  .url-section {
+    h3 {
+      margin: 0 0 16px 0;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .url-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .url-field {
+        flex: 1;
+      }
+    }
+
+    .url-help {
+      margin: 8px 0 0 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.results-card {
+  margin-bottom: 20px;
+
+  .mat-mdc-card-header {
+    .mat-mdc-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1976d2;
+    }
+  }
+
+  .results-summary {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+
+    .summary-item {
+      text-align: center;
+
+      h4 {
+        margin: 0 0 4px 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1976d2;
+      }
+
+      span {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .no-votes {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+
+    mat-icon {
+      font-size: 3rem;
+      height: 3rem;
+      width: 3rem;
+      margin-bottom: 16px;
+      color: #ccc;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+  }
+
+  .results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .result-item {
+      padding: 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #fafafa;
+
+      .party-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        .party-color {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+
+        .party-details {
+          flex: 1;
+
+          h4 {
+            margin: 0 0 4px 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+          }
+
+          .vote-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 0.9rem;
+
+            .vote-count {
+              color: #666;
+            }
+
+            .vote-percentage {
+              color: #1976d2;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+
+      .progress-container {
+        .mat-mdc-progress-bar {
+          height: 8px;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
+.back-section {
+  text-align: center;
+  margin-top: 32px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 16px;
+
+  p {
+    color: #666;
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .manage-survey-container {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .survey-stats {
+    flex-direction: column;
+    gap: 12px !important;
+  }
+
+  .results-summary {
+    flex-direction: column;
+    gap: 16px !important;
+  }
+
+  .url-container {
+    flex-direction: column;
+    align-items: stretch;
+
+    .url-field {
+      margin-bottom: 8px;
+    }
+  }
+}

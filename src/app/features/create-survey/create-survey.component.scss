@@ -1,0 +1,150 @@
+.create-survey-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+
+  .mat-mdc-raised-button:not(:disabled) {
+    background: var(--indigo) !important;
+    color: white;
+  }    
+}
+
+.survey-card {
+  .mat-mdc-card-header {
+    .mat-mdc-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.5rem;
+      color: #1976d2;
+    }
+  }
+}
+
+.form-section {
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .section-subtitle {
+    margin: 0 0 16px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+
+    .form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .color-picker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .color-preview {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.parties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.party-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &.selected {
+    border-color: #1976d2;
+    background-color: #f3f8ff;
+  }
+
+  .party-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+
+    .party-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .party-info {
+      flex: 1;
+
+      h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+      }
+    }
+
+    .selected-icon {
+      color: #1976d2;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.selected-parties {
+  .mat-mdc-chip-set {
+    .mat-mdc-chip {
+      margin: 4px;
+    }
+  }
+}
+
+.mat-mdc-card-actions {
+  padding: 16px 24px;
+  gap: 8px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .create-survey-container {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .parties-grid {
+    grid-template-columns: 1fr;
+  }
+}

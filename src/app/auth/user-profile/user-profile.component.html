@@ -1,0 +1,125 @@
+<div class="profile-container">
+    <!-- Profile Form -->
+    <div *ngIf="!showSuccessMessage">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>My Profile</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div *ngIf="loading" class="loading-spinner">
+                    <mat-spinner diameter="40"></mat-spinner>
+                </div>
+
+                <ng-container *ngIf="!loading">
+                    <app-profile-image [currentImage]="profile?.profileImage!" (imageSelected)="onImageSelected($event)"
+                        (imageRemoved)="onImageRemoved()">
+                    </app-profile-image>
+
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                        <div class="form-row">
+                            <mat-form-field appearance="fill">
+                                <mat-label>First Name</mat-label>
+                                <input matInput formControlName="first_name">
+                                <mat-error *ngIf="profileForm.get('first_name')?.hasError('required')">
+                                    First Name is required
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput formControlName="last_name">
+                                <mat-error *ngIf="profileForm.get('last_name')?.hasError('required')">
+                                    Last Name is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" formControlName="email">
+                            <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+                                Email is required
+                            </mat-error>
+                            <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+                                Please enter a valid email
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Mobile</mat-label>
+                            <input matInput formControlName="mobile">
+                            <mat-error *ngIf="profileForm.get('mobile')?.hasError('pattern')">
+                                Please enter a valid mobile number
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Major/Specialization</mat-label>
+                            <input matInput formControlName="major">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>New Password (leave blank to keep current)</mat-label>
+                            <input matInput type="password" formControlName="password">
+                        </mat-form-field>
+
+                        <div class="form-actions">
+                            <button mat-raised-button color="primary" type="submit"
+                                [disabled]="!profileForm.valid || saving">
+                                <mat-spinner diameter="20" *ngIf="saving"></mat-spinner>
+                                <span *ngIf="!saving">Save Changes</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="profile-info">
+                        <p><strong>Member since:</strong> {{profile?.created_at | date}}</p>
+                        <p><strong>Last updated:</strong> {{profile?.updated_at | date}}</p>
+                        <p><strong>Status:</strong> {{profile?.is_active ? 'Active' : 'Inactive'}}</p>
+                    </div>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="showSuccessMessage" class="success-container" [@fadeInOut]>
+        <mat-card>
+            <mat-card-content class="success-content">
+                <div class="success-icon">
+                    <mat-icon>check_circle</mat-icon>
+                </div>
+
+                <h2>Profile Updated Successfully!</h2>
+
+                <div class="profile-preview" *ngIf="profile?.profileImage">
+                    <img [src]="profile?.profileImage" alt="Updated profile picture">
+                </div>
+
+                <p>Your profile information has been updated successfully.</p>
+
+                <div class="navigation-buttons">
+                    <button mat-raised-button color="primary" routerLink="/exam/list">
+                        <mat-icon>assignment</mat-icon>
+                        Go to Exams
+                    </button>
+                    <button mat-raised-button color="accent" routerLink="/">
+                        <mat-icon>home</mat-icon>
+                        Home Page
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="editProfile()">
+                        <mat-icon>edit</mat-icon>
+                        Edit Profile
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<!-- Add this at the bottom of the template -->
+<!--<app-profile-update-success
+  *ngIf="showSuccessMessage"
+  [profileImage]="profile?.profileImage!"
+  (closed)="showSuccessMessage = false">
+  </app-profile-update-success>-->

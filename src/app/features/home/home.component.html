@@ -1,0 +1,389 @@
+<div class="home-page">
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-a"></div>
+      <div class="hero-orb orb-b"></div>
+      <div class="hero-orb orb-c"></div>
+      <div class="hero-grid"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero-badge">
+        <mat-icon>how_to_vote</mat-icon>
+        <span>Election Survey Platform</span>
+      </div>
+
+      <h1 class="hero-title">
+        Your Voice.<br>
+        <span class="accent">Your Vote.</span><br>
+        Your Survey.
+      </h1>
+
+      <p class="hero-sub">
+        Create, publish, and manage election surveys with real-time results,
+        gender-wise analytics, and party-level breakdowns — all in one place.
+      </p>
+
+      <div class="hero-actions">
+        <button mat-raised-button routerLink="/register" class="btn-primary">
+          <mat-icon>rocket_launch</mat-icon>
+          Get Started Free
+        </button>
+        <button mat-stroked-button routerLink="/login" class="btn-ghost">
+          <mat-icon>login</mat-icon>
+          Sign In
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-num">10K+</span>
+          <span class="stat-label">Votes Cast</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Surveys Published</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Free to Use</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- floating mock dashboard card -->
+    <div class="hero-card-float">
+      <div class="mock-card">
+        <div class="mock-card-header">
+          <div class="mock-dot red"></div>
+          <div class="mock-dot yellow"></div>
+          <div class="mock-dot green"></div>
+          <span class="mock-title">Live Survey · General Election 2025</span>
+        </div>
+        <div class="mock-bars">
+          <div class="mock-bar-row">
+            <span class="party-name">National Party</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:62%;background:linear-gradient(90deg,#667eea,#764ba2)"></div>
+            </div>
+            <span class="bar-pct">62%</span>
+          </div>
+          <div class="mock-bar-row">
+            <span class="party-name">Alliance Front</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:28%;background:linear-gradient(90deg,#f093fb,#f5576c)"></div>
+            </div>
+            <span class="bar-pct">28%</span>
+          </div>
+          <div class="mock-bar-row">
+            <span class="party-name">Green United</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:10%;background:linear-gradient(90deg,#43e97b,#38f9d7)"></div>
+            </div>
+            <span class="bar-pct">10%</span>
+          </div>
+        </div>
+        <div class="mock-gender">
+          <div class="gender-chip male">
+            <mat-icon>male</mat-icon>
+            <span>Male 54%</span>
+          </div>
+          <div class="gender-chip female">
+            <mat-icon>female</mat-icon>
+            <span>Female 46%</span>
+          </div>
+        </div>
+        <div class="mock-footer">
+          <mat-icon>schedule</mat-icon>
+          <span>Closes in 3 days · 1,284 votes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FEATURES
+  ══════════════════════════════════════════ -->
+  <section class="features">
+    <div class="container">
+      <div class="section-label">
+        <div class="label-line"></div>
+        <span>Everything you need</span>
+        <div class="label-line"></div>
+      </div>
+      <h2 class="section-title">Powerful tools for<br>democratic insight</h2>
+
+      <div class="features-grid">
+
+        <div class="feature-card card-accent-purple">
+          <div class="feature-icon">
+            <mat-icon>bar_chart</mat-icon>
+          </div>
+          <h3>Live Dashboard</h3>
+          <p>Real-time vote statistics with gender-wise breakdowns, party performance charts, and demographic analysis all in one view.</p>
+          <div class="feature-tag">Analytics</div>
+        </div>
+
+        <div class="feature-card card-accent-blue">
+          <div class="feature-icon">
+            <mat-icon>how_to_vote</mat-icon>
+          </div>
+          <h3>Survey Builder</h3>
+          <p>Create detailed election surveys, select participating parties, set start and end dates, and publish to the public with a single click.</p>
+          <div class="feature-tag">Survey Management</div>
+        </div>
+
+        <div class="feature-card card-accent-teal">
+          <div class="feature-icon">
+            <mat-icon>account_balance</mat-icon>
+          </div>
+          <h3>Party Master</h3>
+          <p>Maintain your own party registry specific to your region. Add logos, colours, and candidate details for each political party.</p>
+          <div class="feature-tag">Party Management</div>
+        </div>
+
+        <div class="feature-card card-accent-pink">
+          <div class="feature-icon">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <h3>One Vote Guarantee</h3>
+          <p>Each participant can vote only once per survey, ensuring the integrity and authenticity of your election results.</p>
+          <div class="feature-tag">Security</div>
+        </div>
+
+        <div class="feature-card card-accent-orange">
+          <div class="feature-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <h3>Smart Scheduling</h3>
+          <p>Set precise start and end dates for every survey. Voting is automatically locked when the survey period expires.</p>
+          <div class="feature-tag">Scheduling</div>
+        </div>
+
+        <div class="feature-card card-accent-green">
+          <div class="feature-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <h3>Multi-Survey Support</h3>
+          <p>Run multiple surveys simultaneously. Each survey is isolated to your account — full control, full privacy.</p>
+          <div class="feature-tag">Multi-Survey</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════ -->
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-label">
+        <div class="label-line"></div>
+        <span>Simple by design</span>
+        <div class="label-line"></div>
+      </div>
+      <h2 class="section-title">From signup to<br>published in minutes</h2>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-connector left-hidden"></div>
+          <div class="step-bubble">
+            <span class="step-num">01</span>
+            <div class="step-icon-wrap">
+              <mat-icon>person_add</mat-icon>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-body">
+            <h3>Create Account</h3>
+            <p>Sign up for free in seconds. Verify your email and your personal workspace is ready.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-connector"></div>
+          <div class="step-bubble">
+            <span class="step-num">02</span>
+            <div class="step-icon-wrap">
+              <mat-icon>account_balance</mat-icon>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-body">
+            <h3>Add Your Parties</h3>
+            <p>Register the political parties relevant to your election in the Party Master module.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-connector"></div>
+          <div class="step-bubble">
+            <span class="step-num">03</span>
+            <div class="step-icon-wrap">
+              <mat-icon>edit_note</mat-icon>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step-body">
+            <h3>Build Your Survey</h3>
+            <p>Select parties, set the survey period, configure options, and preview before going live.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-connector"></div>
+          <div class="step-bubble step-bubble-last">
+            <span class="step-num">04</span>
+            <div class="step-icon-wrap">
+              <mat-icon>rocket_launch</mat-icon>
+            </div>
+          </div>
+          <div class="step-connector right-hidden"></div>
+          <div class="step-body">
+            <h3>Publish &amp; Analyse</h3>
+            <p>Go live and watch real-time results flow in. Filter by gender, party, or date on the dashboard.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       RULES / INTEGRITY
+  ══════════════════════════════════════════ -->
+  <section class="rules-section">
+    <div class="container">
+      <div class="rules-inner">
+        <div class="rules-text">
+          <div class="section-label left-align">
+            <div class="label-line"></div>
+            <span>Built-in integrity</span>
+          </div>
+          <h2 class="section-title left-align">Survey rules that<br>protect every vote</h2>
+          <p class="rules-desc">
+            Every survey runs on a strict ruleset to ensure fair, tamper-proof results
+            you can trust and share with confidence.
+          </p>
+          <ul class="rules-list">
+            <li>
+              <mat-icon>check_circle</mat-icon>
+              <span>One vote per user per survey — no duplicates ever</span>
+            </li>
+            <li>
+              <mat-icon>check_circle</mat-icon>
+              <span>A single user can participate in multiple different surveys</span>
+            </li>
+            <li>
+              <mat-icon>check_circle</mat-icon>
+              <span>Voting is automatically blocked when the survey end date passes</span>
+            </li>
+            <li>
+              <mat-icon>check_circle</mat-icon>
+              <span>Parties and surveys are private to your account only</span>
+            </li>
+            <li>
+              <mat-icon>check_circle</mat-icon>
+              <span>Each survey can be independently edited before publishing</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rules-visual">
+          <div class="rules-mock">
+            <div class="rules-mock-header">
+              <mat-icon>gavel</mat-icon>
+              <span>Survey Integrity Check</span>
+              <div class="status-badge active">Active</div>
+            </div>
+            <div class="integrity-item pass">
+              <mat-icon>check_circle</mat-icon>
+              <div class="integrity-label">
+                <span>Duplicate vote check</span>
+                <span class="integrity-pass">Passed</span>
+              </div>
+            </div>
+            <div class="integrity-item pass">
+              <mat-icon>check_circle</mat-icon>
+              <div class="integrity-label">
+                <span>Survey window active</span>
+                <span class="integrity-pass">Valid</span>
+              </div>
+            </div>
+            <div class="integrity-item pass">
+              <mat-icon>check_circle</mat-icon>
+              <div class="integrity-label">
+                <span>User identity verified</span>
+                <span class="integrity-pass">Confirmed</span>
+              </div>
+            </div>
+            <div class="integrity-item warn">
+              <mat-icon>schedule</mat-icon>
+              <div class="integrity-label">
+                <span>Survey expiry</span>
+                <span class="integrity-warn">3 days left</span>
+              </div>
+            </div>
+            <div class="integrity-footer">
+              <mat-icon>shield</mat-icon>
+              <span>All checks passed · Safe to vote</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CTA
+  ══════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <div class="cta-orb cta-orb-a"></div>
+      <div class="cta-orb cta-orb-b"></div>
+    </div>
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-icon-wrap">
+          <mat-icon>how_to_vote</mat-icon>
+        </div>
+        <h2 class="cta-title">Ready to run your first election survey?</h2>
+        <p class="cta-sub">
+          Join hundreds of survey creators. Set up your account, register your parties,
+          and publish your first survey today — completely free.
+        </p>
+        <div class="cta-actions">
+          <button mat-raised-button routerLink="/register" class="btn-primary btn-large">
+            <mat-icon>rocket_launch</mat-icon>
+            Create Free Account
+          </button>
+          <button mat-stroked-button routerLink="/login" class="btn-ghost btn-large">
+            Already have an account? Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="home-footer">
+    <div class="container">
+      <div class="footer-brand">
+        <mat-icon>how_to_vote</mat-icon>
+        <span>Ayala Web · Election Survey</span>
+      </div>
+      <p class="footer-copy">© {{ currentYear }} Ayala Web. All rights reserved.</p>
+    </div>
+  </footer>
+
+</div>

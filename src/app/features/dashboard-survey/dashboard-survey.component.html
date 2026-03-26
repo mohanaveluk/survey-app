@@ -1,0 +1,282 @@
+<div class="dashboard-survey-container">
+  <div class="header-section">
+    <div class="header-content">
+      <h1>
+        <mat-icon>analytics</mat-icon>
+        Survey Analytics Dashboard
+      </h1>
+      <p class="subtitle">Track and analyze your election survey performance</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="createNewSurvey()">
+      <mat-icon>add</mat-icon>
+      Create New Survey
+    </button>
+  </div>
+
+  <div class="dashboard-content" *ngIf="!isLoading">
+    <mat-card class="survey-selector-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>list</mat-icon>
+          Select Survey
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="survey-list" *ngIf="mySurveys.length > 0">
+          <div *ngFor="let survey of mySurveys"
+               class="survey-item"
+               [class.selected]="selectedSurvey?.id === survey.id"
+               (click)="selectSurvey(survey)">
+            <div class="survey-info">
+              <h3>{{ survey.name }}</h3>
+              <div class="survey-meta">
+                <span class="status-badge" [class.active]="survey.isActive">
+                  <mat-icon>{{ survey.isActive ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+                  {{ survey.isActive ? 'Active' : 'Inactive' }}
+                </span>
+                <span class="vote-count">{{ survey.totalVotes }} votes</span>
+              </div>
+            </div>
+            <button mat-icon-button (click)="manageSurvey(survey.id); $event.stopPropagation()">
+              <mat-icon>settings</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="empty-surveys" *ngIf="mySurveys.length === 0">
+          <mat-icon>poll</mat-icon>
+          <p>No surveys created yet</p>
+          <button mat-raised-button color="primary" (click)="createNewSurvey()">
+            Create Your First Survey
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="statistics-section" *ngIf="selectedSurvey && !isLoadingStats && statistics">
+      <div class="stats-row">
+        <mat-card class="stat-card primary">
+          <div class="stat-content">
+            <mat-icon>how_to_vote</mat-icon>
+            <div class="stat-info">
+              <h2>{{ statistics.totalVotes }}</h2>
+              <p>Total Votes</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card success">
+          <div class="stat-content">
+            <mat-icon>groups</mat-icon>
+            <div class="stat-info">
+              <h2>{{ selectedSurvey.surveyParties?.length }}</h2>
+              <p>Parties</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card info">
+          <div class="stat-content">
+            <mat-icon>trending_up</mat-icon>
+            <div class="stat-info">
+              <h2>{{ statistics.participationRate }}%</h2>
+              <p>Participation</p>
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card warning" *ngIf="getLeadingParty()">
+          <div class="stat-content">
+            <mat-icon>emoji_events</mat-icon>
+            <div class="stat-info">
+              <h2>{{ getLeadingParty()?.name }}</h2>
+              <p>Leading Party</p>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <div class="charts-row">
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>bar_chart</mat-icon>
+              Votes by Party
+            </mat-card-title>
+            <button mat-icon-button (click)="refreshStatistics()">
+              <mat-icon>refresh</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="party-votes-chart">
+              <div *ngFor="let party of selectedSurvey.surveyParties" class="party-bar">
+                <div class="party-header">
+                  <div class="party-name">
+                    <div class="party-color" [style.background-color]="party.party.color"></div>
+                    <span>{{ party.party.name }}</span>
+                  </div>
+                  <div class="party-stats">
+                    <span class="vote-count">{{ statistics.votesByParty[party.party.id!] || 0 }}</span>
+                    <span class="percentage">{{ getVotePercentage(party.party.id!) }}%</span>
+                  </div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill"
+                       [style.width.%]="getVotePercentage(party.party.id!)"
+                       [style.background-color]="party.party.color">
+                  </div>
+                </div>
+              </div>
+
+              <div class="no-votes" *ngIf="statistics.totalVotes === 0">
+                <mat-icon>inbox</mat-icon>
+                <p>No votes recorded yet</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="chart-card">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>wc</mat-icon>
+              Gender Distribution
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="gender-chart">
+              <div class="gender-item male">
+                <div class="gender-header">
+                  <mat-icon>male</mat-icon>
+                  <span>Male</span>
+                </div>
+                <div class="gender-stats">
+                  <h3>{{ statistics.votesByGender.male }}</h3>
+                  <span>{{ getGenderPercentage('male') }}%</span>
+                </div>
+                <div class="gender-bar">
+                  <div class="bar-fill" [style.width.%]="getGenderPercentage('male')"></div>
+                </div>
+              </div>
+
+              <div class="gender-item female">
+                <div class="gender-header">
+                  <mat-icon>female</mat-icon>
+                  <span>Female</span>
+                </div>
+                <div class="gender-stats">
+                  <h3>{{ statistics.votesByGender.female }}</h3>
+                  <span>{{ getGenderPercentage('female') }}%</span>
+                </div>
+                <div class="gender-bar">
+                  <div class="bar-fill" [style.width.%]="getGenderPercentage('female')"></div>
+                </div>
+              </div>
+
+              <div class="gender-item other" *ngIf="statistics.votesByGender.other > 0">
+                <div class="gender-header">
+                  <mat-icon>person</mat-icon>
+                  <span>Other</span>
+                </div>
+                <div class="gender-stats">
+                  <h3>{{ statistics.votesByGender.other }}</h3>
+                  <span>{{ getGenderPercentage('other') }}%</span>
+                </div>
+                <div class="gender-bar">
+                  <div class="bar-fill" [style.width.%]="getGenderPercentage('other')"></div>
+                </div>
+              </div>
+
+              <div class="no-votes" *ngIf="statistics.totalVotes === 0">
+                <mat-icon>inbox</mat-icon>
+                <p>No gender data available</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <mat-card class="detailed-analysis-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>table_chart</mat-icon>
+            Gender-Based Party Analysis
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="analysis-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Party</th>
+                  <th>Total Votes</th>
+                  <th>Male</th>
+                  <th>Female</th>
+                  <th>Other</th>
+                  <th>Vote Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let party of selectedSurvey.surveyParties">
+                  
+                  <td class="party-cell">
+                      <div class="party-color" [style.background-color]="party.party.color"></div>
+                      <span>{{ party.party.name }}</span>
+                    </td>
+                    <td class="total-cell">{{ statistics.votesByParty[party.party.id!] || 0 }}</td>
+                    <td class="gender-cell male-cell">
+                      {{ getGenderVotesForParty(party.party.id!, 'male') }}
+                      <span class="mini-percentage">
+                        ({{ getVoteMiniPercentage(party.party.id!) }}%)
+                      </span>
+                    </td>
+                    <td class="gender-cell female-cell">
+                      {{ getGenderVotesForParty(party.party.id!, 'female') }}
+                      <span class="mini-percentage">
+                        ({{ getVoteMiniPercentage(party.party.id!) }}%)
+                      </span>
+                    </td>
+                    <td class="gender-cell other-cell">
+                      {{ getGenderVotesForParty(party.party.id!, 'other') }}
+                      <span class="mini-percentage">
+                        ({{ getVoteMiniPercentage(party.party.id!) }}%)
+                      </span>
+                    </td>
+                    <td class="percentage-cell">
+                      <div class="percentage-bar">
+                        <div class="percentage-fill" [style.width.%]="getVotePercentage(party.party.id!)"
+                          [style.background-color]="party.party.color">
+                        </div>
+                        <span>{{ getVotePercentage(party.party.id!) }}%</span>
+                      </div>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="no-votes" *ngIf="statistics.totalVotes === 0">
+              <mat-icon>inbox</mat-icon>
+              <p>No voting data to display</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="loading-stats" *ngIf="isLoadingStats">
+      <mat-spinner></mat-spinner>
+      <p>Loading statistics...</p>
+    </div>
+
+    <div class="no-selection" *ngIf="!selectedSurvey && mySurveys.length > 0">
+      <mat-icon>analytics</mat-icon>
+      <h3>Select a survey to view analytics</h3>
+      <p>Choose a survey from the list above</p>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+    <p>Loading surveys...</p>
+  </div>
+</div>

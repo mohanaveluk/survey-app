@@ -15,6 +15,7 @@ import { Vote2Component } from './features/vote/vote2.component';
 import { UserProfileComponent } from './auth/user-profile/user-profile.component';
 import { ProfileComponent } from './auth/user-profile-v2/user-profile-v2.component';
 import { ForgotPasswordComponent } from './auth/forgot/forgot-password.component';
+import { ContactUsComponent } from './features/contact/contact-us.component';
 
 export const routes: Routes = [
   { path: '', component: Homev2Component },
@@ -33,6 +34,7 @@ export const routes: Routes = [
   { path: 'profile_old', component: UserProfileComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'fp', component: ForgotPasswordComponent },
+  { path: 'contact', component: ContactUsComponent },
   
   { path: 'auth/verifyemail/:userGuid/:verificationCode', component: VerifyEmailComponent }
 ];

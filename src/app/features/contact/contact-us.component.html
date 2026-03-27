@@ -1,0 +1,273 @@
+<div class="contact-page">
+
+  <!-- ── Decorative background ── -->
+  <div class="page-bg">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PAGE HERO HEADER
+  ══════════════════════════════════════ -->
+  <div class="page-hero">
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <mat-icon>support_agent</mat-icon>
+        <span>We're here to help</span>
+      </div>
+      <h1 class="hero-title">Get in Touch</h1>
+      <p class="hero-sub">
+        Have a question, suggestion or need support? Send us a message and
+        our team will get back to you within 24 hours.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MAIN TWO-COLUMN LAYOUT
+  ══════════════════════════════════════ -->
+  <div class="contact-layout">
+
+    <!-- ═══ LEFT — Contact info panel ═══ -->
+    <aside class="info-panel">
+
+      <!-- Info cards -->
+      <div class="info-card">
+        <div class="info-card-icon email-icon">
+          <mat-icon>email</mat-icon>
+        </div>
+        <div class="info-card-body">
+          <h3>Email Us</h3>
+          <p>For general queries and support</p>
+          <a href="mailto:support@ayalaweb.com" class="info-link">
+            support@ayalaweb.com
+          </a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-icon phone-icon">
+          <mat-icon>phone_in_talk</mat-icon>
+        </div>
+        <div class="info-card-body">
+          <h3>Call Us</h3>
+          <p>Mon – Fri, 9 AM to 6 PM EST</p>
+          <a href="tel:+15550001234" class="info-link">+1 (925) 332-0011</a>
+        </div>
+      </div>
+
+      <!--<div class="info-card">
+        <div class="info-card-icon location-icon">
+          <mat-icon>location_on</mat-icon>
+        </div>
+        <div class="info-card-body">
+          <h3>Visit Us</h3>
+          <p>Our head office</p>
+          <span class="info-address">
+            123 Democracy Avenue, Suite 400<br>
+            New York, NY 10001<br>
+            United States
+          </span>
+        </div>
+      </div>-->
+
+      <div class="info-card">
+        <div class="info-card-icon hours-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="info-card-body">
+          <h3>Business Hours</h3>
+          <div class="hours-list">
+            <div class="hours-row">
+              <span class="day">Mon – Fri</span>
+              <span class="time">9:00 AM – 6:00 PM</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Saturday</span>
+              <span class="time">10:00 AM – 2:00 PM</span>
+            </div>
+            <div class="hours-row closed">
+              <span class="day">Sunday</span>
+              <span class="time">Closed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map placeholder -->
+      <!-- <div class="map-placeholder">
+        <div class="map-overlay">
+          <div class="map-pin">
+            <mat-icon>place</mat-icon>
+          </div>
+          <div class="map-label">123 Democracy Avenue, New York</div>
+        </div>
+        <div class="map-grid"></div>
+      </div> -->
+
+      <!-- Social links -->
+      <div class="social-row">
+        <span class="social-label">Find us on</span>
+        <div class="social-chips">
+          <a href="#" class="social-chip" aria-label="Twitter">
+            <mat-icon>tag</mat-icon>
+            Twitter
+          </a>
+          <a href="#" class="social-chip" aria-label="LinkedIn">
+            <mat-icon>work</mat-icon>
+            LinkedIn
+          </a>
+          <a href="#" class="social-chip" aria-label="GitHub">
+            <mat-icon>code</mat-icon>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ═══ RIGHT — Contact form ═══ -->
+    <div class="form-panel">
+
+      <!-- ── Thank you state ── -->
+      <div class="thankyou-state" *ngIf="submitted">
+        <div class="ty-icon-wrap">
+          <div class="ty-icon">
+            <mat-icon>mark_email_read</mat-icon>
+          </div>
+          <div class="ty-burst"></div>
+        </div>
+        <h2 class="ty-title">Message Sent!</h2>
+        <p class="ty-sub">
+          Thank you for reaching out, <strong>{{ sentName }}</strong>.<br>
+          We've received your message and will reply to
+          <strong>{{ sentEmail }}</strong> within 24 hours.
+        </p>
+        <div class="ty-info">
+          <mat-icon>info_outline</mat-icon>
+          <span>Check your spam folder if you don't hear from us.</span>
+        </div>
+        <button mat-raised-button class="primary-btn" (click)="resetForm()">
+          <mat-icon>add_comment</mat-icon>
+          Send Another Message
+        </button>
+      </div>
+
+      <!-- ── Contact form ── -->
+      <div class="form-wrap" *ngIf="!submitted">
+
+        <div class="form-header">
+          <h2 class="form-title">Send us a message</h2>
+          <p class="form-sub">Fill in the details below and we'll get back to you shortly.</p>
+        </div>
+
+        <!-- Error banner -->
+        <div class="error-banner" *ngIf="errorMessage">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+          <button class="close-banner" (click)="errorMessage = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+
+          <!-- Name row -->
+          <div class="field-row two-col">
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" placeholder="John">
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="contactForm.get('firstName')?.hasError('required')">
+                First name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" placeholder="Smith">
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="contactForm.get('lastName')?.hasError('required')">
+                Last name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline" class="field full">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="john@example.com">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="contactForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="contactForm.get('email')?.hasError('email')">Enter a valid email address</mat-error>
+          </mat-form-field>
+
+          <!-- Phone (optional) -->
+          <mat-form-field appearance="outline" class="field full">
+            <mat-label>Phone Number <span class="optional-tag">optional</span></mat-label>
+            <input matInput formControlName="phone" type="tel" placeholder="+1 555 000 0000">
+            <mat-icon matPrefix>phone</mat-icon>
+            <mat-error *ngIf="contactForm.get('phone')?.hasError('pattern')">
+              Enter a valid phone number
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Subject -->
+          <mat-form-field appearance="outline" class="field full">
+            <mat-label>Subject</mat-label>
+            <mat-select formControlName="subject">
+              <mat-option value="general">General Enquiry</mat-option>
+              <mat-option value="support">Technical Support</mat-option>
+              <mat-option value="survey">Survey Help</mat-option>
+              <mat-option value="billing">Billing &amp; Account</mat-option>
+              <mat-option value="partnership">Partnership &amp; Business</mat-option>
+              <mat-option value="feedback">Feedback &amp; Suggestions</mat-option>
+              <mat-option value="other">Other</mat-option>
+            </mat-select>
+            <mat-icon matPrefix>topic</mat-icon>
+            <mat-error *ngIf="contactForm.get('subject')?.hasError('required')">
+              Please select a subject
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Message -->
+          <mat-form-field appearance="outline" class="field full">
+            <mat-label>Your Message</mat-label>
+            <textarea matInput
+                      formControlName="message"
+                      rows="5"
+                      placeholder="Tell us how we can help you…"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="5"
+                      cdkAutosizeMaxRows="10">
+            </textarea>
+            <mat-icon matPrefix>chat</mat-icon>
+            <mat-hint align="end">{{ contactForm.get('message')?.value?.length || 0 }} / 1000</mat-hint>
+            <mat-error *ngIf="contactForm.get('message')?.hasError('required')">
+              Message is required
+            </mat-error>
+            <mat-error *ngIf="contactForm.get('message')?.hasError('minlength')">
+              Message must be at least 10 characters
+            </mat-error>
+            <mat-error *ngIf="contactForm.get('message')?.hasError('maxlength')">
+              Message cannot exceed 1000 characters
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Submit -->
+          <button mat-raised-button type="submit" class="primary-btn"
+                  [disabled]="contactForm.invalid || isSubmitting">
+            <mat-spinner *ngIf="isSubmitting" diameter="18"></mat-spinner>
+            <mat-icon *ngIf="!isSubmitting">send</mat-icon>
+            <span>{{ isSubmitting ? 'Sending…' : 'Send Message' }}</span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

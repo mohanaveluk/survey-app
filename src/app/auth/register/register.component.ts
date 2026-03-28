@@ -21,6 +21,7 @@ export class RegisterComponent {
   // ── Post-registration success state ──────────────────────────────────────
   registrationSuccess = false;
   registeredEmail = '';
+  registereduserGuid = '';
 
   // ── Resend state ──────────────────────────────────────────────────────────
   isResending = false;
@@ -51,9 +52,11 @@ export class RegisterComponent {
       const userRequest = { first_name: firstname, last_name: lastname, email, password };
 
       this.authService.register(userRequest).subscribe({
-        next: () => {
+        next: (response: any) => {
           this.isLoading = false;
           //this.router.navigate(['/login']);
+          const reg_response = response;
+          this.registereduserGuid = response.data.uguid;
           this.registeredEmail = email;
           this.registrationSuccess = true;
           this.cdRef.detectChanges();
@@ -119,7 +122,7 @@ export class RegisterComponent {
     this.resendError = '';
 
     // Wire this up to your actual resend API method in AuthService
-    this.authService.resendVerificationEmail(this.registeredEmail).subscribe({
+    this.authService.resendVerificationEmail(this.registereduserGuid).subscribe({
       next: () => {
         this.isResending = false;
         this.resendSuccess = true;

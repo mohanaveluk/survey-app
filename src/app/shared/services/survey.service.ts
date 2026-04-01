@@ -414,11 +414,16 @@ export class SurveyService {
     return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
   }
 
-  getSurveyUrl(surveyId: string): string {
-    return `${window.location.origin}/vote/${surveyId}`;
+  getSurveyUrl(surveyId: string, userIdentity: string): string {
+    return `${window.location.origin}/${userIdentity}/vote/${surveyId}`;
   }
 
   getSurveyStatistics(surveyId: string): Observable< SurveyStatistics | null> {
+    const surveyApi = this.apiUrlBuilder.buildApiUrl(`vote/${surveyId}/statistics`);
+    return this.http.get<any>(surveyApi);
+  }
+
+  getSurveyStatistics1(surveyId: string): Observable< SurveyStatistics | null> {
     const surveyApi = this.apiUrlBuilder.buildApiUrl(`survey/${surveyId}`);
     return this.http.get<any>(surveyApi).pipe(
       map(apiSurvey => {

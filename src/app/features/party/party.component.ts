@@ -80,17 +80,17 @@ export class PartyComponent implements OnInit {
         result.createdBy = this.authService.currentUserValue?.id.toString() || '';
         result.createdAt = new Date();
         if (party) {
-          this.updateParty(party.id || '', result);
+          this.updateParty(party.id || '', result.party, result.logoFile);
         } else {
-          this.createParty(result);
+          this.createParty(result.party, result.logoFile);
         }
         this.cd.detectChanges();
       }
     });
   }
 
-  createParty(party: Party): void {
-    this.partyService.createParty(party).subscribe({
+  createParty(party: Party, logoFile: File): void {
+    this.partyService.createParty(party, logoFile).subscribe({
       next: (newParty) => {
         this.snackBar.open('Party created successfully!', 'Close', { duration: 3000 });
         this.loadParties();
@@ -103,8 +103,8 @@ export class PartyComponent implements OnInit {
     });
   }
 
-  updateParty(id: string, party: Partial<Party>): void {
-    this.partyService.updateParty(id, party).subscribe({
+  updateParty(id: string, party: Partial<Party>, logoFile: File): void {
+    this.partyService.updateParty(id, party, logoFile).subscribe({
       next: (updatedParty) => {
         this.snackBar.open('Party updated successfully!', 'Close', { duration: 3000 });
         this.loadParties();

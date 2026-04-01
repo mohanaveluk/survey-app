@@ -8,6 +8,7 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 
+  // ─── Container ───────────────────────────────
   .navbar-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -18,6 +19,7 @@
     justify-content: space-between;
   }
 
+  // ─── Brand ───────────────────────────────────
   .navbar-brand {
     display: flex;
     align-items: center;
@@ -26,6 +28,7 @@
     transition: all 0.3s ease;
     padding: 8px 16px;
     border-radius: 12px;
+    flex-shrink: 0;
 
     &:hover {
       background: rgba(102, 126, 234, 0.1);
@@ -33,35 +36,43 @@
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
-      //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      width: 40px; height: 40px;
       background: var(--indigo) !important;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      flex-shrink: 0;
 
-      mat-icon {
-        color: white;
-        font-size: 1.5rem;
-        width: 1.5rem;
-        height: 1.5rem;
-      }
+      mat-icon { color: white; font-size: 1.5rem; width: 1.5rem; height: 1.5rem; }
     }
 
+    // Shared gradient text style
     .brand-text {
-      font-size: 1.5rem;
       font-weight: 700;
-      //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      white-space: nowrap;
+    }
+
+    // Full name — desktop only
+    .brand-text-full {
+      font-size: 1.5rem;
+      display: block;
+    }
+
+    // Short "VP" initials — mobile only (hidden by default)
+    .brand-text-short {
+      font-size: 1.1rem;
+      display: none;
+      letter-spacing: 0.5px;
     }
   }
 
+  // ─── Desktop nav ─────────────────────────────
   .navbar-nav {
     display: flex;
     align-items: center;
@@ -82,11 +93,7 @@
       &::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        inset: 0;
         background: var(--indigo) !important;
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -97,115 +104,96 @@
         color: white;
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
-
-        &::before {
-          opacity: 1;
-        }
+        &::before { opacity: 1; }
       }
 
       &.active {
         color: white;
-        //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         background: var(--indigo) !important;
         box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
       }
 
-      mat-icon {
-        font-size: 1.2rem;
-        width: 1.2rem;
-        height: 1.2rem;
-      }
-
-      span {
-        font-size: 0.95rem;
-      }
+      mat-icon { font-size: 1.2rem; width: 1.2rem; height: 1.2rem; }
+      span      { font-size: 0.95rem; }
     }
   }
 
+  // ─── Right-side user area ─────────────────────
   .navbar-user {
     display: flex;
     align-items: center;
     gap: 12px;
+  }
 
-    .user-menu {
-      .user-avatar-button {
-        padding: 4px;
+  // Desktop wrapper — hidden on mobile
+  .desktop-only {
+    display: flex;
+    align-items: center;
+  }
+
+  // ─── User avatar (desktop) ────────────────────
+  .user-menu {
+    .user-avatar-button {
+      padding: 4px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+
+      &:hover { background: rgba(102, 126, 234, 0.1); transform: scale(1.05); }
+
+      .user-avatar {
+        width: 40px; height: 40px;
         border-radius: 50%;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: rgba(102, 126, 234, 0.1);
-          transform: scale(1.05);
-        }
-
-        .user-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          background: var(--indigo) !important;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-          transition: all 0.3s ease;
-
-          .user-initials {
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-          }
-        }
-      }
-    }
-
-    .guest-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .login-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        //color: #667eea;
-        color: var(--indigo) !important;
-        font-weight: 500;
-        padding: 8px 16px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-
-        &:hover {
-          background: rgba(102, 126, 234, 0.1);
-        }
-      }
-
-      .register-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         background: var(--indigo) !important;
-        color: white;
-        font-weight: 600;
-        padding: 10px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-        }
+        .user-initials { color: white; font-weight: 600; font-size: 0.9rem; }
       }
-    }
-
-    .mobile-menu-toggle {
-      display: none;
-      color: #667eea;
     }
   }
 
+  // ─── Guest buttons (desktop) ──────────────────
+  .guest-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--indigo) !important;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      &:hover { background: rgba(102, 126, 234, 0.1); }
+    }
+
+    .register-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--indigo) !important;
+      color: white;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s ease;
+      &:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); }
+    }
+  }
+
+  // ─── Hamburger — hidden on desktop ────────────
+  .mobile-menu-toggle {
+    display: none;
+    color: var(--indigo, #667eea);
+  }
+
+  // ─── Mobile slide-down panel ──────────────────
   .mobile-nav {
     position: absolute;
     top: 100%;
@@ -227,64 +215,129 @@
     }
 
     .mobile-nav-content {
-      padding: 20px 24px;
+      padding: 16px 20px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+    }
 
-      .mobile-nav-link {
+    // ── User identity strip ──
+    .mobile-user-strip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #f8f9ff, #eef2ff);
+      border-radius: 12px;
+      margin-bottom: 4px;
+
+      .mobile-avatar {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background: var(--indigo) !important;
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 16px 20px;
-        border-radius: 12px;
-        color: #666;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        justify-content: flex-start;
-        width: 100%;
+        justify-content: center;
+        flex-shrink: 0;
 
-        &:hover {
-          background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
-        }
-
-        &.active {
-          //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          background: var(--indigo) !important;
+        span {
           color: white;
-        }
-
-        &.logout-mobile {
-          color: #f44336;
-
-          &:hover {
-            background: rgba(244, 67, 54, 0.1);
-            color: #f44336;
-          }
-        }
-
-        mat-icon {
-          font-size: 1.3rem;
-          width: 1.3rem;
-          height: 1.3rem;
+          font-weight: 700;
+          font-size: 0.9rem;
         }
       }
 
-      .mobile-divider {
-        margin: 12px 0;
+      .mobile-user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+
+        .mobile-username {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: #1e1b4b;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .mobile-email {
+          font-size: 0.75rem;
+          color: #9ca3af;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
+
+    // ── Mobile nav link base ──
+    .mobile-nav-link {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 14px 20px !important;
+      border-radius: 12px !important;
+      color: #666 !important;
+      font-weight: 500 !important;
+      transition: all 0.2s ease !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
+      text-transform: none !important;
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.1) !important;
+        color: var(--indigo, #667eea) !important;
+      }
+
+      &.active {
+        background: var(--indigo) !important;
+        color: white !important;
+      }
+
+      mat-icon { font-size: 1.3rem; width: 1.3rem; height: 1.3rem; }
+      span      { font-size: 0.95rem; }
+
+      // ── Guest login button ──
+      &.mobile-login {
+        color: var(--indigo, #667eea) !important;
+        border: 1.5px solid rgba(79,70,229,0.35) !important;
+        font-weight: 600 !important;
+
+        &:hover { background: rgba(102,126,234,0.08) !important; border-color: var(--indigo) !important; }
+      }
+
+      // ── Guest register button ──
+      &.mobile-register {
+        background: var(--indigo) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 14px rgba(79,70,229,0.3) !important;
+
+        &:hover { box-shadow: 0 6px 20px rgba(79,70,229,0.45) !important; }
+      }
+
+      // ── Logout ──
+      &.logout-mobile {
+        color: #f44336 !important;
+        &:hover { background: rgba(244, 67, 54, 0.08) !important; color: #f44336 !important; }
+      }
+    }
+
+    .mobile-divider { margin: 8px 0; }
   }
 }
 
-// User dropdown styles
+// ─────────────────────────────────────────────
+//  User dropdown (desktop mat-menu)
+// ─────────────────────────────────────────────
 ::ng-deep .user-dropdown {
   .mat-mdc-menu-panel {
     min-width: 290px;
     border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.08);
     overflow: hidden;
   }
 
@@ -296,38 +349,20 @@
     gap: 16px;
 
     .user-avatar-large {
-      width: 50px;
-      height: 40px;
+      width: 50px; height: 40px;
       border-radius: 50%;
-      //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       background: var(--indigo) !important;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-
-      .user-initials {
-        color: white;
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
+      box-shadow: 0 4px 16px rgba(102,126,234,0.3);
+      .user-initials { color: white; font-weight: 700; font-size: 1.1rem; }
     }
 
     .user-details {
       flex: 1;
-
-      h4 {
-        margin: 0 0 4px 0;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-      }
-
-      p {
-        margin: 0;
-        font-size: 0.9rem;
-        color: #666;
-      }
+      h4 { margin: 0 0 4px; font-size: 1.1rem; font-weight: 600; color: #333; }
+      p  { margin: 0; font-size: 0.9rem; color: #666; }
     }
   }
 
@@ -340,136 +375,116 @@
     font-weight: 500;
     transition: all 0.3s ease;
 
-    &:hover {
-      background: rgba(102, 126, 234, 0.08);
-      color: #667eea;
-    }
+    &:hover { background: rgba(102,126,234,0.08); color: #667eea; }
 
     &.logout-item {
       color: #f44336;
-
-      &:hover {
-        background: rgba(244, 67, 54, 0.08);
-        color: #f44336;
-      }
+      &:hover { background: rgba(244,67,54,0.08); color: #f44336; }
     }
 
-    mat-icon {
-      font-size: 1.2rem;
-      width: 1.2rem;
-      height: 1.2rem;
-    }
+    mat-icon { font-size: 1.2rem; width: 1.2rem; height: 1.2rem; }
   }
 }
 
-// Responsive design
+// ─────────────────────────────────────────────
+//  Responsive breakpoints
+// ─────────────────────────────────────────────
+
+// ── Tablet / small desktop: hide nav text ────
+@media (max-width: 960px) {
+  .navbar .navbar-nav .nav-link span {
+    display: none;
+  }
+}
+
+// ── Mobile: switch to hamburger layout ───────
 @media (max-width: 768px) {
   .navbar {
-    .navbar-nav {
-      display: none;
-    }
 
-    .navbar-user {
-      .mobile-menu-toggle {
-        display: flex;
-      }
-    }
+    // Hide desktop nav entirely
+    .navbar-nav  { display: none; }
 
+    // Hide desktop user / guest buttons
+    .desktop-only { display: none; }
+
+    // Show hamburger
+    .mobile-menu-toggle { display: flex; }
+
+    // Brand: hide full text, show short version
     .navbar-brand {
-      .brand-text {
-        display: none;
+      padding: 6px 10px;
+      gap: 8px;
+
+      .brand-text-full  { display: none; }
+      .brand-text-short { display: block; }
+
+      .brand-icon {
+        width: 36px; height: 36px;
+        mat-icon { font-size: 1.3rem; width: 1.3rem; height: 1.3rem; }
       }
     }
   }
 }
 
+// ── Small mobile ─────────────────────────────
 @media (max-width: 480px) {
   .navbar {
-    .navbar-container {
-      padding: 0 16px;
-      height: 60px;
-    }
+    .navbar-container { padding: 0 16px; height: 60px; }
 
     .navbar-brand {
-      .brand-icon {
-        width: 36px;
-        height: 36px;
+      padding: 4px 8px;
+      gap: 6px;
 
-        mat-icon {
-          font-size: 1.3rem;
-          width: 1.3rem;
-          height: 1.3rem;
-        }
-      }
+      .brand-text-short { font-size: 1rem; }
     }
   }
 }
 
-// Dark mode support
+// ─────────────────────────────────────────────
+//  Dark mode
+// ─────────────────────────────────────────────
 @media (prefers-color-scheme: dark) {
   .navbar {
     background: rgba(30, 30, 30, 0.95);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255,255,255,0.1);
 
-    .navbar-brand {
-      &:hover {
-        background: rgba(102, 126, 234, 0.2);
-      }
-    }
+    .navbar-brand:hover { background: rgba(102,126,234,0.2); }
 
     .navbar-nav .nav-link {
       color: #e0e0e0;
-
-      &:hover {
-        color: white;
-      }
+      &:hover { color: white; }
     }
 
     .guest-actions .login-btn {
-      color: #8fa7ff;
-
-      &:hover {
-        background: rgba(102, 126, 234, 0.2);
-      }
+      color: #8fa7ff !important;
+      &:hover { background: rgba(102,126,234,0.2); }
     }
 
     .mobile-nav {
-      background: rgba(30, 30, 30, 0.98);
-      border-bottom-color: rgba(255, 255, 255, 0.1);
+      background: rgba(30,30,30,0.98);
+      border-bottom-color: rgba(255,255,255,0.1);
 
-      .mobile-nav-content .mobile-nav-link {
-        color: #e0e0e0;
+      .mobile-user-strip {
+        background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+        .mobile-username { color: #e0e0e0; }
+      }
 
-        &:hover {
-          background: rgba(102, 126, 234, 0.2);
-          color: #8fa7ff;
-        }
+      .mobile-nav-link {
+        color: #e0e0e0 !important;
+        &:hover { background: rgba(102,126,234,0.2) !important; color: #8fa7ff !important; }
       }
     }
   }
 
   ::ng-deep .user-dropdown {
     .user-info {
-      background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
-
-      .user-details {
-        h4 {
-          color: #e0e0e0;
-        }
-
-        p {
-          color: #b0b0b0;
-        }
-      }
+      background: linear-gradient(135deg, #2a2a2a, #1f1f1f);
+      .user-details h4 { color: #e0e0e0; }
+      .user-details p  { color: #b0b0b0; }
     }
-
     .mat-mdc-menu-item {
       color: #e0e0e0;
-
-      &:hover {
-        background: rgba(102, 126, 234, 0.2);
-        color: #8fa7ff;
-      }
+      &:hover { background: rgba(102,126,234,0.2); color: #8fa7ff; }
     }
   }
 }

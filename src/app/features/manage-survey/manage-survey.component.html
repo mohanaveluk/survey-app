@@ -1,5 +1,6 @@
 <div class="manage-survey-container" *ngIf="!isLoading && survey">
-  <!-- Survey Header -->
+
+  <!-- ── Survey Header ── -->
   <mat-card class="header-card">
     <mat-card-header>
       <mat-card-title>
@@ -10,10 +11,10 @@
         Created on {{ survey.createdAt | date:'medium' }}
       </mat-card-subtitle>
     </mat-card-header>
-    
+
     <mat-card-content>
       <p *ngIf="survey.description">{{ survey.description }}</p>
-      
+
       <div class="survey-meta">
         <div class="meta-item">
           <mat-icon>schedule</mat-icon>
@@ -82,10 +83,10 @@
         <mat-icon>refresh</mat-icon>
         Refresh
       </button>
-    </mat-card-actions>    
+    </mat-card-actions>
   </mat-card>
 
-  <!-- Survey URL -->
+  <!-- ── Survey URL ── -->
   <mat-card class="url-card" *ngIf="survey.status === 'published'">
     <mat-card-content>
       <div class="url-section">
@@ -103,7 +104,7 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Results -->
+  <!-- ── Results ── -->
   <mat-card class="results-card" *ngIf="surveyResult">
     <mat-card-header>
       <mat-card-title>
@@ -116,6 +117,8 @@
     </mat-card-header>
 
     <mat-card-content>
+
+      <!-- Summary pills -->
       <div class="results-summary" *ngIf="surveyResult.totalVotes > 0">
         <div class="summary-item">
           <h4>{{ surveyResult.totalVotes }}</h4>
@@ -126,53 +129,104 @@
           <span>Parties</span>
         </div>
         <div class="summary-item" *ngIf="getWinningParty()">
-          <h4>{{ getVotePercentage(survey.surveyParties?.find(p => p.party.name === getWinningParty())?.id || '') }}%</h4>
+          <h4>{{ getLeadingPercentage() || 0 }}%</h4>
           <span>Leading</span>
         </div>
       </div>
 
+      <!-- No votes empty state -->
       <div class="no-votes" *ngIf="surveyResult.totalVotes === 0">
         <mat-icon>inbox</mat-icon>
         <h3>No votes yet</h3>
         <p>Share your survey URL to start collecting votes</p>
       </div>
 
+      <!-- ════════════════════════════════════════
+           SINGLE party results loop — logo + bar
+      ════════════════════════════════════════ -->
       <div class="results-list" *ngIf="surveyResult.totalVotes > 0">
-        <div *ngFor="let party of survey.surveyParties" class="result-item">
+        <div *ngFor="let party of survey.surveyParties"
+             class="result-item"
+             [class.winner]="isWinningParty(party.party.id!)">
+
+          <!-- Winner crown badge -->
+          <div class="winner-badge" *ngIf="isWinningParty(party.party.id!)">
+            <mat-icon>emoji_events</mat-icon>
+            Leading
+          </div>
+
           <div class="party-info">
-            <div class="party-color" [style.background-color]="party.party.color"></div>
+
+            <!-- ── Logo avatar ── -->
+            <div class="party-avatar"
+                 [style.border-color]="party.party.color"
+                 [style.background-color]="party.party.color + '18'">
+
+              <!-- Image — shown when logo_url is set -->
+              <img *ngIf="party.party.logo_url"
+                   [src]="party.party.logo_url"
+                   [alt]="party.party.name + ' logo'"
+                   class="party-logo-img"
+                   (error)="onLogoError($event, party.party.color!)">
+
+              <!-- Initials fallback — shown when no logo_url -->
+              <span *ngIf="!party.party.logo_url"
+                    class="party-initials"
+                    [style.color]="party.party.color">
+                {{ party.party.name | slice:0:2 | uppercase }}
+              </span>
+            </div>
+
+            <!-- ── Name + leader + vote stats ── -->
             <div class="party-details">
-              <h4>{{ party.party.name }}</h4>
+              <div class="party-name-row">
+                <h4>{{ party.party.name }}</h4>
+                <span class="leader-name" *ngIf="party.party.leader_name">
+                  <mat-icon>person</mat-icon>
+                  {{ party.party.leader_name }}
+                </span>
+              </div>
               <div class="vote-stats">
-                <span class="vote-count">{{ getVoteCount(party.party.id!) }} votes</span>
-                <span class="vote-percentage">{{ getVotePercentage(party.party.id!) }}%</span>
+                <span class="vote-count">
+                  <mat-icon>how_to_vote</mat-icon>
+                  {{ getVoteCount(party.party.id!) }} votes
+                </span>
+                <span class="vote-percentage"
+                      [style.color]="party.party.color">
+                  {{ getVotePercentage(party.party.id!) }}%
+                </span>
               </div>
             </div>
+
+          </div><!-- /party-info -->
+
+          <!-- Progress bar — custom coloured -->
+          <div class="progress-track">
+            <div class="progress-fill"
+                 [style.width.%]="getVotePercentage(party.party.id!)"
+                 [style.background-color]="party.party.color"
+                 [class.winner-bar]="isWinningParty(party.party.id!)">
+            </div>
           </div>
-          
-          <div class="progress-container">
-            <mat-progress-bar 
-              mode="determinate" 
-              [value]="getVotePercentage(party.party.id!)"
-              [color]="isWinningParty(party.party.id!) ? 'primary' : 'accent'">
-            </mat-progress-bar>
-          </div>
-        </div>
-      </div>
+
+        </div><!-- /result-item loop -->
+      </div><!-- /results-list -->
+
     </mat-card-content>
   </mat-card>
 
-  <!-- Back Button -->
+  <!-- ── Back ── -->
   <div class="back-section">
     <button mat-stroked-button (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
       Back to Dashboard
     </button>
   </div>
+
 </div>
 
-<!-- Loading State -->
+<!-- Loading -->
 <div class="loading-container" *ngIf="isLoading">
   <mat-spinner></mat-spinner>
-  <p>Loading survey...</p>
+  <p>Loading survey…</p>
 </div>

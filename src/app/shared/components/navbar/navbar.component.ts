@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 import { SharedModule } from '../../shared.module';
 import { User } from '../../models/auth.model';
+import { IdentityService } from '../../services/identity.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,10 +13,12 @@ import { User } from '../../models/auth.model';
 })
 export class NavbarComponent implements OnInit {
   currentUser: User | null = null;
+  userIdentity: string = '';
   isMenuOpen = false;
 
   constructor(
     private authService: AuthService,
+    private identityService: IdentityService,
     private router: Router,
     private cd: ChangeDetectorRef
   ) {}
@@ -23,6 +26,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
+      this.userIdentity = user?.identity || '';
+      this.cd.detectChanges();
+    });
+    this.identityService.identityName$.subscribe(name => {
+      this.userIdentity = name;
       this.cd.detectChanges();
     });
   }

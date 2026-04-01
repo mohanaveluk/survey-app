@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
   profileForm!: FormGroup;
+  emailAddress = '';
 
   // ── UI state ──────────────────────────────────────────────────────────────
   isLoading        = true;
@@ -61,6 +62,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       firstname:     ['', Validators.required],
       lastname:      ['', Validators.required],
+      medianame:      [''],
       email:         ['', [Validators.required, Validators.email]],
       mobile:        ['', Validators.pattern(/^[+\d\s\-().]{7,20}$/)],
       address_line1: [''],
@@ -79,6 +81,7 @@ export class ProfileComponent implements OnInit {
       next: (response) => {
         const profile: UserProfile = response ?? response;
         this.patchForm(profile);
+        this.emailAddress = profile.email ?? '';
         this.currentAvatarUrl = profile.profileImage ?? null;
         this.originalValues   = { ...this.profileForm.value };
         this.isLoading        = false;
@@ -224,6 +227,7 @@ export class ProfileComponent implements OnInit {
           first_name:   this.profileForm.value.firstname,
           last_name:    this.profileForm.value.lastname,
           mobile:       this.profileForm.value.mobile,
+          major:        this.profileForm.value.medianame,
           created_at:   new Date,
           updated_at:   new Date,
           address_line1: this.profileForm.value.address_line1,

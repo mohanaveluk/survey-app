@@ -71,6 +71,7 @@ export interface LoginRequest {
     email: string;
     //role: 'admin' | 'user' | 'manager' | 'doctor' | 'prvider';
     mobile: string;
+    identity: string;
     major: string;
     profileImage: string;
     is_active: number;

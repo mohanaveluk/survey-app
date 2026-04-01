@@ -40,6 +40,7 @@ export interface ProfileUpdateRequest {
   email?: string;
   password?: string;
   mobile: string;
+  major: string;
   created_at: Date;
   updated_at: Date;
   is_active?: number;

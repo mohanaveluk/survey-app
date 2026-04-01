@@ -6,20 +6,21 @@
   .mat-mdc-raised-button:not(:disabled) {
     background: var(--indigo) !important;
     color: white;
-  }    
+  }
 }
 
+// ─────────────────────────────────────────────
+//  Header card (unchanged)
+// ─────────────────────────────────────────────
 .header-card {
   margin-bottom: 20px;
 
-  .mat-mdc-card-header {
-    .mat-mdc-card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.5rem;
-      color: #1976d2;
-    }
+  .mat-mdc-card-header .mat-mdc-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    color: var(--indigo, #1976d2);
   }
 
   .survey-meta {
@@ -32,16 +33,9 @@
       display: flex;
       align-items: center;
       gap: 6px;
-
-      mat-icon {
-        font-size: 1.4rem;
-        height: 1.4rem;
-        width: 1.4rem;
-        color: #666;
-      }
+      mat-icon { font-size: 1.4rem; height: 1.4rem; width: 1.4rem; color: #666; }
     }
   }
-
 
   .survey-stats {
     display: flex;
@@ -54,19 +48,10 @@
       align-items: center;
       gap: 8px;
       color: #666;
-
       mat-icon {
-        font-size: 1.2rem;
-        height: 1.2rem;
-        width: 1.2rem;
-
-        &.active {
-          color: #4caf50;
-        }
-
-        &.inactive {
-          color: #f44336;
-        }
+        font-size: 1.2rem; height: 1.2rem; width: 1.2rem;
+        &.active   { color: #4caf50; }
+        &.inactive { color: #f44336; }
       }
     }
   }
@@ -75,59 +60,42 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-
-    .actions-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .actions-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    button { display: flex; align-items: center; gap: 8px; }
   }
 }
 
+// ─────────────────────────────────────────────
+//  URL card (unchanged)
+// ─────────────────────────────────────────────
 .url-card {
   margin-bottom: 20px;
 
   .url-section {
-    h3 {
-      margin: 0 0 16px 0;
-      color: #333;
-      font-weight: 500;
-    }
+    h3 { margin: 0 0 16px; color: #333; font-weight: 500; }
 
     .url-container {
       display: flex;
       align-items: center;
       gap: 8px;
-
-      .url-field {
-        flex: 1;
-      }
+      .url-field { flex: 1; }
     }
 
-    .url-help {
-      margin: 8px 0 0 0;
-      color: #666;
-      font-size: 0.9rem;
-    }
+    .url-help { margin: 8px 0 0; color: #666; font-size: 0.9rem; }
   }
 }
 
+// ─────────────────────────────────────────────
+//  Results card
+// ─────────────────────────────────────────────
 .results-card {
   margin-bottom: 20px;
 
-  .mat-mdc-card-header {
-    .mat-mdc-card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #1976d2;
-    }
+  .mat-mdc-card-header .mat-mdc-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--indigo, #1976d2);
   }
 
   .results-summary {
@@ -135,23 +103,13 @@
     gap: 32px;
     margin-bottom: 24px;
     padding: 16px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
+    background: #f8f9fa;
+    border-radius: 12px;
 
     .summary-item {
       text-align: center;
-
-      h4 {
-        margin: 0 0 4px 0;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #1976d2;
-      }
-
-      span {
-        color: #666;
-        font-size: 0.9rem;
-      }
+      h4 { margin: 0 0 4px; font-size: 1.5rem; font-weight: 700; color: var(--indigo, #1976d2); }
+      span { color: #666; font-size: 0.9rem; }
     }
   }
 
@@ -159,99 +117,197 @@
     text-align: center;
     padding: 40px 20px;
     color: #666;
+    mat-icon { font-size: 3rem; height: 3rem; width: 3rem; margin-bottom: 16px; color: #ccc; display: block; margin: 0 auto 16px; }
+    h3 { margin: 0 0 8px; font-weight: 500; }
+    p  { margin: 0; font-size: 0.9rem; }
+  }
+}
 
-    mat-icon {
-      font-size: 3rem;
-      height: 3rem;
-      width: 3rem;
-      margin-bottom: 16px;
-      color: #ccc;
-    }
+// ─────────────────────────────────────────────
+//  Results list — single loop
+// ─────────────────────────────────────────────
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-    h3 {
-      margin: 0 0 8px 0;
-      font-weight: 500;
-    }
+.result-item {
+  position: relative;
+  padding: 16px 18px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fafafa;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 
-    p {
-      margin: 0;
-      font-size: 0.9rem;
-    }
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border-color: #d1d5db;
   }
 
-  .results-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  // ── Winner highlight ──
+  &.winner {
+    border-color: var(--indigo, #4f46e5);
+    background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
+    box-shadow: 0 4px 20px rgba(79,70,229,0.12);
+  }
+}
 
-    .result-item {
-      padding: 16px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      background-color: #fafafa;
+// Winner crown badge (top-right)
+.winner-badge {
+  position: absolute;
+  top: -1px; right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, var(--indigo, #4f46e5), #7c3aed);
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px 3px 7px;
+  border-radius: 0 0 8px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
-      .party-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
+  mat-icon { font-size: 0.85rem; width: 0.85rem; height: 0.85rem; }
+}
 
-        .party-color {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
+// ─────────────────────────────────────────────
+//  Party info row (logo + details)
+// ─────────────────────────────────────────────
+.party-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
 
-        .party-details {
-          flex: 1;
+// ── Logo avatar ───────────────────────────────
+.party-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2.5px solid;        // colour set inline per party
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-          h4 {
-            margin: 0 0 4px 0;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #333;
-          }
+  .result-item:hover & {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
 
-          .vote-stats {
-            display: flex;
-            gap: 16px;
-            font-size: 0.9rem;
+  .party-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;             // breathing room inside circle
+    border-radius: 50%;
+  }
 
-            .vote-count {
-              color: #666;
-            }
+  .party-initials {
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    user-select: none;
+    text-transform: uppercase;
+  }
+}
 
-            .vote-percentage {
-              color: #1976d2;
-              font-weight: 500;
-            }
-          }
-        }
-      }
+// ── Party text details ────────────────────────
+.party-details {
+  flex: 1;
+  min-width: 0;
+}
 
-      .progress-container {
-        .mat-mdc-progress-bar {
-          height: 8px;
-          border-radius: 4px;
-        }
-      }
+.party-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e1b4b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .leader-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+    white-space: nowrap;
+
+    mat-icon { font-size: 0.8rem; width: 0.8rem; height: 0.8rem; }
+  }
+}
+
+.vote-stats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.875rem;
+
+  .vote-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #6b7280;
+    font-weight: 500;
+
+    mat-icon { font-size: 0.9rem; width: 0.9rem; height: 0.9rem; }
+  }
+
+  .vote-percentage {
+    font-weight: 800;
+    font-size: 1rem;
+    // colour set inline per party
+  }
+}
+
+// ── Progress track ────────────────────────────
+.progress-track {
+  height: 10px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  overflow: hidden;
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+    min-width: 4px;
+
+    &.winner-bar {
+      box-shadow: 0 2px 8px rgba(79,70,229,0.35);
     }
   }
 }
 
+// ─────────────────────────────────────────────
+//  Back button
+// ─────────────────────────────────────────────
 .back-section {
   text-align: center;
   margin-top: 32px;
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 auto;
-  }
+  button { display: flex; align-items: center; gap: 8px; margin: 0 auto; }
 }
 
+// ─────────────────────────────────────────────
+//  Loading
+// ─────────────────────────────────────────────
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -259,35 +315,25 @@
   justify-content: center;
   height: 300px;
   gap: 16px;
-
-  p {
-    color: #666;
-    margin: 0;
-  }
+  p { color: #666; margin: 0; }
 }
 
+// ─────────────────────────────────────────────
+//  Responsive
+// ─────────────────────────────────────────────
 @media (max-width: 600px) {
-  .manage-survey-container {
-    margin: 10px;
-    padding: 10px;
-  }
+  .manage-survey-container { margin: 10px; padding: 10px; }
 
-  .survey-stats {
-    flex-direction: column;
-    gap: 12px !important;
-  }
-
-  .results-summary {
-    flex-direction: column;
-    gap: 16px !important;
-  }
+  .survey-stats  { flex-direction: column; gap: 12px !important; }
+  .results-summary { flex-direction: column; gap: 16px !important; }
 
   .url-container {
     flex-direction: column;
     align-items: stretch;
-
-    .url-field {
-      margin-bottom: 8px;
-    }
+    .url-field { margin-bottom: 8px; }
   }
+
+  .party-avatar { width: 44px; height: 44px; }
+
+  .party-name-row { flex-direction: column; align-items: flex-start; gap: 2px; }
 }

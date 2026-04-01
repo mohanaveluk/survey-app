@@ -16,6 +16,7 @@ import { UserProfileComponent } from './auth/user-profile/user-profile.component
 import { ProfileComponent } from './auth/user-profile-v2/user-profile-v2.component';
 import { ForgotPasswordComponent } from './auth/forgot/forgot-password.component';
 import { ContactUsComponent } from './features/contact/contact-us.component';
+import { DashboardSurveyv2Component } from './features/overview/dashboard-surveyv2.component';
 
 export const routes: Routes = [
   { path: '', component: Homev2Component },
@@ -23,13 +24,14 @@ export const routes: Routes = [
   { path: 'home2', component: HomeComponent },
   { path: 'login', component: LoginV2Component },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardSurveyComponent },
+  { path: 'overview', component: DashboardSurveyComponent },
+  { path: 'dashboard', component: DashboardSurveyv2Component },
   { path: 'party', component: PartyComponent },
   { path: 'survey/create', component: CreateSurveyComponent },
   { path: 'survey/edit/:id', component: CreateSurveyComponent },  
   { path: 'survey/list', component: SurveyListComponent },
   { path: 'survey/manage/:id', component: ManageSurveyComponent },
-  { path: 'vote/:id', component: Vote2Component },
+  { path: ':identity/vote/:id', component: Vote2Component },
   { path: 'vote1/:id', component: VoteComponent },
   { path: 'profile_old', component: UserProfileComponent },
   { path: 'profile', component: ProfileComponent },

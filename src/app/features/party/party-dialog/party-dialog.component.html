@@ -1,26 +1,30 @@
-<h2 mat-dialog-title>
-  <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
-  {{ isEditMode ? 'Edit Party' : 'Add New Party' }}
+<h2 mat-dialog-title class="dialog-title-row">
+  <div class="title-left">
+    <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+    {{ isEditMode ? 'Edit Party' : 'Add New Party' }}
+  </div>
 </h2>
 
 <mat-dialog-content>
   <form [formGroup]="partyForm">
+
+    <!-- Party Name -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Party Name</mat-label>
       <input matInput formControlName="name" placeholder="Enter party name" required>
-      <mat-error *ngIf="partyForm.get('name')?.hasError('required')">
-        Party name is required
-      </mat-error>
-      <mat-error *ngIf="partyForm.get('name')?.hasError('minlength')">
-        Name must be at least 2 characters
-      </mat-error>
+      <mat-icon matPrefix>account_balance</mat-icon>
+      <mat-error *ngIf="partyForm.get('name')?.hasError('required')">Party name is required</mat-error>
+      <mat-error *ngIf="partyForm.get('name')?.hasError('minlength')">Name must be at least 2 characters</mat-error>
     </mat-form-field>
 
+    <!-- Party Leader -->
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Party Leader (Optional)</mat-label>
+      <mat-label>Party Leader <span class="opt-tag">optional</span></mat-label>
       <input matInput formControlName="leader_name" placeholder="Enter leader name">
+      <mat-icon matPrefix>person</mat-icon>
     </mat-form-field>
 
+    <!-- ── Color selection (unchanged) ── -->
     <div class="color-selection">
       <label>Party Color</label>
       <div class="color-palette">
@@ -42,31 +46,196 @@
       </div>
     </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Logo URL (Optional)</mat-label>
-      <input matInput formControlName="logo_url" placeholder="https://example.com/logo.png">
-    </mat-form-field>
+    <!-- ═══════════════════════════════════════
+         LOGO PICKER
+    ═══════════════════════════════════════ -->
+    <div class="logo-section">
+      <label class="logo-label">
+        <mat-icon>image</mat-icon>
+        Party Logo <span class="opt-tag">optional</span>
+      </label>
 
-    <div class="preview" *ngIf="partyForm.get('color')?.value">
+      <!-- Source tabs -->
+      <div class="logo-source-tabs">
+        <button type="button"
+                class="source-tab"
+                [class.active]="logoSource === 'local'"
+                (click)="setLogoSource('local')">
+          <mat-icon>upload_file</mat-icon>
+          Local File
+        </button>
+        <button type="button"
+                class="source-tab"
+                [class.active]="logoSource === 'url'"
+                (click)="setLogoSource('url')">
+          <mat-icon>link</mat-icon>
+          Online URL
+        </button>
+        <button type="button"
+                class="source-tab"
+                [class.active]="logoSource === 'gdrive'"
+                (click)="setLogoSource('gdrive')">
+          <mat-icon>add_to_drive</mat-icon>
+          Google Drive
+        </button>
+      </div>
+
+      <!-- ── LOCAL FILE ── -->
+      <div class="logo-input-area" *ngIf="logoSource === 'local'">
+        <input #fileInput type="file"
+               accept="image/jpeg,image/png,image/svg+xml,image/webp,image/gif"
+               class="hidden-file-input"
+               (change)="onLocalFileSelected($event)">
+
+        <div class="drop-zone"
+             [class.has-image]="logoPreviewUrl"
+             [class.drag-over]="isDragOver"
+             (click)="fileInput.click()"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave()"
+             (drop)="onDrop($event)">
+
+          <!-- Preview state -->
+          <ng-container *ngIf="logoPreviewUrl">
+            <img [src]="logoPreviewUrl" alt="Logo preview" class="drop-preview-img">
+            <div class="drop-hover-overlay">
+              <mat-icon>photo_camera</mat-icon>
+              <span>Change image</span>
+            </div>
+          </ng-container>
+
+          <!-- Empty state -->
+          <ng-container *ngIf="!logoPreviewUrl">
+            <mat-icon class="drop-icon">cloud_upload</mat-icon>
+            <p class="drop-title">Click to upload or drag &amp; drop</p>
+            <p class="drop-hint">PNG, JPG, SVG, WebP · Max 2 MB</p>
+          </ng-container>
+        </div>
+
+        <p class="logo-error" *ngIf="logoError">
+          <mat-icon>error_outline</mat-icon>{{ logoError }}
+        </p>
+      </div>
+
+      <!-- ── ONLINE URL ── -->
+      <div class="logo-input-area" *ngIf="logoSource === 'url'">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Image URL</mat-label>
+          <input matInput
+                 formControlName="logo_url"
+                 placeholder="https://example.com/party-logo.png"
+                 (input)="onUrlInput()">
+          <mat-icon matPrefix>link</mat-icon>
+          <mat-hint>Paste a direct link to an image file</mat-hint>
+          <mat-error *ngIf="partyForm.get('logo_url')?.hasError('invalidUrl')">
+            Please enter a valid image URL
+          </mat-error>
+        </mat-form-field>
+
+        <!-- URL preview -->
+        <div class="url-preview" *ngIf="logoPreviewUrl && logoSource === 'url'">
+          <img [src]="logoPreviewUrl"
+               alt="Logo preview"
+               class="url-preview-img"
+               (error)="onUrlImageError()"
+               (load)="onUrlImageLoad()">
+          <p class="url-preview-label" *ngIf="urlImageValid">
+            <mat-icon>check_circle</mat-icon>Image loaded successfully
+          </p>
+          <p class="logo-error" *ngIf="urlImageError">
+            <mat-icon>error_outline</mat-icon>Could not load image from this URL
+          </p>
+        </div>
+      </div>
+
+      <!-- ── GOOGLE DRIVE ── -->
+      <div class="logo-input-area" *ngIf="logoSource === 'gdrive'">
+
+        <!-- If no image yet — show the picker button -->
+        <div class="gdrive-picker-area" *ngIf="!logoPreviewUrl">
+          <mat-icon class="gdrive-icon">add_to_drive</mat-icon>
+          <p class="gdrive-title">Pick an image from Google Drive</p>
+          <p class="gdrive-hint">
+            Paste a shareable Google Drive image link below, or enter the File ID directly.
+          </p>
+
+          <mat-form-field appearance="outline" class="full-width" style="margin-top:12px;">
+            <mat-label>Google Drive Share Link or File ID</mat-label>
+            <input matInput
+                   #gdriveInput
+                   placeholder="https://drive.google.com/file/d/FILE_ID/view  or  FILE_ID">
+            <mat-icon matPrefix>add_to_drive</mat-icon>
+          </mat-form-field>
+
+          <button type="button" mat-stroked-button class="gdrive-load-btn"
+                  (click)="loadGoogleDriveImage(gdriveInput.value)">
+            <mat-icon>visibility</mat-icon>
+            Load Image
+          </button>
+
+          <p class="logo-error" *ngIf="logoError">
+            <mat-icon>error_outline</mat-icon>{{ logoError }}
+          </p>
+
+          <div class="gdrive-info">
+            <mat-icon>info_outline</mat-icon>
+            <span>
+              The file must be shared as
+              <strong>"Anyone with the link can view"</strong>
+              in Google Drive.
+            </span>
+          </div>
+        </div>
+
+        <!-- If image loaded from Drive -->
+        <div class="gdrive-loaded" *ngIf="logoPreviewUrl">
+          <img [src]="logoPreviewUrl" alt="Drive image" class="url-preview-img">
+          <p class="url-preview-label">
+            <mat-icon>check_circle</mat-icon>Google Drive image loaded
+          </p>
+        </div>
+      </div>
+
+      <!-- ── Remove logo button ── -->
+      <button *ngIf="logoPreviewUrl"
+              type="button"
+              class="remove-logo-btn"
+              (click)="removeLogo()">
+        <mat-icon>delete</mat-icon>
+        Remove Logo
+      </button>
+    </div>
+
+    <!-- ── Preview card ── -->
+    <div class="preview">
       <h4>Preview</h4>
       <div class="preview-card">
-        <div class="preview-color" [style.background-color]="partyForm.get('color')?.value"></div>
+        <div class="preview-color" [style.background-color]="partyForm.get('color')?.value">
+          <div class="preview-logo-badge" *ngIf="logoPreviewUrl">
+            <img [src]="logoPreviewUrl" alt="logo">
+          </div>
+        </div>
         <div class="preview-info">
           <h5>{{ partyForm.get('name')?.value || 'Party Name' }}</h5>
-          <p *ngIf="partyForm.get('leader_name')?.value">{{ partyForm.get('leader_name')?.value }}</p>
-          <img *ngIf="partyForm.get('logo_url')?.value"
-               [src]="partyForm.get('logo_url')?.value"
-               alt="Party logo"
-               class="preview-logo">
+          <p *ngIf="partyForm.get('leader_name')?.value">
+            <mat-icon>person</mat-icon>
+            {{ partyForm.get('leader_name')?.value }}
+          </p>
+          <span class="no-logo-hint" *ngIf="!logoPreviewUrl">No logo selected</span>
         </div>
       </div>
     </div>
+
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" [disabled]="partyForm.invalid" (click)="onSubmit()">
+  <button mat-raised-button color="primary"
+          [disabled]="partyForm.invalid || isSaving"
+          (click)="onSubmit()">
+    <mat-spinner *ngIf="isSaving" diameter="18"></mat-spinner>
+    <mat-icon *ngIf="!isSaving">{{ isEditMode ? 'save' : 'add' }}</mat-icon>
     {{ isEditMode ? 'Update' : 'Create' }}
   </button>
 </mat-dialog-actions>

@@ -168,7 +168,7 @@
             <mat-form-field appearance="outline" class="field">
               <mat-label>First Name</mat-label>
               <input matInput formControlName="firstname" placeholder="John">
-              <mat-icon matPrefix>badge</mat-icon>
+              <mat-icon matPrefix>person</mat-icon>
               <mat-error *ngIf="profileForm.get('firstname')?.hasError('required')">
                 First name is required
               </mat-error>
@@ -177,21 +177,20 @@
             <mat-form-field appearance="outline" class="field">
               <mat-label>Last Name</mat-label>
               <input matInput formControlName="lastname" placeholder="Smith">
-              <mat-icon matPrefix>badge</mat-icon>
+              <mat-icon matPrefix>person</mat-icon>
               <mat-error *ngIf="profileForm.get('lastname')?.hasError('required')">
                 Last name is required
               </mat-error>
             </mat-form-field>
           </div>
 
+
           <div class="form-grid two-col">
             <mat-form-field appearance="outline" class="field">
-              <mat-label>Email Address</mat-label>
-              <input matInput formControlName="email" type="email" placeholder="john@example.com">
-              <mat-icon matPrefix>email</mat-icon>
-              <mat-hint>Used for login and notifications</mat-hint>
-              <mat-error *ngIf="profileForm.get('email')?.hasError('required')">Email is required</mat-error>
-              <mat-error *ngIf="profileForm.get('email')?.hasError('email')">Enter a valid email address</mat-error>
+              <mat-label>Media Name</mat-label>
+              <input matInput formControlName="medianame" type="text" placeholder="Abc media">
+              <mat-icon matPrefix>live_tv</mat-icon>
+              <mat-hint>Used to identify the name of the media in the publshing url</mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="field">

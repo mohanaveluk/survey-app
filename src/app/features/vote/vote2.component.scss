@@ -12,19 +12,15 @@
 .vote-card {
   margin-bottom: 20px;
 
-  .mat-mdc-card-header {
-    .mat-mdc-card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.5rem;
-      color: var(--indigo, #4f46e5);
-    }
+  .mat-mdc-card-header .mat-mdc-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    color: var(--indigo, #4f46e5);
   }
 
-  .mat-mdc-card-content {
-    padding: 12px 16px;
-  }
+  .mat-mdc-card-content { padding: 12px 16px; }
 }
 
 // ─────────────────────────────────────────────
@@ -34,28 +30,20 @@
   margin-bottom: 24px;
 
   h3 {
-    margin: 0 0 8px 0;
+    margin: 0 0 8px;
     color: #333;
     font-weight: 500;
 
-    .optional {
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: #9ca3af;
-    }
+    .optional { font-size: 0.8rem; font-weight: 400; color: #9ca3af; }
   }
 
-  .section-subtitle {
-    margin: 0 0 16px 0;
-    color: #666;
-    font-size: 0.9rem;
-  }
+  .section-subtitle { margin: 0 0 16px; color: #666; font-size: 0.9rem; }
 }
 
 .full-width { width: 100%; }
 
 // ─────────────────────────────────────────────
-//  Already voted message
+//  Already voted
 // ─────────────────────────────────────────────
 .already-voted-message {
   margin: 20px 0;
@@ -69,15 +57,9 @@
       align-items: flex-start;
       gap: 16px;
 
-      mat-icon {
-        color: #4caf50;
-        font-size: 2rem; height: 2rem; width: 2rem;
-        flex-shrink: 0;
-      }
-
+      mat-icon { color: #4caf50; font-size: 2rem; height: 2rem; width: 2rem; flex-shrink: 0; }
       div { flex: 1; min-width: 0; }
-
-      h3 { margin: 0 0 8px 0; color: #333; font-weight: 500; }
+      h3 { margin: 0 0 8px; color: #333; font-weight: 500; }
       p  { margin: 0; color: #666; line-height: 1.5; }
     }
   }
@@ -104,14 +86,10 @@
   box-shadow: 0 12px 32px rgba(79,70,229,0.35);
   animation: iconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-  mat-icon {
-    font-size: 2.4rem; width: 2.4rem; height: 2.4rem;
-    color: white; position: relative; z-index: 1;
-  }
+  mat-icon { font-size: 2.4rem; width: 2.4rem; height: 2.4rem; color: white; position: relative; z-index: 1; }
 
   .thankyou-burst {
-    position: absolute;
-    inset: -10px;
+    position: absolute; inset: -10px;
     border-radius: 34px;
     border: 3px solid rgba(79,70,229,0.25);
     animation: burstPulse 1.8s ease-out infinite;
@@ -150,7 +128,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: #f5f3ff;
   border: 1px solid #ddd6fe;
   border-radius: 14px;
@@ -169,18 +147,39 @@
   .tp-party {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+  }
 
-    .tp-swatch {
-      width: 14px; height: 14px;
-      border-radius: 50%;
-    }
+  .tp-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--indigo, #4f46e5);
+  }
+}
 
-    .tp-name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--indigo, #4f46e5);
-    }
+// Thank-you avatar (larger version)
+.tp-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  .tp-logo-img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    padding: 4px;
+    border-radius: 50%;
+  }
+
+  .tp-initials {
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1;
+    user-select: none;
   }
 }
 
@@ -212,38 +211,104 @@
 
 .party-option {
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  transition: all 0.25s ease;
+  border: 2px solid transparent !important;
+  border-radius: 12px !important;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
+    border-color: #d1d5db !important;
   }
 
   &.selected {
-    border-color: var(--indigo, #4f46e5);
-    background-color: #eef2ff;
+    border-color: var(--indigo, #4f46e5) !important;
+    background-color: #eef2ff !important;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.15) !important;
+  }
+}
+
+// ── Party card inner layout ───────────────────
+.party-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+}
+
+// ── Logo avatar ───────────────────────────────
+.party-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2.5px solid;       // colour injected inline
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  .party-option:hover &, .party-option.selected & {
+    transform: scale(1.06);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
   }
 
-  .party-content {
-    display: flex;
+  .party-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;             // breathing room inside circle
+    border-radius: 50%;
+  }
+
+  .party-initials {
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    user-select: none;
+    text-transform: uppercase;
+  }
+}
+
+// ── Party text ────────────────────────────────
+.party-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e1b4b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .party-leader {
+    display: inline-flex;
     align-items: center;
-    gap: 16px;
-    padding: 8px;
+    gap: 3px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-    .party-color {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .party-info {
-      flex: 1;
-      h4 { margin: 0; font-size: 1rem; font-weight: 500; color: #333; }
-    }
-
-    .check-icon { color: var(--indigo, #4f46e5); }
+    mat-icon { font-size: 0.78rem; width: 0.78rem; height: 0.78rem; flex-shrink: 0; }
   }
+}
+
+.check-icon {
+  color: var(--indigo, #4f46e5);
+  flex-shrink: 0;
+  animation: iconPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 // ─────────────────────────────────────────────
@@ -253,26 +318,77 @@
   margin-top: 20px;
 
   .preview-card {
-    background-color: #eef2ff;
+    background: #eef2ff;
     border-left: 4px solid var(--indigo, #4f46e5);
+    border-radius: 10px;
 
     .preview-content {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
 
-      h4 { margin: 0 0 8px 0; color: #333; font-weight: 500; }
+      // The how_to_vote icon on the left
+      > mat-icon {
+        color: var(--indigo, #4f46e5);
+        font-size: 1.6rem; width: 1.6rem; height: 1.6rem;
+        flex-shrink: 0;
+      }
 
-      .selected-party {
+      .preview-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .preview-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #9ca3af;
+      }
+
+      .preview-party {
         display: flex;
         align-items: center;
-        gap: 8px;
-        font-weight: 500;
-        color: var(--indigo, #4f46e5);
+        gap: 10px;
 
-        .party-color { width: 16px; height: 16px; border-radius: 50%; }
+        .preview-name {
+          font-size: 1rem;
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
+  }
+}
+
+// Mini avatar used in the selected preview
+.preview-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  .party-logo-img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    padding: 3px;
+    border-radius: 50%;
+  }
+
+  .party-initials {
+    font-size: 0.65rem;
+    font-weight: 800;
+    line-height: 1;
+    user-select: none;
   }
 }
 
@@ -280,18 +396,9 @@
 //  Survey info card
 // ─────────────────────────────────────────────
 .survey-info {
-  .mat-mdc-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
+  .mat-mdc-card-content { display: flex; flex-direction: column; gap: 12px; }
   .info-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #666;
-
+    display: flex; align-items: center; gap: 8px; color: #666;
     mat-icon { color: #999; font-size: 1.2rem; height: 1.2rem; width: 1.2rem; }
   }
 }
@@ -300,13 +407,9 @@
 //  Loading
 // ─────────────────────────────────────────────
 .loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
-  gap: 16px;
-
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 300px; gap: 16px;
   p { color: #666; margin: 0; }
 }
 
@@ -320,20 +423,15 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    line-height: 1;
 
-    
     mat-spinner {
-      display: inline-flex !important;
-      align-items: center;
-      
+      flex-shrink: 0;
+      width: 18px !important; height: 18px !important;
+      display: inline-flex !important; align-items: center !important;
+      ::ng-deep svg    { width: 18px !important; height: 18px !important; display: inline-flex !important; }
       ::ng-deep circle { stroke: white; }
-      
-      // Override the default block sizing that breaks inline flow
-      ::ng-deep svg {
-        display: block;
-      }
     }
-    
   }
 }
 
@@ -342,4 +440,6 @@
 // ─────────────────────────────────────────────
 @media (max-width: 600px) {
   .vote-container { margin: 10px; padding: 10px; }
+  .party-avatar { width: 44px; height: 44px; }
+  .party-content { gap: 10px; padding: 8px; }
 }

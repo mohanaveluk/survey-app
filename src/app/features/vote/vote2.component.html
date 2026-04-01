@@ -13,28 +13,26 @@
     <mat-card-content>
       <form [formGroup]="voteForm" (ngSubmit)="onSubmit()">
 
-          <!-- Voter Email -->
-          <div class="form-section">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Your Email Address</mat-label>
-              <input matInput
-                     formControlName="voterEmail"
-                     type="email"
-                     placeholder="Enter your email"
-                     (blur)="onEmailChange()">
-              <mat-icon matSuffix>email</mat-icon>
-              <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('required')">
-                Email is required
-              </mat-error>
-              <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('email')">
-                Please enter a valid email address
-              </mat-error>
-            </mat-form-field>
-          </div>
+        <!-- ── Voter Email ── -->
+        <div class="form-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Your Email Address</mat-label>
+            <input matInput
+                   formControlName="voterEmail"
+                   type="email"
+                   placeholder="Enter your email"
+                   (blur)="onEmailChange()">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="voteForm.get('voterEmail')?.hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-
-          
-        <!-- ── Already voted (returning user detected via email blur) ── -->
+        <!-- ── Already voted ── -->
         <div class="already-voted-message" *ngIf="hasVotedAlready">
           <mat-card class="info-card">
             <mat-card-content>
@@ -49,7 +47,7 @@
           </mat-card>
         </div>
 
-        <!-- ── Thank-you state after successful verification ── -->
+        <!-- ── Thank-you state ── -->
         <div class="thankyou-state" *ngIf="hasVoted && !hasVotedAlready">
           <div class="thankyou-icon">
             <mat-icon>how_to_vote</mat-icon>
@@ -63,7 +61,21 @@
           <div class="thankyou-party" *ngIf="submittedParty">
             <span class="tp-label">You voted for</span>
             <div class="tp-party">
-              <div class="tp-swatch" [style.background-color]="submittedParty.color"></div>
+              <!-- Show logo in thank-you too if available -->
+              <div class="tp-avatar"
+                   [style.border-color]="submittedParty.color"
+                   [style.background-color]="submittedParty.color + '18'">
+                <img *ngIf="submittedParty.logo_url"
+                     [src]="submittedParty.logo_url"
+                     [alt]="submittedParty.name"
+                     class="tp-logo-img"
+                     (error)="onLogoError($event, submittedParty.color!)">
+                <span *ngIf="!submittedParty.logo_url"
+                      class="tp-initials"
+                      [style.color]="submittedParty.color">
+                  {{ submittedParty.name | slice:0:2 | uppercase }}
+                </span>
+              </div>
               <span class="tp-name">{{ submittedParty.name }}</span>
             </div>
           </div>
@@ -107,7 +119,7 @@
             </mat-form-field>
           </div>
 
-          <!-- Party selection -->
+          <!-- ── Party selection ── -->
           <div class="form-section">
             <h3>Choose Your Preferred Party</h3>
             <p class="section-subtitle">Select the party you want to vote for</p>
@@ -117,19 +129,51 @@
                         class="party-option"
                         [class.selected]="selectedParty?.id === party.party.id"
                         (click)="onPartySelect(party.party)">
+
                 <div class="party-content">
+
+                  <!-- Radio button -->
                   <mat-radio-button
                     [value]="party.party.id"
                     [checked]="selectedParty?.id === party.party.id"
-                    (change)="onPartySelect(party.party)">
+                    (change)="onPartySelect(party.party)"
+                    (click)="$event.stopPropagation()">
                   </mat-radio-button>
-                  <div class="party-color" [style.background-color]="party.party.color"></div>
+
+                  <!-- ── Logo avatar — replaces the plain colour dot ── -->
+                  <div class="party-avatar"
+                       [style.border-color]="party.party.color"
+                       [style.background-color]="party.party.color + '18'">
+
+                    <!-- Logo image -->
+                    <img *ngIf="party.party.logo_url"
+                         [src]="party.party.logo_url"
+                         [alt]="party.party.name + ' logo'"
+                         class="party-logo-img"
+                         (error)="onLogoError($event, party.party.color!)">
+
+                    <!-- Initials fallback -->
+                    <span *ngIf="!party.party.logo_url"
+                          class="party-initials"
+                          [style.color]="party.party.color">
+                      {{ party.party.name | slice:0:2 | uppercase }}
+                    </span>
+                  </div>
+
+                  <!-- Party name + leader -->
                   <div class="party-info">
                     <h4>{{ party.party.name }}</h4>
+                    <span class="party-leader" *ngIf="party.party.leader_name">
+                      <mat-icon>person</mat-icon>
+                      {{ party.party.leader_name }}
+                    </span>
                   </div>
+
+                  <!-- Selected checkmark -->
                   <mat-icon *ngIf="selectedParty?.id === party.party.id" class="check-icon">
                     check_circle
                   </mat-icon>
+
                 </div>
               </mat-card>
             </div>
@@ -139,17 +183,33 @@
             </mat-error>
           </div>
 
-          <!-- Selected party preview -->
+          <!-- ── Selected party preview ── -->
           <div class="selected-preview" *ngIf="selectedParty">
             <mat-card class="preview-card">
               <mat-card-content>
                 <div class="preview-content">
-                  <mat-icon color="primary">how_to_vote</mat-icon>
-                  <div>
-                    <h4>Your Vote</h4>
-                    <div class="selected-party">
-                      <div class="party-color" [style.background-color]="selectedParty.color"></div>
-                      <span>{{ selectedParty.name }}</span>
+                  <mat-icon>how_to_vote</mat-icon>
+                  <div class="preview-body">
+                    <span class="preview-label">Your Vote</span>
+                    <div class="preview-party">
+                      <!-- Mini avatar in preview -->
+                      <div class="preview-avatar"
+                           [style.border-color]="selectedParty.color"
+                           [style.background-color]="selectedParty.color + '18'">
+                        <img *ngIf="selectedParty.logo_url"
+                             [src]="selectedParty.logo_url"
+                             [alt]="selectedParty.name"
+                             class="party-logo-img"
+                             (error)="onLogoError($event, selectedParty.color!)">
+                        <span *ngIf="!selectedParty.logo_url"
+                              class="party-initials"
+                              [style.color]="selectedParty.color">
+                          {{ selectedParty.name | slice:0:2 | uppercase }}
+                        </span>
+                      </div>
+                      <span class="preview-name" [style.color]="selectedParty.color">
+                        {{ selectedParty.name }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -161,7 +221,7 @@
       </form>
     </mat-card-content>
 
-    <!-- Action button — hidden once voted -->
+    <!-- Action button -->
     <mat-card-actions align="end" *ngIf="!hasVoted && !hasVotedAlready">
       <button mat-raised-button
               color="primary"
@@ -174,7 +234,7 @@
     </mat-card-actions>
   </mat-card>
 
-  <!-- Survey meta info -->
+  <!-- Survey meta -->
   <div class="survey-info" *ngIf="survey">
     <mat-card>
       <mat-card-content>

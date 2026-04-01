@@ -11,6 +11,7 @@ import {
   VoteVerificationDialogData,
   VoteVerificationDialogResult,
 } from './vote-dialog/vote-verification-dialog.component';
+import { IdentityService } from '../../shared/services/identity.service';
 
 @Component({
   selector: 'app-vote',
@@ -32,6 +33,7 @@ export class Vote2Component implements OnInit {
 
   constructor(
     private route:         ActivatedRoute,
+    private identityService: IdentityService,
     private router:        Router,
     private fb:            FormBuilder,
     private cd:            ChangeDetectorRef,
@@ -64,6 +66,7 @@ export class Vote2Component implements OnInit {
       next: (survey) => {
         if (survey?.data?.isActive) {
           this.survey   = survey.data;
+          this.identityService.setIdentityName(this.survey?.creator?.major || '');
           this.isLoading = false;
           this.cd.detectChanges();
         } else {
@@ -180,5 +183,17 @@ export class Vote2Component implements OnInit {
 
   getPartyById(partyId: string): Party | undefined {
     return this.survey?.surveyParties?.find(p => p.id === partyId)?.party;
+  }
+
+  onLogoError(event: Event, partyColor: string): void {
+    const img = event.target as HTMLImageElement;
+    // Hide the broken image
+    img.style.display = 'none';
+
+    // Show the parent avatar's background colour as the fallback
+    const avatar = img.closest('.party-avatar') as HTMLElement;
+    if (avatar) {
+      avatar.style.backgroundColor = partyColor;
+    }
   }
 }

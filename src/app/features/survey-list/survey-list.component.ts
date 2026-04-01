@@ -55,7 +55,8 @@ export class SurveyListComponent implements OnInit {
   }
 
   getSurveyUrl(surveyId: string): string {
-    return this.surveyService.getSurveyUrl(surveyId);
+    const currentUser = this.authService.currentUserValue; //getUser()
+    return this.surveyService.getSurveyUrl(surveyId, currentUser?.identity || '');
   }
 
   copyUrl(surveyId: string, event: Event): void {

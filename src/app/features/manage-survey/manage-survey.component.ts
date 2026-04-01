@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Survey, SurveyResult } from '../../shared/models/survey.model';
 import { AuthService } from '../../auth/auth.service';
 import { SurveyService } from '../../shared/services/survey.service';
 import { SharedModule } from '../../shared/shared.module';
+import { IdentityService } from '../../shared/services/identity.service';
 
 @Component({
   selector: 'app-manage-survey',
@@ -13,6 +14,8 @@ import { SharedModule } from '../../shared/shared.module';
   imports: [SharedModule]
 })
 export class ManageSurveyComponent implements OnInit {
+  @Output() userIdentity = new EventEmitter<string>();
+
   survey: Survey | null = null;
   surveyResult: SurveyResult | null = null;
   surveyUrl = '';
@@ -23,6 +26,7 @@ export class ManageSurveyComponent implements OnInit {
     private router: Router,
     private surveyService: SurveyService,
     private authService: AuthService,
+    private identityService: IdentityService,
     private snackBar: MatSnackBar,
     private cd: ChangeDetectorRef
   ) {}
@@ -31,8 +35,11 @@ export class ManageSurveyComponent implements OnInit {
     const surveyId = this.route.snapshot.paramMap.get('id');
     if (surveyId) {
       this.loadSurvey(surveyId);
+      const currentUser = this.authService.currentUserValue;
+      this.userIdentity.emit(currentUser?.identity || '');
+      this.identityService.setIdentityName(currentUser?.identity || '');
       //this.loadSurveyResults(surveyId);
-      this.surveyUrl = this.surveyService.getSurveyUrl(surveyId);
+      this.surveyUrl = this.surveyService.getSurveyUrl(surveyId, currentUser?.identity || '');
       this.cd.detectChanges();
     } else {
       this.router.navigate(['/dashboard']);
@@ -176,6 +183,17 @@ export class ManageSurveyComponent implements OnInit {
     const maxVotes = Math.max(...Object.values(this.surveyResult.votes));
     return this.surveyResult.votes[partyId] === maxVotes && maxVotes > 0;
   }
+
+  getLeadingPercentage(): number {
+    if (!this.surveyResult || this.surveyResult.totalVotes === 0) {
+      return 0;
+    }
+
+    const winningPartyId = this.survey?.surveyParties?.find(p => p.party.name === this.getWinningParty())?.party.id || '';
+    const leadingPercentage = this.getVotePercentage(winningPartyId);
+
+    return leadingPercentage;
+  }
   
   publishSurvey(): void {
     if (this.survey) {
@@ -227,6 +245,18 @@ export class ManageSurveyComponent implements OnInit {
 
   isPublished(): boolean {
     return this.survey?.status === 'published';
+  }
+
+  onLogoError(event: Event, partyColor: string): void {
+    const img = event.target as HTMLImageElement;
+    // Hide the broken image
+    img.style.display = 'none';
+
+    // Show the parent avatar's background colour as the fallback
+    const avatar = img.closest('.party-avatar') as HTMLElement;
+    if (avatar) {
+      avatar.style.backgroundColor = partyColor;
+    }
   }
   
 }

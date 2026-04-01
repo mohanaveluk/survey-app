@@ -55,18 +55,48 @@ export class PartyService {
     return this.http.get<Party>(apiUrl);
   }
 
-  createParty(party: Party): Observable<Party> {
+  createParty(party: Party, logoFile: File): Observable<Party> {
+    const formData = new FormData();
+    if(party.name) formData.append("name", party.name);
+    if(party.leader_name) formData.append("leader_name", party.leader_name);
+    if(party.color) formData.append("color", party.color);
+    // logo_url can be null — send it as an empty string so NestJS can clear it
+    formData.append('logo_url', party.logo_url ?? '');
+
+    // Append file only if one was selected
+    if (logoFile) {
+      formData.append('file', logoFile, logoFile.name);
+    }
+    
     const apiUrl = this.apiUrlBuilder.buildApiUrl('party');
-    return this.http.post<Party>(apiUrl, party);
+    return this.http.post<Party>(apiUrl, formData);
   }
 
-  updateParty(id: string, party: Partial<Party>): Observable<Party> {
+  updateParty(id: string, party: Partial<Party>, logoFile: File): Observable<Party> {
+    const formData = new FormData();
+    if(party.name) formData.append("name", party.name);
+    if(party.leader_name) formData.append("leader_name", party.leader_name);
+    if(party.color) formData.append("color", party.color);
+    // logo_url can be null — send it as an empty string so NestJS can clear it
+    formData.append('logo_url', party.logo_url ?? '');
+
+    // Append file only if one was selected
+    if (logoFile) {
+      formData.append('file', logoFile, logoFile.name);
+    }
     const apiUrl = this.apiUrlBuilder.buildApiUrl(`party/${id}`);
-    return this.http.patch<Party>(apiUrl, party);
+    return this.http.patch<Party>(apiUrl, formData);
   }
 
   deleteParty(id: string): Observable<void> {
     const apiUrl = this.apiUrlBuilder.buildApiUrl(`party/${id}`);
     return this.http.delete<void>(apiUrl);
+  }
+
+  uploadImage(file: File): Observable<{ imageUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const url = this.apiUrlBuilder.buildApiUrl('auth/profile/image');
+    return this.http.post<{ imageUrl: string }>(url, formData);
   }
 }

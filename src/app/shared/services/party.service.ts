@@ -60,6 +60,7 @@ export class PartyService {
     if(party.name) formData.append("name", party.name);
     if(party.leader_name) formData.append("leader_name", party.leader_name);
     if(party.color) formData.append("color", party.color);
+    if(party.createdBy) formData.append("createdBy", party.createdBy);
     // logo_url can be null — send it as an empty string so NestJS can clear it
     formData.append('logo_url', party.logo_url ?? '');
 
@@ -77,6 +78,8 @@ export class PartyService {
     if(party.name) formData.append("name", party.name);
     if(party.leader_name) formData.append("leader_name", party.leader_name);
     if(party.color) formData.append("color", party.color);
+    if(party.createdBy) formData.append("createdBy", party.createdBy);
+
     // logo_url can be null — send it as an empty string so NestJS can clear it
     formData.append('logo_url', party.logo_url ?? '');
 

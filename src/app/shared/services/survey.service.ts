@@ -350,9 +350,9 @@ export class SurveyService {
     return of(survey || null);
   }
 
-  publishSurvey(surveyId: string): Observable<ApiResponse<Survey> | null> {
+  publishSurvey(surveyId: string, surveyUrl: string): Observable<ApiResponse<Survey> | null> {
     const surveyApi = this.apiUrlBuilder.buildApiUrl(`survey/${surveyId}/publish`);
-    return this.http.put<ApiResponse<Survey>>(surveyApi, {}).pipe(
+    return this.http.put<ApiResponse<Survey>>(surveyApi, { status: 'published', surveyUrl }).pipe(
       map(apiSurvey => apiSurvey || null)
     );
   }

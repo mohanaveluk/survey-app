@@ -36,8 +36,6 @@ export class ManageSurveyComponent implements OnInit {
     if (surveyId) {
       this.loadSurvey(surveyId);
       const currentUser = this.authService.currentUserValue;
-      this.userIdentity.emit(currentUser?.identity || '');
-      this.identityService.setIdentityName(currentUser?.identity || '');
       //this.loadSurveyResults(surveyId);
       this.surveyUrl = this.surveyService.getSurveyUrl(surveyId, currentUser?.identity || '');
       this.cd.detectChanges();
@@ -198,7 +196,7 @@ export class ManageSurveyComponent implements OnInit {
   publishSurvey(): void {
     if (this.survey) {
       if (this.survey && confirm('Are you sure you want to publish this survey? You will not be able to edit it after publishing.')) {
-        this.surveyService.publishSurvey(this.survey.id).subscribe({
+        this.surveyService.publishSurvey(this.survey.id, this.surveyUrl).subscribe({
           next: (updatedSurvey) => {
             if (updatedSurvey) {
               this.survey = updatedSurvey.data || this.survey;

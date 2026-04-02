@@ -405,7 +405,8 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
   .auth-card {
-    background: rgba(30, 30, 30, 0.95);
+    /*background: rgba(30, 30, 30, 0.95);*/
+    background: rgba(255, 255, 255, 0.95);
     color: #e0e0e0;
 
     .auth-header {

@@ -202,6 +202,18 @@ export class CreateSurveyComponent implements OnInit {
     }
   }
   
+  onLogoError(event: Event, partyColor: string): void {
+    const img = event.target as HTMLImageElement;
+    // Hide the broken image
+    img.style.display = 'none';
+
+    // Show the parent avatar's background colour as the fallback
+    const avatar = img.closest('.party-avatar') as HTMLElement;
+    if (avatar) {
+      avatar.style.backgroundColor = partyColor;
+    }
+  }
+    
   onCancel(): void {
     this.router.navigate(['/dashboard']);
   }

@@ -78,7 +78,28 @@
                       [class.selected]="isPartySelected(party)"
                       (click)="onPartyToggle(party)">
               <div class="party-content">
-                <div class="party-color" [style.background-color]="party.color"></div>
+                <!-- <div class="party-color" [style.background-color]="party.color"></div> -->
+                
+                <!-- ── Logo avatar — replaces the plain colour dot ── -->
+                <div class="party-avatar"
+                      [style.border-color]="party.color"
+                      [style.background-color]="party.color + '18'">
+
+                  <!-- Logo image -->
+                  <img *ngIf="party.logo_url"
+                        [src]="party.logo_url"
+                        [alt]="party.name + ' logo'"
+                        class="party-logo-img"
+                        (error)="onLogoError($event, party.color!)">
+
+                  <!-- Initials fallback -->
+                  <span *ngIf="!party.logo_url"
+                        class="party-initials"
+                        [style.color]="party.color">
+                    {{ party.name | slice:0:2 | uppercase }}
+                  </span>
+                </div>         
+
                 <div class="party-info">
                   <h4>{{ party.name }}</h4>
                 </div>

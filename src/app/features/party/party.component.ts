@@ -78,6 +78,7 @@ export class PartyComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         result.createdBy = this.authService.currentUserValue?.id.toString() || '';
+        result.party.createdBy = result.createdBy;
         result.createdAt = new Date();
         if (party) {
           this.updateParty(party.id || '', result.party, result.logoFile);

@@ -441,8 +441,8 @@
 // ─────────────────────────────────────────────
 @media (prefers-color-scheme: dark) {
   .verify-card {
-    background: rgba(30, 30, 30, 0.96);
-
+    /*background: rgba(30, 30, 30, 0.96);*/
+    background: rgba(255, 255, 255, 0.95);
     .state-sub { color: #bbb; strong { color: #eee; } }
   }
 

@@ -194,7 +194,7 @@ export class CreateSurveyComponent implements OnInit {
           },
           error: (error) => {
             console.error('Failed to create survey:', error);
-            this.snackBar.open('Failed to create survey', 'Close', { duration: 3000 });
+            this.snackBar.open(`Failed to create survey: ${error?.error.message}`, 'Close', { duration: 3000 });
             this.isCreating = false;
           }
         });
@@ -213,7 +213,7 @@ export class CreateSurveyComponent implements OnInit {
       avatar.style.backgroundColor = partyColor;
     }
   }
-    
+
   onCancel(): void {
     this.router.navigate(['/dashboard']);
   }

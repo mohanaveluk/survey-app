@@ -249,7 +249,15 @@
     transition: all 0.2s ease !important;
 
     mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
-    mat-spinner ::ng-deep circle { stroke: white; }
+    /*mat-spinner ::ng-deep circle { stroke: white; }*/
+    mat-spinner {
+      flex-shrink: 0;
+      width: 18px !important; height: 18px !important;
+      display: inline-flex !important; align-items: center !important;
+      ::ng-deep svg    { width: 18px !important; height: 18px !important; display: inline-flex !important; }
+      ::ng-deep circle { stroke: white; }
+      margin-right: 10px !important;
+    }    
 
     &:not(:disabled):hover {
       transform: translateY(-1px) !important;

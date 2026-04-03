@@ -17,6 +17,7 @@ import { ProfileComponent } from './auth/user-profile-v2/user-profile-v2.compone
 import { ForgotPasswordComponent } from './auth/forgot/forgot-password.component';
 import { ContactUsComponent } from './features/contact/contact-us.component';
 import { DashboardSurveyv2Component } from './features/overview/dashboard-surveyv2.component';
+import { AboutUsComponent } from './features/about/about-us.component';
 
 export const routes: Routes = [
   { path: '', component: Homev2Component },
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'fp', component: ForgotPasswordComponent },
   { path: 'contact', component: ContactUsComponent },
+  { path: 'about', component: AboutUsComponent },
   
   { path: 'auth/verifyemail/:userGuid/:verificationCode', component: VerifyEmailComponent }
 ];

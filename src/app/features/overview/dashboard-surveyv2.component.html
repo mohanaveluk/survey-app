@@ -126,7 +126,27 @@
               <div *ngFor="let party of selectedSurvey.surveyParties; let i = index"
                    class="party-bar-row">
                 <div class="party-label">
-                  <div class="party-swatch" [style.background]="party.party.color"></div>
+                  <!-- <div class="party-swatch" [style.background]="party.party.color"></div> -->
+                    <!-- ── Logo avatar — replaces the plain colour dot ── -->
+                    <div class="party-avatar"
+                        [style.border-color]="party.party.color"
+                        [style.background-color]="party.party.color + '18'">
+
+                      <!-- Logo image -->
+                      <img *ngIf="party.party.logo_url"
+                          [src]="party.party.logo_url"
+                          [alt]="party.party.name + ' logo'"
+                          class="party-logo-img"
+                          (error)="onLogoError($event, party.party.color!)">
+
+                      <!-- Initials fallback -->
+                      <span *ngIf="!party.party.logo_url"
+                            class="party-initials"
+                            [style.color]="party.party.color">
+                        {{ party.party.name | slice:0:2 | uppercase }}
+                      </span>
+                    </div>
+
                   <span class="party-name-text">{{ party.party.name }}</span>
                 </div>
                 <div class="bar-track">
@@ -288,7 +308,27 @@
               <div *ngFor="let party of selectedSurvey.surveyParties; let i = index"
                    class="stacked-row">
                 <div class="stacked-label">
-                  <div class="party-swatch sm" [style.background]="party.party.color"></div>
+                  <!-- <div class="party-swatch sm" [style.background]="party.party.color"></div> -->
+                    <!-- ── Logo avatar — replaces the plain colour dot ── -->
+                    <div class="party-avatar"
+                        [style.border-color]="party.party.color"
+                        [style.background-color]="party.party.color + '18'">
+
+                      <!-- Logo image -->
+                      <img *ngIf="party.party.logo_url"
+                          [src]="party.party.logo_url"
+                          [alt]="party.party.name + ' logo'"
+                          class="party-logo-img"
+                          (error)="onLogoError($event, party.party.color!)">
+
+                      <!-- Initials fallback -->
+                      <span *ngIf="!party.party.logo_url"
+                            class="party-initials"
+                            [style.color]="party.party.color">
+                        {{ party.party.name | slice:0:2 | uppercase }}
+                      </span>
+                    </div>
+
                   <span>{{ party.party.name }}</span>
                 </div>
 
@@ -387,7 +427,27 @@
               <tbody>
                 <tr *ngFor="let party of selectedSurvey.surveyParties">
                   <td class="party-cell">
-                    <div class="party-color" [style.background-color]="party.party.color"></div>
+                    <!-- <div class="party-color" [style.background-color]="party.party.color"></div> -->
+                    <!-- ── Logo avatar — replaces the plain colour dot ── -->
+                    <div class="party-avatar"
+                        [style.border-color]="party.party.color"
+                        [style.background-color]="party.party.color + '18'">
+
+                      <!-- Logo image -->
+                      <img *ngIf="party.party.logo_url"
+                          [src]="party.party.logo_url"
+                          [alt]="party.party.name + ' logo'"
+                          class="party-logo-img"
+                          (error)="onLogoError($event, party.party.color!)">
+
+                      <!-- Initials fallback -->
+                      <span *ngIf="!party.party.logo_url"
+                            class="party-initials"
+                            [style.color]="party.party.color">
+                        {{ party.party.name | slice:0:2 | uppercase }}
+                      </span>
+                    </div>
+
                     <span>{{ party.party.name }}</span>
                   </td>
                   <td class="total-cell">{{ statistics.votesByParty[party.party.id!] || 0 }}</td>

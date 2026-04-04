@@ -243,7 +243,8 @@
     }
 
     &.warning {
-      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      /*background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);*/
+      background: linear-gradient(135deg, #008e06 0%, #fee140 100%);
       color: white;
 
       mat-icon {

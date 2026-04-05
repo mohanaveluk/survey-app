@@ -1,0 +1,180 @@
+<div class="help-page">
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="help-hero">
+    <div class="hero-bg-dots"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <mat-icon>support_agent</mat-icon>
+        Help Center
+      </div>
+      <h1>How can we help you?</h1>
+      <p>Find answers to common questions about creating surveys, managing parties, casting votes, and more.</p>
+
+      <!-- Search bar -->
+      <div class="search-wrap">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input #searchInput
+               class="search-input"
+               type="text"
+               placeholder="Search the help center…"
+               [(ngModel)]="searchQuery"
+               (input)="onSearch()">
+        <button *ngIf="searchQuery" class="search-clear" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Quick category chips -->
+      <div class="quick-cats">
+        <button *ngFor="let cat of categories"
+                class="cat-chip"
+                [class.active]="activeCategory === cat.id"
+                (click)="setCategory(cat.id)">
+          <mat-icon>{{ cat.icon }}</mat-icon>
+          {{ cat.label }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════ -->
+  <div class="help-layout">
+
+    <!-- LEFT — sticky category sidebar -->
+    <aside class="help-sidebar">
+      <div class="sidebar-label">Topics</div>
+      <nav class="sidebar-nav">
+        <button *ngFor="let cat of categories"
+                class="sidebar-item"
+                [class.active]="activeCategory === cat.id"
+                (click)="setCategory(cat.id)">
+          <mat-icon>{{ cat.icon }}</mat-icon>
+          <span>{{ cat.label }}</span>
+          <span class="sidebar-count">{{ getCategoryCount(cat.id) }}</span>
+        </button>
+      </nav>
+
+      <!-- Contact block in sidebar -->
+      <div class="sidebar-contact">
+        <h4>Still need help?</h4>
+        <a href="mailto:support@voter-pulse.com" class="contact-row">
+          <mat-icon>email</mat-icon>
+          <span>support@voter-pulse.com</span>
+        </a>
+        <a href="tel:+19253320011" class="contact-row">
+          <mat-icon>phone</mat-icon>
+          <span>+1 (925) 332-0011</span>
+        </a>
+        <button class="chat-sidebar-btn" (click)="openChat()">
+          <mat-icon>chat_bubble</mat-icon>
+          Start Live Chat
+        </button>
+      </div>
+    </aside>
+
+    <!-- RIGHT — FAQ panels -->
+    <main class="faq-main">
+
+      <!-- No results -->
+      <div class="no-results" *ngIf="filteredFaqs.length === 0">
+        <mat-icon>search_off</mat-icon>
+        <h3>No results for "{{ searchQuery }}"</h3>
+        <p>Try different keywords or browse a category from the sidebar.</p>
+        <button class="btn-ghost" (click)="clearSearch()">Clear search</button>
+      </div>
+
+      <!-- FAQ groups -->
+      <ng-container *ngFor="let cat of visibleCategories">
+        <div class="faq-group" *ngIf="getFaqsForCategory(cat.id).length > 0">
+
+          <div class="faq-group-header">
+            <div class="faq-group-icon" [ngClass]="'icon-' + cat.id">
+              <mat-icon>{{ cat.icon }}</mat-icon>
+            </div>
+            <div>
+              <h2>{{ cat.label }}</h2>
+              <p>{{ cat.description }}</p>
+            </div>
+          </div>
+
+          <div class="faq-list">
+            <div *ngFor="let faq of getFaqsForCategory(cat.id); let i = index"
+                 class="faq-item"
+                 [class.open]="faq.open">
+
+              <button class="faq-question" (click)="toggleFaq(faq)">
+                <span class="faq-q-text">{{ faq.question }}</span>
+                <div class="faq-chevron">
+                  <mat-icon>{{ faq.open ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </div>
+              </button>
+
+              <div class="faq-answer" [class.visible]="faq.open">
+                <div class="faq-answer-inner" [innerHTML]="faq.answer"></div>
+                <!-- Was this helpful? -->
+                <div class="faq-helpful" *ngIf="faq.open">
+                  <span>Was this helpful?</span>
+                  <button class="helpful-btn yes" (click)="markHelpful(faq, true)"
+                          [class.voted]="faq.helpfulVote === true">
+                    <mat-icon>thumb_up</mat-icon> Yes
+                  </button>
+                  <button class="helpful-btn no" (click)="markHelpful(faq, false)"
+                          [class.voted]="faq.helpfulVote === false">
+                    <mat-icon>thumb_down</mat-icon> No
+                  </button>
+                  <span class="helpful-thanks" *ngIf="faq.helpfulVote !== undefined">
+                    Thanks for your feedback!
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       CONTACT BANNER
+  ══════════════════════════════════════ -->
+  <section class="contact-banner">
+    <div class="banner-inner">
+      <h2>Couldn't find your answer?</h2>
+      <p>Our support team is ready to help you Monday – Friday, 9 AM to 6 PM EST.</p>
+      <div class="banner-actions">
+        <a href="mailto:support@voter-pulse.com" class="banner-btn email-btn">
+          <mat-icon>email</mat-icon>
+          Email Support
+        </a>
+        <a href="tel:+19253320011" class="banner-btn phone-btn">
+          <mat-icon>phone_in_talk</mat-icon>
+          +1 (925) 332-0011
+        </a>
+        <button class="banner-btn chat-btn" (click)="openChat()">
+          <mat-icon>chat_bubble</mat-icon>
+          Live Chat
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     FLOATING CHAT BUBBLE
+══════════════════════════════════════ -->
+<div class="chat-fab" (click)="openChat()" matTooltip="Chat with us" matTooltipPosition="left">
+  <div class="chat-fab-icon">
+    <mat-icon>chat</mat-icon>
+  </div>
+  <div class="chat-fab-pulse"></div>
+  <div class="chat-fab-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</div>
+</div>

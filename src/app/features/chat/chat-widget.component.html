@@ -1,0 +1,145 @@
+<!-- ══════════════════════════════════════
+     FLOATING CHAT BUTTON
+══════════════════════════════════════ -->
+<div class="chat-fab"
+     [class.panel-open]="isOpen"
+     (click)="toggleChat()"
+     matTooltip="{{ isOpen ? '' : 'Chat with Pulse AI' }}"
+     matTooltipPosition="left">
+
+  <div class="fab-icon-wrap">
+    <mat-icon class="fab-icon-chat" [class.hidden]="isOpen">chat</mat-icon>
+    <mat-icon class="fab-icon-close" [class.visible]="isOpen">close</mat-icon>
+  </div>
+
+  <div class="fab-pulse" *ngIf="!isOpen"></div>
+  <div class="fab-badge" *ngIf="!isOpen && unreadCount > 0">{{ unreadCount }}</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CHAT PANEL
+══════════════════════════════════════ -->
+<div class="chat-panel" [class.open]="isOpen" role="dialog" aria-label="Voter-Pulse Assistant">
+
+  <!-- ── Header ── -->
+  <div class="chat-header">
+    <div class="header-bot">
+      <div class="bot-avatar">
+        <mat-icon>smart_toy</mat-icon>
+        <span class="online-dot"></span>
+      </div>
+      <div class="bot-info">
+        <span class="bot-name">Pulse AI</span>
+        <span class="bot-status">
+          <span class="status-dot"></span>
+          {{ isTyping ? 'Typing…' : 'Online' }}
+        </span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-icon-button class="header-btn" (click)="clearChat()" matTooltip="Clear chat">
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
+      <button mat-icon-button class="header-btn" (click)="toggleChat()" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Messages area ── -->
+  <div class="chat-messages" #messagesEl>
+
+    <!-- Welcome state — shown when no messages yet -->
+    <div class="chat-welcome" *ngIf="messages.length === 0">
+      <div class="welcome-avatar">
+        <mat-icon>smart_toy</mat-icon>
+      </div>
+      <h3>Hi! I'm Pulse AI 👋</h3>
+      <p>
+        I can answer your questions about <strong>Voter-Pulse</strong> —
+        surveys, parties, voting, analytics, and more.
+      </p>
+      <div class="suggested-chips">
+        <button *ngFor="let s of suggestions"
+                class="suggestion-chip"
+                (click)="sendSuggestion(s)">
+          {{ s }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Message bubbles -->
+    <div *ngFor="let msg of messages; let i = index"
+         class="message-row"
+         [class.user-row]="msg.role === 'user'"
+         [class.bot-row]="msg.role === 'assistant'">
+
+      <!-- Bot avatar (only for first consecutive bot message) -->
+      <div class="msg-avatar" *ngIf="msg.role === 'assistant' && isFirstBotMsg(i)">
+        <mat-icon>smart_toy</mat-icon>
+      </div>
+      <div class="msg-avatar-spacer"
+           *ngIf="msg.role === 'assistant' && !isFirstBotMsg(i)">
+      </div>
+
+      <div class="bubble-wrap">
+        <div class="bubble" [class.user-bubble]="msg.role === 'user'"
+                            [class.bot-bubble]="msg.role === 'assistant'"
+                            [class.error-bubble]="msg.isError">
+
+          <!-- Text content -->
+          <div class="bubble-text" [innerHTML]="msg.content"></div>
+
+          <!-- Quick action links inside bot messages -->
+          <div class="bubble-links" *ngIf="msg.links && msg.links.length">
+            <a *ngFor="let link of msg.links"
+               [routerLink]="link.route"
+               class="bubble-link"
+               (click)="toggleChat()">
+              <mat-icon>arrow_forward</mat-icon>
+              {{ link.label }}
+            </a>
+          </div>
+        </div>
+
+        <span class="bubble-time">{{ msg.timestamp | date:'h:mm a' }}</span>
+      </div>
+
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="message-row bot-row" *ngIf="isTyping">
+      <div class="msg-avatar"><mat-icon>smart_toy</mat-icon></div>
+      <div class="bubble bot-bubble typing-bubble">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Input area ── -->
+  <div class="chat-input-area">
+    <div class="input-wrap" [class.focused]="inputFocused">
+      <textarea #inputEl
+                class="chat-input"
+                [(ngModel)]="inputText"
+                placeholder="Ask me anything about Voter-Pulse…"
+                rows="1"
+                (keydown)="onKeyDown($event)"
+                (focus)="inputFocused = true"
+                (blur)="inputFocused = false"
+                (input)="autoResize($event)">
+      </textarea>
+      <button class="send-btn"
+              [class.active]="inputText.trim()"
+              [disabled]="!inputText.trim() || isTyping"
+              (click)="sendMessage()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+    <p class="input-hint">Powered by Pulse AI · Press Enter to send, Shift+Enter for new line</p>
+  </div>
+
+</div>

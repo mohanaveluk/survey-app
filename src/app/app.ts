@@ -8,10 +8,11 @@ import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { ChatWidgetComponent } from "./features/chat/chat-widget.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SharedModule, NavbarComponent, FooterComponent], //HeaderComponent
+  imports: [RouterOutlet, SharedModule, NavbarComponent, FooterComponent, ChatWidgetComponent], //HeaderComponent
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

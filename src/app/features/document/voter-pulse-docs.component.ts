@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { ImageModalComponent } from "../../shared/components/image-modal/image-modal.component";
 
 @Component({
   selector:    'app-voter-pulse-docs',
   templateUrl: './voter-pulse-docs.component.html',
   styleUrls:   ['./voter-pulse-docs.component.scss'],
-  imports:     [SharedModule, RouterLink],
+  imports: [SharedModule, RouterLink, ImageModalComponent],
 })
 export class VoterPulseDocsComponent {
+
+  selectedImage: string | null = null;
 
   /** Smooth-scroll to a section by its HTML id */
   scrollTo(id: string): void {
@@ -27,4 +30,13 @@ export class VoterPulseDocsComponent {
     link.download = 'Voter-Pulse-User-Guide.pdf';
     link.click();
   }
+
+  openImageModal(imageSrc: string): void {
+    this.selectedImage = imageSrc;
+  }
+
+  closeImageModal(): void {
+    this.selectedImage = null;
+  }
+
 }

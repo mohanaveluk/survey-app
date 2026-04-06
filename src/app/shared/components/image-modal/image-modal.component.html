@@ -1,0 +1,8 @@
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <img [src]="imageSrc" alt="Enlarged Image" />
+    <button class="close-btn" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

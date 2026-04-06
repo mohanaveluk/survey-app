@@ -120,7 +120,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/party_create.jpg"
                    alt="Add New Party dialog showing name, leader, colour picker and logo options"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/party_create.jpg')"/>
               <div class="screenshot-caption">
                 Add New Party dialog — fill in details and upload a logo
               </div>
@@ -171,7 +172,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/party-list.jpg"
                    alt="Party Management page showing Party Alpha and Party Beta cards"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/party-list.jpg')"/>
               <div class="screenshot-caption">
                 Party Management page — all registered parties shown as cards
               </div>
@@ -252,7 +254,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/survey-create.png"
                    alt="Create New Election Survey form with details and party selection"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/survey-create.png')"/>
               <div class="screenshot-caption">
                 Survey creation form — define details and select competing parties
               </div>
@@ -299,7 +302,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/survey-draft.png"
                    alt="Survey detail page showing Draft status with Publish Survey and Edit buttons"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/survey-draft.png')"/>
               <div class="screenshot-caption">
                 Survey detail page in Draft mode — review, edit, or publish
               </div>
@@ -332,7 +336,8 @@
             <div class="screenshot-frame half">
               <img src="assets/docs/survey-publish-confirm.png"
                    alt="Confirmation dialog asking if you want to publish the survey"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/survey-publish-confirm.png')"/>
               <div class="screenshot-caption">
                 Publish confirmation dialog
               </div>
@@ -340,7 +345,8 @@
             <div class="screenshot-frame half">
               <img src="assets/docs/survey-published.png"
                    alt="Survey detail page after publishing showing Published status and survey URL"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/survey-published.png')"/>
               <div class="screenshot-caption">
                 Survey published — unique URL generated
               </div>
@@ -384,7 +390,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/survey-email.png"
                    alt="Survey invitation email in Gmail showing Cast Your Vote Now button and survey URL"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/survey-email.png')"/>
               <div class="screenshot-caption">
                 Invitation email sent to participants upon survey publication
               </div>
@@ -452,7 +459,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/vote-form.png"
                    alt="Voting page showing email field, demographic information and party selection"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/vote-form.png')"/>
               <div class="screenshot-caption">
                 Voting page — accessible to the public without any login
               </div>
@@ -509,7 +517,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/vote-otp-email.png"
                    alt="Vote verification email showing 6-digit OTP code, expiry and party selection"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/vote-otp-email.png')"/>
               <div class="screenshot-caption">
                 Verification email containing the 6-digit OTP code
               </div>
@@ -558,7 +567,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/vote-otp-dialog.png"
                    alt="OTP verification dialog on the voting page showing 6 digit input boxes"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/vote-otp-dialog.png')"/>
               <div class="screenshot-caption">
                 OTP dialog — enter the code and click Verify &amp; Submit Vote
               </div>
@@ -605,7 +615,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/vote-thankyou.png"
                    alt="Thank You for Voting confirmation page showing voted party"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/vote-thankyou.png')"/>
               <div class="screenshot-caption">
                 Vote confirmation page — the participant's choice is recorded
               </div>
@@ -662,7 +673,8 @@
             <div class="screenshot-frame">
               <img src="assets/docs/dashboard.png"
                    alt="Survey Analytics Dashboard showing KPI cards, votes by party chart and gender distribution"
-                   loading="lazy"/>
+                   loading="lazy"
+                   (click)="openImageModal('assets/docs/dashboard.png')"/>
               <div class="screenshot-caption">
                 Analytics Dashboard — real-time results, charts, and demographic insights
               </div>
@@ -736,4 +748,10 @@
     </div>
 
   </div>
+    <!-- Image Modal -->
+    <app-image-modal
+      *ngIf="selectedImage"
+      [imageSrc]="selectedImage"
+      (close)="closeImageModal()">
+    </app-image-modal>  
 </div>

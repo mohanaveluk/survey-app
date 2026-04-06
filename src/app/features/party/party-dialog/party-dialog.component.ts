@@ -63,6 +63,7 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
     this.partyForm = this.fb.group({
       name:        ['', [Validators.required, Validators.minLength(2)]],
       leader_name: [''],
+      contestant_name: [''],
       color:       ['#1976d2'],
       logo_url:    [''],
     });

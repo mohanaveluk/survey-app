@@ -5,6 +5,7 @@ export interface Party {
   name: string;
   color?: string;
   leader_name?: string;
+  contestant_name?: string;
   logo_url?: string;
   createdBy?: string;
   createdAt?: Date;

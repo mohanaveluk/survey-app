@@ -1,0 +1,739 @@
+<div class="docs-page">
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <header class="docs-hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <mat-icon>how_to_vote</mat-icon>
+        <span>Official User Documentation · v2.0</span>
+      </div>
+      <h1>Voter-Pulse <span class="accent">User Guide</span></h1>
+      <p class="hero-sub">
+        A complete walkthrough of every feature — from setting up political parties
+        to publishing a survey and monitoring live election results.
+      </p>
+      <div class="hero-actions">
+        <button mat-raised-button class="btn-download" (click)="downloadPdf()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Download PDF Guide
+        </button>
+        <div class="hero-meta">
+          <span><mat-icon>menu_book</mat-icon> 3 modules</span>
+          <span><mat-icon>photo_library</mat-icon> 12 screenshots</span>
+          <span><mat-icon>timer</mat-icon> 5 min read</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════ TOC ══════════════ -->
+  <nav class="docs-toc">
+    <div class="toc-inner">
+      <span class="toc-label">Contents</span>
+      <a class="toc-link" (click)="scrollTo('party')">
+        <span class="toc-num">01</span> Party Management
+      </a>
+      <span class="toc-sep">·</span>
+      <a class="toc-link" (click)="scrollTo('survey')">
+        <span class="toc-num">02</span> Survey Management
+      </a>
+      <span class="toc-sep">·</span>
+      <a class="toc-link" (click)="scrollTo('vote')">
+        <span class="toc-num">03</span> Vote Management
+      </a>
+    </div>
+  </nav>
+
+  <div class="docs-body">
+
+    <!-- ══════════════ MODULE 1: PARTY MANAGEMENT ══════════════ -->
+    <section id="party" class="docs-module">
+      <div class="module-header indigo">
+        <div class="module-num">01</div>
+        <div class="module-title-wrap">
+          <div class="module-tag">Party Management</div>
+          <h2>Build Your Party Registry</h2>
+          <p>
+            Before creating an election survey, you must first register the political parties
+            that will appear as voting options. The Party Registry is private to your account —
+            no other user can view or modify your parties.
+          </p>
+        </div>
+        <mat-icon class="module-icon">account_balance</mat-icon>
+      </div>
+
+      <!-- Step 1.1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge indigo-badge">Step 1</div>
+          <h3>Create a New Party</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Navigate to the <strong>Party</strong> section from the top navigation bar and click
+              <strong>+ Add Party</strong>. A dialog will appear prompting you to fill in the
+              following details:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>label</mat-icon>
+                <div>
+                  <strong>Party Name</strong> — The official name of the political party
+                  (required field).
+                </div>
+              </li>
+              <li>
+                <mat-icon>person</mat-icon>
+                <div>
+                  <strong>Party Leader</strong> — The name of the party's designated leader
+                  (optional, but recommended for clarity).
+                </div>
+              </li>
+              <li>
+                <mat-icon>palette</mat-icon>
+                <div>
+                  <strong>Party Colour</strong> — Choose from a predefined palette or enter a
+                  custom hex code. This colour is used throughout charts and result displays.
+                </div>
+              </li>
+              <li>
+                <mat-icon>image</mat-icon>
+                <div>
+                  <strong>Party Logo</strong> (optional) — Upload a logo using one of three
+                  methods: <em>Local File</em> (drag-and-drop or browse, max 2 MB),
+                  <em>Online URL</em> (paste any publicly accessible image URL), or
+                  <em>Google Drive</em> (paste a shareable Drive link).
+                </div>
+              </li>
+            </ul>
+            <div class="callout info-callout">
+              <mat-icon>info</mat-icon>
+              <span>
+                Once a logo URL is entered, the system previews the image immediately.
+                A green confirmation message confirms successful loading before you save.
+              </span>
+            </div>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/party_create.jpg"
+                   alt="Add New Party dialog showing name, leader, colour picker and logo options"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Add New Party dialog — fill in details and upload a logo
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1.2 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge indigo-badge">Step 2</div>
+          <h3>View and Manage Your Parties</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              After saving, the party appears as a card on the Party Management page. Each card
+              displays the party name, leader, logo (or generated initial), and assigned colour.
+              Two action icons at the bottom of each card allow you to:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>edit</mat-icon>
+                <div>
+                  <strong>Edit</strong> — Modify the party's name, leader, colour, or logo at
+                  any time. Edits apply to all future surveys that include this party.
+                </div>
+              </li>
+              <li>
+                <mat-icon>delete</mat-icon>
+                <div>
+                  <strong>Delete</strong> — Permanently remove the party from your registry.
+                  Note: removing a party that is already associated with a published survey
+                  may affect result displays.
+                </div>
+              </li>
+            </ul>
+            <div class="callout tip-callout">
+              <mat-icon>lightbulb</mat-icon>
+              <span>
+                Use the <strong>Search</strong> bar at the top of the page to quickly locate
+                a specific party when your registry contains many entries.
+              </span>
+            </div>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/party-list.jpg"
+                   alt="Party Management page showing Party Alpha and Party Beta cards"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Party Management page — all registered parties shown as cards
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ MODULE 2: SURVEY MANAGEMENT ══════════════ -->
+    <section id="survey" class="docs-module">
+      <div class="module-header teal">
+        <div class="module-num">02</div>
+        <div class="module-title-wrap">
+          <div class="module-tag">Survey Management</div>
+          <h2>Create, Publish &amp; Manage Surveys</h2>
+          <p>
+            A survey is the central unit of Voter-Pulse. It defines the election context,
+            the competing parties, the voting window, and controls when the public can participate.
+            Only authenticated users may create and manage surveys.
+          </p>
+        </div>
+        <mat-icon class="module-icon">poll</mat-icon>
+      </div>
+
+      <!-- Step 2.1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge teal-badge">Step 1</div>
+          <h3>Create a New Election Survey</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Click <strong>Create Survey</strong> in the top navigation. The survey creation
+              form requires the following information:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>title</mat-icon>
+                <div>
+                  <strong>Survey Name</strong> — A clear, descriptive title for the election
+                  survey (e.g., "State Election Survey 2026").
+                </div>
+              </li>
+              <li>
+                <mat-icon>description</mat-icon>
+                <div>
+                  <strong>Description</strong> (optional) — Additional context about the survey
+                  displayed to participants on the voting page.
+                </div>
+              </li>
+              <li>
+                <mat-icon>date_range</mat-icon>
+                <div>
+                  <strong>Start &amp; End Date</strong> — Define the active voting window. Votes
+                  can only be submitted within this date range.
+                </div>
+              </li>
+              <li>
+                <mat-icon>shield</mat-icon>
+                <div>
+                  <strong>Anonymous Survey</strong> — Enable this option to keep all voter
+                  identities private. The organiser will only see aggregated results.
+                </div>
+              </li>
+              <li>
+                <mat-icon>groups</mat-icon>
+                <div>
+                  <strong>Select Parties</strong> — Choose at least two parties from your Party
+                  Registry to appear as voting options. Selected parties are shown as colour-coded
+                  chips at the bottom for easy review.
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/survey-create.png"
+                   alt="Create New Election Survey form with details and party selection"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Survey creation form — define details and select competing parties
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2.2 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge teal-badge">Step 2</div>
+          <h3>Review Your Survey in Draft Mode</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Upon saving, the survey is created in <strong>Draft</strong> status and you are
+              automatically redirected to the Survey Detail page. In Draft mode:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>visibility_off</mat-icon>
+                <div>The survey is <strong>not publicly accessible</strong>. No votes can be cast.</div>
+              </li>
+              <li>
+                <mat-icon>edit_note</mat-icon>
+                <div>All survey fields remain <strong>fully editable</strong>. Use the <em>Edit</em> button to make changes before going live.</div>
+              </li>
+              <li>
+                <mat-icon>rocket_launch</mat-icon>
+                <div>When you are ready to go live, click <strong>Publish Survey</strong> to make the survey accessible to the public.</div>
+              </li>
+            </ul>
+            <div class="callout warning-callout">
+              <mat-icon>warning</mat-icon>
+              <span>
+                Once a survey is published, the party selection and core settings are <strong>locked</strong>
+                and cannot be edited. Review all details carefully before publishing.
+              </span>
+            </div>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/survey-draft.png"
+                   alt="Survey detail page showing Draft status with Publish Survey and Edit buttons"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Survey detail page in Draft mode — review, edit, or publish
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2.3 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge teal-badge">Step 3</div>
+          <h3>Publish the Survey</h3>
+        </div>
+        <div class="step-body two-screenshots">
+          <div class="step-text-full">
+            <p>
+              Clicking <strong>Publish Survey</strong> triggers a confirmation dialog to ensure
+              intentional publishing. Click <strong>OK</strong> to confirm — the system will
+              immediately:
+            </p>
+            <ul class="step-list inline">
+              <li><mat-icon>check_circle</mat-icon><span>Update the survey status to <strong>Published</strong></span></li>
+              <li><mat-icon>check_circle</mat-icon><span>Generate a unique, shareable survey URL</span></li>
+              <li><mat-icon>check_circle</mat-icon><span>Make the survey available for public voting</span></li>
+              <li><mat-icon>check_circle</mat-icon><span>Replace the action bar with <em>Copy Link</em>, <em>Deactivate</em>, and <em>Close Survey</em> controls</span></li>
+            </ul>
+          </div>
+          <div class="screenshots-row">
+            <div class="screenshot-frame half">
+              <img src="assets/docs/survey-publish-confirm.png"
+                   alt="Confirmation dialog asking if you want to publish the survey"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Publish confirmation dialog
+              </div>
+            </div>
+            <div class="screenshot-frame half">
+              <img src="assets/docs/survey-published.png"
+                   alt="Survey detail page after publishing showing Published status and survey URL"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Survey published — unique URL generated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2.4 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge teal-badge">Step 4</div>
+          <h3>Share the Survey Link</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Once published, the platform automatically dispatches a beautifully formatted
+              invitation email containing:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>email</mat-icon>
+                <div>The survey title and organiser name</div>
+              </li>
+              <li>
+                <mat-icon>link</mat-icon>
+                <div>A prominent <strong>Cast Your Vote Now</strong> button that links directly to the voting page</div>
+              </li>
+              <li>
+                <mat-icon>content_copy</mat-icon>
+                <div>The full survey URL for copy-paste sharing across WhatsApp, social media, or any messaging platform</div>
+              </li>
+            </ul>
+            <p>
+              You can also manually share the URL displayed on the Survey Detail page by
+              clicking the <strong>Copy Survey Link</strong> button.
+            </p>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/survey-email.png"
+                   alt="Survey invitation email in Gmail showing Cast Your Vote Now button and survey URL"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Invitation email sent to participants upon survey publication
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ MODULE 3: VOTE MANAGEMENT ══════════════ -->
+    <section id="vote" class="docs-module">
+      <div class="module-header amber">
+        <div class="module-num">03</div>
+        <div class="module-title-wrap">
+          <div class="module-tag">Vote Management</div>
+          <h2>Cast, Verify &amp; Monitor Votes</h2>
+          <p>
+            Voters do not need a Voter-Pulse account to participate. The platform uses
+            email-based OTP verification to ensure each participant casts exactly one vote
+            per survey, maintaining the integrity of results.
+          </p>
+        </div>
+        <mat-icon class="module-icon">how_to_vote</mat-icon>
+      </div>
+
+      <!-- Step 3.1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge amber-badge">Step 1</div>
+          <h3>Access the Voting Page</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              When a participant opens the survey link, they are presented with the
+              <strong>Voting Page</strong>. No login or registration is required. Participants
+              complete the following fields:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>email</mat-icon>
+                <div>
+                  <strong>Email Address</strong> (required) — Used solely to send the
+                  one-time verification code. Not shared with the organiser in anonymous surveys.
+                </div>
+              </li>
+              <li>
+                <mat-icon>people</mat-icon>
+                <div>
+                  <strong>Demographic Information</strong> (optional) — Gender, age, and location.
+                  These fields help organisers understand voting patterns across demographics.
+                </div>
+              </li>
+              <li>
+                <mat-icon>how_to_vote</mat-icon>
+                <div>
+                  <strong>Party Selection</strong> — Choose the preferred party from the list of
+                  participating parties. The selected party is highlighted and a preview appears
+                  at the bottom of the page.
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/vote-form.png"
+                   alt="Voting page showing email field, demographic information and party selection"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Voting page — accessible to the public without any login
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3.2 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge amber-badge">Step 2</div>
+          <h3>Receive the One-Time Verification Code</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Upon submitting the vote, the system dispatches a <strong>6-digit One-Time
+              Password (OTP)</strong> to the participant's email address. The verification
+              email clearly displays:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>pin</mat-icon>
+                <div>
+                  The <strong>6-digit verification code</strong> in large, individually-boxed
+                  digits for easy reading.
+                </div>
+              </li>
+              <li>
+                <mat-icon>timer</mat-icon>
+                <div>
+                  The <strong>expiry window</strong> (5 minutes) — the code must be used
+                  promptly to confirm the vote.
+                </div>
+              </li>
+              <li>
+                <mat-icon>check_box</mat-icon>
+                <div>
+                  The <strong>party selection</strong> summary, confirming which party the vote
+                  will be recorded for.
+                </div>
+              </li>
+            </ul>
+            <div class="callout info-callout">
+              <mat-icon>security</mat-icon>
+              <span>
+                If you did not attempt to vote, simply ignore the email. Your vote will
+                <strong>not</strong> be recorded unless the code is entered and submitted.
+              </span>
+            </div>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/vote-otp-email.png"
+                   alt="Vote verification email showing 6-digit OTP code, expiry and party selection"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Verification email containing the 6-digit OTP code
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3.3 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge amber-badge">Step 3</div>
+          <h3>Enter the Code &amp; Confirm Your Vote</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Return to the survey page where an <strong>OTP verification dialog</strong>
+              is displayed. Enter the 6-digit code received in your email:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>keyboard</mat-icon>
+                <div>
+                  Type each digit into the individual input boxes. The dialog auto-advances
+                  to the next box as each digit is entered.
+                </div>
+              </li>
+              <li>
+                <mat-icon>timer</mat-icon>
+                <div>
+                  A <strong>countdown timer</strong> displays the remaining validity of the code.
+                  Click <em>Resend</em> if the code has expired.
+                </div>
+              </li>
+              <li>
+                <mat-icon>verified</mat-icon>
+                <div>
+                  Click <strong>Verify &amp; Submit Vote</strong> to confirm. The vote is
+                  permanently recorded once verified and cannot be changed.
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/vote-otp-dialog.png"
+                   alt="OTP verification dialog on the voting page showing 6 digit input boxes"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                OTP dialog — enter the code and click Verify &amp; Submit Vote
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3.4 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge amber-badge">Step 4</div>
+          <h3>Vote Confirmed — Thank You Page</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Upon successful verification, the participant is directed to a
+              <strong>confirmation page</strong> that:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>check_circle</mat-icon>
+                <div>Confirms the vote has been <strong>recorded and verified</strong> successfully</div>
+              </li>
+              <li>
+                <mat-icon>ballot</mat-icon>
+                <div>Displays the <strong>party voted for</strong> as a clear summary card</div>
+              </li>
+              <li>
+                <mat-icon>info</mat-icon>
+                <div>Notes that results will be published once the survey officially closes</div>
+              </li>
+            </ul>
+            <div class="callout success-callout">
+              <mat-icon>verified_user</mat-icon>
+              <span>
+                Each email address is permitted to cast <strong>exactly one vote</strong> per
+                survey. Any subsequent attempt using the same email will be rejected by the system.
+              </span>
+            </div>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/vote-thankyou.png"
+                   alt="Thank You for Voting confirmation page showing voted party"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Vote confirmation page — the participant's choice is recorded
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3.5 -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-badge amber-badge">Step 5</div>
+          <h3>Monitor Live Results on the Dashboard</h3>
+        </div>
+        <div class="step-body">
+          <div class="step-text">
+            <p>
+              Authenticated organisers can track the public's voting activity in real time
+              from the <strong>Survey Analytics Dashboard</strong>. The dashboard provides
+              a comprehensive view of results including:
+            </p>
+            <ul class="step-list">
+              <li>
+                <mat-icon>bar_chart</mat-icon>
+                <div>
+                  <strong>KPI summary cards</strong> — total votes cast, number of participating
+                  parties, overall participation rate, and the currently leading party.
+                </div>
+              </li>
+              <li>
+                <mat-icon>poll</mat-icon>
+                <div>
+                  <strong>Votes by Party chart</strong> — a horizontal bar chart displaying each
+                  party's vote count and percentage share.
+                </div>
+              </li>
+              <li>
+                <mat-icon>donut_large</mat-icon>
+                <div>
+                  <strong>Gender Distribution donut chart</strong> — a breakdown of votes by
+                  gender (Male, Female, Other) across the entire survey.
+                </div>
+              </li>
+              <li>
+                <mat-icon>stacked_bar_chart</mat-icon>
+                <div>
+                  <strong>Gender Breakdown by Party</strong> — a stacked bar chart revealing
+                  the gender composition of each party's vote share for deeper demographic analysis.
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="step-screenshot">
+            <div class="screenshot-frame">
+              <img src="assets/docs/dashboard.png"
+                   alt="Survey Analytics Dashboard showing KPI cards, votes by party chart and gender distribution"
+                   loading="lazy"/>
+              <div class="screenshot-caption">
+                Analytics Dashboard — real-time results, charts, and demographic insights
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ QUICK REFERENCE ══════════════ -->
+    <section class="quick-ref">
+      <h2>Quick Reference</h2>
+      <div class="qr-grid">
+        <div class="qr-card">
+          <mat-icon class="qr-icon indigo-icon">account_balance</mat-icon>
+          <h4>Party</h4>
+          <ul>
+            <li>Navigate to <strong>Party</strong> tab</li>
+            <li>Click <strong>+ Add Party</strong></li>
+            <li>Fill name, leader, colour, logo</li>
+            <li>Edit or delete anytime</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <mat-icon class="qr-icon teal-icon">poll</mat-icon>
+          <h4>Survey</h4>
+          <ul>
+            <li>Click <strong>Create Survey</strong></li>
+            <li>Saved as <em>Draft</em> initially</li>
+            <li>Click <strong>Publish</strong> to go live</li>
+            <li>Share the generated URL</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <mat-icon class="qr-icon amber-icon">how_to_vote</mat-icon>
+          <h4>Voting</h4>
+          <ul>
+            <li>No account needed to vote</li>
+            <li>Enter email + pick party</li>
+            <li>Enter 6-digit OTP from email</li>
+            <li>One vote per email per survey</li>
+          </ul>
+        </div>
+        <div class="qr-card">
+          <mat-icon class="qr-icon green-icon">dashboard</mat-icon>
+          <h4>Analytics</h4>
+          <ul>
+            <li>Open <strong>Dashboard</strong></li>
+            <li>Select your survey</li>
+            <li>View real-time charts</li>
+            <li>Monitor gender breakdown</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ FOOTER CTA ══════════════ -->
+    <div class="docs-footer-cta">
+      <mat-icon>help_outline</mat-icon>
+      <div>
+        <h3>Need more help?</h3>
+        <p>Visit our Help Center for FAQs, or contact our support team.</p>
+      </div>
+      <div class="footer-cta-actions">
+        <button mat-stroked-button routerLink="/help">Help Center</button>
+        <button mat-raised-button routerLink="/contact" color="primary">Contact Support</button>
+        <button mat-raised-button class="btn-download-sm" (click)="downloadPdf()">
+          <mat-icon>picture_as_pdf</mat-icon> Download PDF
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

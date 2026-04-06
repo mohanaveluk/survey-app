@@ -20,6 +20,7 @@ import { DashboardSurveyv2Component } from './features/overview/dashboard-survey
 import { AboutUsComponent } from './features/about/about-us.component';
 import { HelpCenterComponent } from './features/help/help-center.component';
 import { ChatWidgetComponent } from './features/chat/chat-widget.component';
+import { VoterPulseDocsComponent } from './features/document/voter-pulse-docs.component';
 
 export const routes: Routes = [
   { path: '', component: Homev2Component },
@@ -43,6 +44,7 @@ export const routes: Routes = [
   { path: 'about', component: AboutUsComponent },
   { path: 'help', component: HelpCenterComponent },
   { path: 'chat', component: ChatWidgetComponent },
+  { path: 'docs', component: VoterPulseDocsComponent },
   
   { path: 'auth/verifyemail/:userGuid/:verificationCode', component: VerifyEmailComponent }
 ];

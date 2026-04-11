@@ -1,0 +1,225 @@
+<div class="write-page">
+ 
+  <!-- Header -->
+  <div class="write-header">
+    <div class="write-header-inner">
+      <div class="back-link" routerLink="/blog">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Back to Blog</span>
+      </div>
+      <div class="header-right">
+        <span class="draft-chip" *ngIf="isDraft">Unsaved draft</span>
+        <button mat-button class="btn-preview" (click)="togglePreview()">
+          <mat-icon>{{ previewMode ? 'edit' : 'visibility' }}</mat-icon>
+          {{ previewMode ? 'Edit' : 'Preview' }}
+        </button>
+        <button mat-raised-button class="btn-publish"
+                [disabled]="form.invalid || publishing"
+                (click)="publish()">
+          <mat-spinner *ngIf="publishing" diameter="16"></mat-spinner>
+          <mat-icon *ngIf="!publishing">send</mat-icon>
+          {{ publishing ? 'Publishing…' : (editMode ? 'Update Article' : 'Publish Article') }}
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Main area -->
+  <div class="write-layout">
+    <form [formGroup]="form" class="write-form" *ngIf="!previewMode">
+ 
+      <!-- Title -->
+      <div class="field-group">
+        <input class="title-input"
+               formControlName="title"
+               placeholder="Write a compelling article title…"
+               maxlength="300">
+        <span class="char-count">{{ form.get('title')?.value?.length ?? 0 }}/300</span>
+        <div class="field-error" *ngIf="form.get('title')?.errors?.['required'] && form.get('title')?.touched">
+          Title is required
+        </div>
+      </div>
+ 
+      <!-- Excerpt -->
+      <div class="field-group">
+        <textarea class="excerpt-input"
+                  formControlName="excerpt"
+                  placeholder="Write a 2–3 sentence teaser that appears on the article card…"
+                  rows="3"
+                  maxlength="600">
+        </textarea>
+        <span class="char-count">{{ form.get('excerpt')?.value?.length ?? 0 }}/600</span>
+        <div class="field-error" *ngIf="form.get('excerpt')?.errors?.['required'] && form.get('excerpt')?.touched">
+          Excerpt is required to show on article cards
+        </div>
+      </div>
+ 
+      <!-- Meta row -->
+      <div class="meta-row">
+        <!-- Category -->
+        <div class="meta-field">
+          <label class="meta-label">Category</label>
+          <mat-select formControlName="category" class="meta-select">
+            <mat-option *ngFor="let c of categories" [value]="c.id">
+              {{ c.label }}
+            </mat-option>
+          </mat-select>
+        </div>
+ 
+        <!-- Read time -->
+        <div class="meta-field">
+          <label class="meta-label">Est. Read Time (min)</label>
+          <input type="number" formControlName="read_time" min="1" max="60" class="meta-input">
+        </div>
+ 
+        <!-- Featured toggle -->
+        <div class="meta-field toggle-field">
+          <label class="meta-label">Feature this article</label>
+          <mat-slide-toggle formControlName="featured" color="primary"></mat-slide-toggle>
+        </div>
+ 
+        <!-- Trending toggle -->
+        <div class="meta-field toggle-field">
+          <label class="meta-label">Mark as trending</label>
+          <mat-slide-toggle formControlName="trending" color="warn"></mat-slide-toggle>
+        </div>
+      </div>
+ 
+      <!-- Tags -->
+      <div class="field-group">
+        <label class="meta-label">Tags (comma-separated)</label>
+        <input class="tags-input"
+               formControlName="tagsRaw"
+               placeholder="election, otp, survey, tutorial, analytics…">
+        <div class="tags-preview" *ngIf="parsedTags.length">
+          <span *ngFor="let t of parsedTags" class="tag">#{{ t }}</span>
+        </div>
+      </div>
+ 
+      <!-- Author (if not using JWT) -->
+      <div class="field-group">
+        <label class="meta-label">Your name</label>
+        <input class="meta-input wide" formControlName="author_name" placeholder="e.g. Priya Nair">
+        <input class="meta-input wide" formControlName="author_role"
+               placeholder="Your role (e.g. Platform Lead, Community Member)">
+      </div>
+ 
+      <!-- Content toolbar -->
+      <div class="content-toolbar">
+        <label class="meta-label">Article Content (HTML supported)</label>
+        <div class="toolbar-btns">
+          <button type="button" class="tb-btn" (click)="insertHtml('<h2>Section heading</h2>\n')">
+            H2
+          </button>
+          <button type="button" class="tb-btn" (click)="insertHtml('<h3>Sub-heading</h3>\n')">
+            H3
+          </button>
+          <button type="button" class="tb-btn" (click)="insertHtml('<p></p>\n')" title="Paragraph">
+            P
+          </button>
+          <button type="button" class="tb-btn" (click)="insertHtml('<strong></strong>')">
+            <strong>B</strong>
+          </button>
+          <button type="button" class="tb-btn"
+                  (click)="insertHtml('<ul>\n  <li></li>\n  <li></li>\n</ul>\n')">
+            List
+          </button>
+          <button type="button" class="tb-btn"
+                  (click)="insertHtml('<blockquote></blockquote>\n')">
+            Quote
+          </button>
+          <button type="button" class="tb-btn"
+                  (click)="insertHtml('<code></code>')">
+            Code
+          </button>
+        </div>
+      </div>
+ 
+      <!-- Content editor -->
+      <div class="field-group">
+        <textarea #contentEl
+                  class="content-input"
+                  formControlName="content_html"
+                  placeholder="Write your article content here. HTML is supported — use the toolbar above to insert common elements."
+                  rows="24">
+        </textarea>
+        <div class="field-error" *ngIf="form.get('content_html')?.errors?.['minlength'] && form.get('content_html')?.touched">
+          Content must be at least 50 characters
+        </div>
+      </div>
+ 
+      <!-- Success banner -->
+      <div class="publish-success" *ngIf="publishedId">
+        <mat-icon>check_circle</mat-icon>
+        <span>Article published! </span>
+        <a [routerLink]="['/blog']">View on Blog</a>
+      </div>
+ 
+      <!-- Error banner -->
+      <div class="publish-error" *ngIf="publishError">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ publishError }}</span>
+      </div>
+ 
+    </form>
+ 
+    <!-- PREVIEW MODE -->
+    <div class="preview-wrap" *ngIf="previewMode">
+      <div class="preview-header">
+        <div class="post-tags">
+          <span *ngFor="let t of parsedTags" class="tag">#{{ t }}</span>
+        </div>
+        <span class="post-cat cat-{{ form.get('category')?.value }}">
+          {{ categoryLabel }}
+        </span>
+      </div>
+      <h1 class="preview-title">{{ form.get('title')?.value || 'Article Title' }}</h1>
+      <p class="preview-excerpt">{{ form.get('excerpt')?.value || 'Article excerpt will appear here.' }}</p>
+      <div class="post-author-row">
+        <div class="author-avatar" [style.background]="'#4f46e5'">
+          {{ authorInitials }}
+        </div>
+        <div class="author-info">
+          <span class="author-name">{{ form.get('author_name')?.value || 'Author Name' }}</span>
+          <span class="author-role">{{ form.get('author_role')?.value || 'Community Member' }}</span>
+        </div>
+        <span class="post-read">{{ form.get('read_time')?.value }} min read</span>
+      </div>
+      <div class="post-body preview-body"
+           [innerHTML]="form.get('content_html')?.value || '<p>Your content will appear here…</p>'">
+      </div>
+    </div>
+ 
+    <!-- Sidebar tips -->
+    <aside class="write-sidebar">
+      <div class="tip-card">
+        <h4><mat-icon>tips_and_updates</mat-icon> Writing Tips</h4>
+        <ul>
+          <li>Keep titles under 80 characters for best display</li>
+          <li>Excerpt should hook the reader in 2–3 sentences</li>
+          <li>Use H2/H3 headings to break long content</li>
+          <li>Add <code>&lt;strong&gt;</code> for key terms</li>
+          <li>Use <code>&lt;blockquote&gt;</code> for pro-tips</li>
+          <li>Include practical examples readers can follow</li>
+        </ul>
+      </div>
+ 
+      <div class="tip-card">
+        <h4><mat-icon>category</mat-icon> Categories</h4>
+        <ul>
+          <li><strong>Guide</strong> — Step-by-step tutorials</li>
+          <li><strong>Voting</strong> — How to vote, OTP, verification</li>
+          <li><strong>Party</strong> — Managing party registry</li>
+          <li><strong>Survey</strong> — Creating & publishing surveys</li>
+          <li><strong>Tips</strong> — Best practices & tricks</li>
+          <li><strong>News</strong> — Platform updates & releases</li>
+        </ul>
+      </div>
+ 
+      <div class="tip-card tip-card-warn" *ngIf="form.get('featured')?.value">
+        <mat-icon>star</mat-icon>
+        <p>This article will be pinned as the <strong>Featured Post</strong> at the top of the blog. Only one post should be featured at a time.</p>
+      </div>
+    </aside>
+  </div>
+</div>

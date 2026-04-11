@@ -9,6 +9,7 @@ export interface Party {
   logo_url?: string;
   createdBy?: string;
   createdAt?: Date;
+  countryId?: string | null;
 }
 
 export interface Survey {
@@ -85,4 +86,10 @@ export interface SurveyStatistics {
     count: number;
   }[];
   participationRate: number;
+}
+
+export interface LibraryImage {
+  url:    string;  // the logo URL stored in the parties table
+  name:   string;  // derived from the URL (filename without extension)
+  broken: boolean; // true if the <img> fires an error event
 }

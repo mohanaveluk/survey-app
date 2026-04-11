@@ -1,0 +1,782 @@
+// party-master-dialog.component.scss
+// Matches voter-pulse indigo theme from party_component.scss
+
+// ─────────────────────────────────────────────
+//  Tokens (mirror the host app's CSS vars)
+// ─────────────────────────────────────────────
+:host {
+  --indigo:      #4f46e5;
+  --indigo-dk:   #3730a3;
+  --indigo-lt:   #eef2ff;
+  --teal:        #0d9488;
+  --amber:       #f59e0b;
+  --green:       #059669;
+  --green-lt:    #ecfdf5;
+  --rose:        #e11d48;
+  --ink:         #1e1b4b;
+  --body:        #374151;
+  --muted:       #6b7280;
+  --light:       #9ca3af;
+  --surface:     #f8f7ff;
+  --border:      #e5e3f8;
+  --border-soft: #e5e7eb;
+  --white:       #ffffff;
+}
+
+// ─────────────────────────────────────────────
+//  Shell — no Angular Material dialog padding
+// ─────────────────────────────────────────────
+.mat-mdc-dialog-component-host {
+  border-radius: 20px !important;
+}
+
+.pmd-shell {
+  display: flex;
+  flex-direction: column;
+  width: 960px;
+  max-width: 95vw;
+  min-height: 88vh;
+  max-height: 88vh;
+  background: var(--white);
+  overflow: hidden;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+// ─────────────────────────────────────────────
+//  Header
+// ─────────────────────────────────────────────
+.pmd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0f0d2a 0%, #1e1b4b 100%);
+  flex-shrink: 0;
+}
+
+.pmd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pmd-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 1.3rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    color: #fde68a;
+  }
+}
+
+.pmd-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 2px;
+  letter-spacing: -0.3px;
+}
+
+.pmd-subtitle {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+}
+
+.pmd-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255,255,255,0.7);
+  transition: all 0.15s;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
+
+  &:hover {
+    background: rgba(255,255,255,0.18);
+    color: white;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Toolbar (search + stats)
+// ─────────────────────────────────────────────
+.pmd-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+// Search
+.pmd-search-wrap {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  transition: border-color 0.18s;
+
+  &.focused { border-color: var(--indigo); background: white; }
+
+  .pmd-search-icon {
+    font-size: 1.05rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--light);
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  .pmd-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.875rem;
+    color: var(--ink);
+    height: 38px;
+    min-width: 0;
+
+    &::placeholder { color: var(--light); }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  .pmd-search-clear {
+    background: none;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: var(--light);
+    border-radius: 4px;
+    transition: color 0.12s;
+
+    &:hover { color: var(--ink); }
+    mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+  }
+}
+
+// Stats chips
+.pmd-stats {
+  display: flex;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+
+  mat-icon { font-size: 0.85rem; width: 0.85rem; height: 0.85rem; }
+
+  &.selected-chip {
+    background: var(--indigo-lt);
+    border-color: var(--indigo);
+    color: var(--indigo);
+    animation: fadeIn 0.2s ease-out;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Loading skeleton
+// ─────────────────────────────────────────────
+.pmd-loading {
+  flex: 1;
+  overflow: hidden;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// Shared shimmer style applied inline to every skeleton element
+%skel-pulse {
+  background: linear-gradient(90deg, #ede9fe 25%, #ddd6fe 50%, #ede9fe 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.pmd-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface);
+
+  .skel-check  { @extend %skel-pulse; width: 20px; height: 20px; border-radius: 5px; flex-shrink: 0; }
+  .skel-avatar { @extend %skel-pulse; width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; }
+
+  .skel-lines {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    .skel-line { @extend %skel-pulse; height: 11px; border-radius: 50px; }
+    .long  { width: 55%; }
+    .short { width: 35%; }
+  }
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+// ─────────────────────────────────────────────
+//  Empty / Error states
+// ─────────────────────────────────────────────
+.pmd-error-state,
+.pmd-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  gap: 8px;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: #c4b5fd;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+    strong { color: var(--ink); }
+  }
+}
+
+.retry-btn {
+  margin-top: 8px;
+  border-color: var(--indigo) !important;
+  color: var(--indigo) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+
+  mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+}
+
+.clear-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--indigo);
+  padding: 4px 0;
+
+  &:hover { text-decoration: underline; }
+}
+
+// ═══════════════════════════════════════════════
+//  TABLE
+// ═══════════════════════════════════════════════
+.pmd-table-wrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Column grid ───────────────────────────────
+// col widths: checkbox | party | leader | color | status
+$cols: 44px 1fr 140px 65px 80px 90px;
+
+.pmd-table-head,
+.pmd-row {
+  display: grid;
+  grid-template-columns: $cols;
+  align-items: center;
+  gap: 8px;
+}
+
+// ── Table head ────────────────────────────────
+.pmd-table-head {
+  padding: 8px 20px;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  flex-shrink: 0;
+
+  > div {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--muted);
+  }
+}
+
+// ── Table body (scrollable) ───────────────────
+.pmd-table-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 8px;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+}
+
+// ── Table row ─────────────────────────────────
+.pmd-row {
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  margin-bottom: 2px;
+
+  &:hover:not(.row-already-added) {
+    background: var(--indigo-lt);
+  }
+
+  &.row-selected {
+    background: var(--indigo-lt);
+    box-shadow: inset 3px 0 0 var(--indigo);
+  }
+
+  &.row-already-added {
+    opacity: 0.55;
+    cursor: default;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Custom Checkbox
+// ─────────────────────────────────────────────
+.pmd-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  input[type="checkbox"] { display: none; }
+
+  .cb-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--border-soft);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+
+    mat-icon {
+      font-size: 0.85rem;
+      width: 0.85rem;
+      height: 0.85rem;
+      color: white;
+      display: none;
+    }
+  }
+
+  &.checked .cb-box {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    mat-icon { display: block; }
+  }
+
+  // master checkbox indeterminate state
+  &.indeterminate .cb-box {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    mat-icon { display: block; }
+  }
+
+  &.master-cb .cb-box {
+    border-radius: 6px;
+    width: 22px;
+    height: 22px;
+    mat-icon { font-size: 0.9rem; width: 0.9rem; height: 0.9rem; }
+  }
+
+  &.disabled {
+    cursor: default;
+    .cb-box { background: #f3f4f6; border-color: #e5e7eb; }
+  }
+
+  &:hover:not(.disabled):not(.checked) .cb-box {
+    border-color: var(--indigo);
+    background: var(--indigo-lt);
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Party column
+// ─────────────────────────────────────────────
+.col-party {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.party-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  mat-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: white;
+  }
+}
+
+.party-name-wrap {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.party-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.party-contestant {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ─────────────────────────────────────────────
+//  Leader column
+// ─────────────────────────────────────────────
+.col-leader {
+  min-width: 0;
+}
+
+.leader-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  mat-icon { font-size: 0.85rem; width: 0.85rem; height: 0.85rem; color: var(--muted); flex-shrink: 0; }
+}
+
+// ─────────────────────────────────────────────
+//  Country column
+// ─────────────────────────────────────────────
+.col-country {
+  min-width: 0;
+}
+
+.country-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  mat-icon { font-size: 0.85rem; width: 0.85rem; height: 0.85rem; color: var(--muted); flex-shrink: 0; }
+}
+
+.no-data {
+  font-size: 0.78rem;
+  color: var(--light);
+}
+
+// ─────────────────────────────────────────────
+//  Color column
+// ─────────────────────────────────────────────
+.col-color {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.color-hex {
+  font-size: 0.7rem;
+  font-family: 'Courier New', monospace;
+  color: var(--muted);
+}
+
+// ─────────────────────────────────────────────
+//  Status column
+// ─────────────────────────────────────────────
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 700;
+
+  mat-icon { font-size: 0.75rem; width: 0.75rem; height: 0.75rem; }
+
+  &.added-badge {
+    background: var(--green-lt, #ecfdf5);
+    color: var(--green, #059669);
+  }
+
+  &.new-badge {
+    background: var(--indigo-lt);
+    color: var(--indigo);
+    animation: fadeIn 0.15s ease-out;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Save progress bar
+// ─────────────────────────────────────────────
+.pmd-save-progress {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--indigo-lt);
+
+  .progress-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--indigo);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    height: 5px;
+    background: #c7d2fe;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--indigo);
+    border-radius: 50px;
+    transition: width 0.3s ease;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  Save error banner
+// ─────────────────────────────────────────────
+.save-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #fff1f2;
+  border-top: 1px solid #fecdd3;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #be123c;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 1rem; width: 1rem; height: 1rem; flex-shrink: 0; }
+}
+
+// ─────────────────────────────────────────────
+//  Footer actions
+// ─────────────────────────────────────────────
+.pmd-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: white;
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.selected-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--indigo);
+  animation: fadeIn 0.2s ease-out;
+
+  mat-icon { font-size: 1rem; width: 1rem; height: 1rem; }
+  strong   { font-size: 1rem; }
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+
+  mat-icon {
+    font-size: 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  //mat-spinner { flex-shrink: 0; ::ng-deep circle { stroke: white; } }
+  mat-spinner {
+    display: inline-flex !important;
+    align-items: center;
+    margin-right: 10px;
+
+    ::ng-deep circle {
+      stroke: white;
+    }
+
+    // Override the default block sizing that breaks inline flow
+    ::ng-deep svg {
+      display: block;
+    }
+  }
+}
+
+.btn-cancel {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  color: var(--muted) !important;
+  border-radius: 10px !important;
+}
+
+.btn-add-selected {
+  background: linear-gradient(135deg, var(--indigo), #7c3aed) !important;
+  color: white !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  border-radius: 10px !important;
+  height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 20px !important;
+  transition: all 0.2s !important;
+
+  mat-icon   { font-size: 1.1rem; width: 1.1rem; height: 1.1rem; }
+  mat-spinner { flex-shrink: 0;
+                ::ng-deep svg    { width: 16px !important; height: 16px !important; }
+                ::ng-deep circle { stroke: white; } }
+
+  &:not([disabled]):hover {
+    box-shadow: 0 6px 20px rgba(79,70,229,0.4) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  &[disabled] { opacity: 0.5 !important; cursor: not-allowed !important; }
+}
+
+// ─────────────────────────────────────────────
+//  Animations
+// ─────────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─────────────────────────────────────────────
+//  Responsive
+// ─────────────────────────────────────────────
+@media (max-width: 600px) {
+  .pmd-shell { width: 100vw; max-width: 100vw; border-radius: 16px; }
+
+  $cols-sm: 36px 1fr 80px;
+
+  .pmd-table-head,
+  .pmd-row {
+    grid-template-columns: $cols-sm;
+
+    // Hide leader + color on mobile
+    .col-leader,
+    .col-color  { display: none; }
+  }
+
+  .pmd-toolbar { flex-wrap: wrap; }
+  .pmd-search-wrap { min-width: 100%; }
+  .pmd-footer { flex-direction: column; align-items: stretch; }
+  .footer-right { justify-content: flex-end; }
+}

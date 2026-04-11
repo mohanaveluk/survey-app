@@ -1,0 +1,237 @@
+<!-- party-master-dialog.component.html -->
+
+<div class="pmd-shell">
+
+  <!-- ── Dialog header ── -->
+  <div class="pmd-header">
+    <div class="pmd-header-left">
+      <div class="pmd-header-icon">
+        <mat-icon>account_balance</mat-icon>
+      </div>
+      <div>
+        <h2 class="pmd-title">Party Master</h2>
+        <p class="pmd-subtitle">Select one or more parties to add to your registry</p>
+      </div>
+    </div>
+    <button class="pmd-close-btn" (click)="onCancel()" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- ── Search + stats toolbar ── -->
+  <div class="pmd-toolbar">
+    <div class="pmd-search-wrap" [class.focused]="searchFocused">
+      <mat-icon class="pmd-search-icon">search</mat-icon>
+      <input
+        class="pmd-search-input"
+        type="text"
+        placeholder="Search party by name or leader…"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilter()"
+        (focus)="searchFocused = true"
+        (blur)="searchFocused = false"
+        [disabled]="loading">
+      <button *ngIf="searchQuery" type="button" class="pmd-search-clear" (click)="clearSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="pmd-stats">
+      <span class="stat-chip">
+        <mat-icon>format_list_bulleted</mat-icon>
+        {{ filteredParties.length }} of {{ allParties.length }}
+      </span>
+      <span class="stat-chip selected-chip" *ngIf="selectedCount > 0">
+        <mat-icon>check_circle</mat-icon>
+        {{ selectedCount }} selected
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Loading skeleton ── -->
+  <div class="pmd-loading" *ngIf="loading">
+    <div class="pmd-skeleton" *ngFor="let i of [1,2,3,4,5]">
+      <div class="skel-check"></div>
+      <div class="skel-avatar"></div>
+      <div class="skel-lines">
+        <div class="skel-line long"></div>
+        <div class="skel-line short"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Error state ── -->
+  <div class="pmd-error-state" *ngIf="!loading && loadError">
+    <mat-icon>cloud_off</mat-icon>
+    <p>{{ loadError }}</p>
+    <button mat-stroked-button class="retry-btn" (click)="loadMasterParties()">
+      <mat-icon>refresh</mat-icon> Retry
+    </button>
+  </div>
+
+  <!-- ── Empty search result ── -->
+  <div class="pmd-empty-state" *ngIf="!loading && !loadError && filteredParties.length === 0 && allParties.length > 0">
+    <mat-icon>search_off</mat-icon>
+    <p>No parties match "<strong>{{ searchQuery }}</strong>"</p>
+    <button type="button" class="clear-link" (click)="clearSearch()">Clear search</button>
+  </div>
+
+  <!-- ── No data at all ── -->
+  <div class="pmd-empty-state" *ngIf="!loading && !loadError && allParties.length === 0">
+    <mat-icon>how_to_vote</mat-icon>
+    <p>No parties available in the master list.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TABLE
+  ══════════════════════════════════════════ -->
+  <div class="pmd-table-wrap" *ngIf="!loading && !loadError && filteredParties.length > 0">
+
+    <!-- Table header -->
+    <div class="pmd-table-head">
+      <div class="col-check">
+        <!-- Select all / deselect all -->
+        <label class="pmd-checkbox master-cb" [class.checked]="isAllSelected"
+               [class.indeterminate]="isIndeterminate"
+               matTooltip="{{ isAllSelected ? 'Deselect all' : 'Select all on this page' }}"
+               (click)="toggleAll()">
+          <span class="cb-box">
+            <mat-icon *ngIf="isAllSelected">check</mat-icon>
+            <mat-icon *ngIf="isIndeterminate && !isAllSelected">remove</mat-icon>
+          </span>
+        </label>
+      </div>
+      <div class="col-party">Party</div>
+      <div class="col-leader">Leader</div>
+      <div class="col-color">Country</div>
+      <div class="col-color">Color</div>
+      <div class="col-status">Status</div>
+    </div>
+
+    <!-- Table body -->
+    <div class="pmd-table-body">
+      <div *ngFor="let party of filteredParties; trackBy: trackById"
+           class="pmd-row"
+           [class.row-selected]="party.checked"
+           [class.row-already-added]="party.alreadyAdded"
+           (click)="!party.alreadyAdded && toggleRow(party)">
+
+        <!-- Checkbox -->
+        <div class="col-check">
+          <label class="pmd-checkbox"
+                 [class.checked]="party.checked"
+                 [class.disabled]="party.alreadyAdded"
+                 (click)="$event.stopPropagation()">
+            <input type="checkbox"
+                   [checked]="party.checked"
+                   [disabled]="party.alreadyAdded"
+                   (change)="toggleRow(party)"
+                   (click)="$event.stopPropagation()">
+            <span class="cb-box">
+              <mat-icon *ngIf="party.checked">check</mat-icon>
+            </span>
+          </label>
+        </div>
+
+        <!-- Party avatar + name -->
+        <div class="col-party">
+          <div class="party-avatar-wrap">
+            <!-- Logo image -->
+            <div class="party-avatar" [style.background]="party.color || '#4f46e5'">
+              <img *ngIf="party.logo_url && !party.logoError"
+                   [src]="party.logo_url"
+                   [alt]="party.name"
+                   (error)="party.logoError = true">
+              <mat-icon *ngIf="!party.logo_url || party.logoError">groups</mat-icon>
+            </div>
+          </div>
+          <div class="party-name-wrap">
+            <span class="party-name">{{ party.name }}</span>
+            <span class="party-contestant" *ngIf="party.contestant_name">
+              {{ party.contestant_name }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Leader -->
+        <div class="col-leader">
+          <span class="leader-name" *ngIf="party.leader_name">
+            <mat-icon>person</mat-icon>
+            {{ party.leader_name }}
+          </span>
+          <span class="no-data" *ngIf="!party.leader_name">—</span>
+        </div>
+
+        <!-- Country -->
+        <div class="col-country">
+          <span class="country-name" *ngIf="party.country">
+            <mat-icon>public</mat-icon>
+            {{ party.country.isoCode }}
+          </span>
+          <span class="no-data" *ngIf="!party.country">—</span>
+        </div>
+
+        <!-- Color swatch -->
+        <div class="col-color">
+          <div class="color-swatch" [style.background]="party.color || '#e5e7eb'"
+               [matTooltip]="party.color || 'No colour'">
+          </div>
+          <span class="color-hex">{{ party.color || '—' }}</span>
+        </div>
+
+        <!-- Status badge -->
+        <div class="col-status">
+          <span class="status-badge added-badge" *ngIf="party.alreadyAdded">
+            <mat-icon>check_circle</mat-icon> Added
+          </span>
+          <span class="status-badge new-badge" *ngIf="!party.alreadyAdded && party.checked">
+            <mat-icon>add_circle</mat-icon> Selected
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Progress bar during save ── -->
+  <div class="pmd-save-progress" *ngIf="saving">
+    <div class="progress-label">
+      <mat-spinner diameter="16"></mat-spinner>
+      <span>Adding party {{ saveProgress }} of {{ saveTotal }}…</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="savePercent"></div>
+    </div>
+  </div>
+
+  <!-- ── Error during save ── -->
+  <div class="save-error-banner" *ngIf="saveErrors.length > 0 && !saving">
+    <mat-icon>warning</mat-icon>
+    <span>{{ saveErrors.length }} party(s) could not be added. Others were saved successfully.</span>
+  </div>
+
+  <!-- ── Footer actions ── -->
+  <div class="pmd-footer">
+    <div class="footer-left">
+      <span class="selected-summary" *ngIf="selectedCount > 0">
+        <mat-icon>check_circle</mat-icon>
+        <strong>{{ selectedCount }}</strong> party{{ selectedCount > 1 ? 'ies' : '' }} selected
+      </span>
+    </div>
+
+    <div class="footer-right">
+      <button mat-button class="btn-cancel" (click)="onCancel()" [disabled]="saving">
+        Cancel
+      </button>
+      <button mat-raised-button
+              class="btn-add-selected"
+              [disabled]="selectedCount === 0 || saving"
+              (click)="addSelected()">
+        <mat-spinner *ngIf="saving" diameter="16"></mat-spinner>
+        <mat-icon *ngIf="!saving">add</mat-icon>
+        {{ saving ? 'Adding…' : 'Add Selected (' + selectedCount + ')' }}
+      </button>
+    </div>
+  </div>
+
+</div>

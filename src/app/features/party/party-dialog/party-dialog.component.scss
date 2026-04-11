@@ -44,6 +44,65 @@ mat-dialog-content {
   }
 }
 
+// ── Search inside dropdown ────────────────────────────────────────────────
+  .country-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+ 
+    .cs-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+ 
+    .country-search-input {
+      border: none;
+      outline: none;
+      font-size: 0.85rem;
+      color: #374151;
+      background: transparent;
+      width: 100%;
+ 
+      &::placeholder { color: #9ca3af; }
+    }
+  }
+ 
+  // Country option row inside <mat-option>
+  .country-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+ 
+    mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #9ca3af; }
+ 
+    .country-flag-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 20px;
+      background: #f3f4f6;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: monospace;
+      color: #374151;
+      letter-spacing: 0.5px;
+    }
+ 
+    &.all-option mat-icon { color: #4f46e5; }
+  }
+  
 // ─────────────────────────────────────────────
 //  Color selection (unchanged)
 // ─────────────────────────────────────────────
@@ -374,6 +433,268 @@ mat-dialog-content {
 
   &:hover { background: #fff1f2; border-color: #e11d48; }
 }
+
+
+// ═══════════════════════════════════════════════
+//  IMAGE LIBRARY
+// ═══════════════════════════════════════════════
+ 
+// Loading spinner
+.lib-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px 16px;
+ 
+  span { font-size: 0.85rem; color: var(--muted, #6b7280); }
+}
+ 
+// Generic empty / error / no-results box
+.lib-state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  gap: 6px;
+ 
+  .lib-state-icon {
+    font-size: 2.4rem; width: 2.4rem; height: 2.4rem;
+    color: #c4c2f0;
+ 
+    &.error-icon { color: #fca5a5; }
+  }
+ 
+  .lib-state-title {
+    font-size: 0.9rem; font-weight: 700; color: #374151; margin: 0;
+  }
+ 
+  .lib-state-sub {
+    font-size: 0.8rem; color: #9ca3af; line-height: 1.5; margin: 0;
+    max-width: 280px;
+    strong { color: #374151; }
+  }
+}
+ 
+.lib-action-btn {
+  margin-top: 8px;
+  border-color: var(--indigo, #4f46e5) !important;
+  color: var(--indigo, #4f46e5) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+  &:hover { background: var(--indigo-light, #eef2ff) !important; }
+}
+ 
+.lib-clear-link {
+  background: none; border: none; cursor: pointer;
+  font-size: 0.82rem; font-weight: 600; color: var(--indigo, #4f46e5);
+  padding: 4px 0; margin-top: 4px;
+  &:hover { text-decoration: underline; }
+}
+ 
+// ── Toolbar (search + count) ──────────────────
+.lib-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+ 
+.lib-search-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0 10px;
+  transition: border-color 0.18s;
+ 
+  &.focused { border-color: var(--indigo, #4f46e5); }
+ 
+  .lib-search-icon {
+    font-size: 1rem; width: 1rem; height: 1rem;
+    color: #9ca3af; flex-shrink: 0; pointer-events: none;
+  }
+ 
+  .lib-search-input {
+    flex: 1; border: none; outline: none;
+    font-size: 0.85rem; color: #1e1b4b; background: transparent;
+    height: 36px; min-width: 0;
+    &::placeholder { color: #9ca3af; }
+  }
+ 
+  .lib-search-clear {
+    background: none; border: none; padding: 2px; cursor: pointer;
+    display: flex; align-items: center; color: #9ca3af;
+    border-radius: 4px; transition: color 0.15s;
+    &:hover { color: #374151; }
+    mat-icon { font-size: 0.95rem; width: 0.95rem; height: 0.95rem; }
+  }
+}
+ 
+.lib-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+ 
+// ── Image grid ────────────────────────────────
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 2px;
+  border-radius: 10px;
+ 
+  // thin scrollbar
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: #e5e3f8; border-radius: 4px; }
+}
+ 
+// Image tile
+.lib-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: center;
+ 
+  &:hover {
+    border-color: var(--indigo, #4f46e5);
+    background: var(--indigo-light, #eef2ff);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79,70,229,0.15);
+  }
+ 
+  &.lib-tile-selected {
+    border-color: var(--indigo, #4f46e5);
+    background: var(--indigo-light, #eef2ff);
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+  }
+}
+ 
+// Thumbnail container
+.lib-thumb-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 75%;   // 4:3 ratio
+  border-radius: 7px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+ 
+.lib-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+ 
+// Broken image placeholder
+.lib-broken {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  mat-icon { font-size: 1.4rem; width: 1.4rem; height: 1.4rem; color: #d1d5db; }
+}
+ 
+// Selected tick overlay
+.lib-tick {
+  position: absolute;
+  inset: 0;
+  background: rgba(79,70,229,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+ 
+  mat-icon {
+    font-size: 1.6rem; width: 1.6rem; height: 1.6rem;
+    color: var(--indigo, #4f46e5);
+    filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));
+  }
+}
+ 
+// Image name label
+.lib-name {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 80px;
+  display: block;
+}
+ 
+// ── Selected strip (below grid) ───────────────
+.lib-selected-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: white;
+  border: 1.5px solid var(--indigo, #4f46e5);
+  border-radius: 10px;
+  animation: fadeIn 0.2s ease-out;
+ 
+  .strip-check {
+    font-size: 1.1rem; width: 1.1rem; height: 1.1rem;
+    color: #059669; flex-shrink: 0;
+  }
+ 
+  .strip-img {
+    width: 36px; height: 36px;
+    object-fit: contain; border-radius: 6px;
+    background: #f3f4f6; flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+  }
+ 
+  .strip-info {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px;
+    .strip-name { font-size: 0.82rem; font-weight: 700; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .strip-hint { font-size: 0.7rem; color: #9ca3af; }
+  }
+ 
+  .strip-change {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 7px; border: 1.5px solid #e5e7eb;
+    background: none; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+    color: #6b7280; white-space: nowrap; transition: all 0.15s;
+    mat-icon { font-size: 0.85rem; width: 0.85rem; height: 0.85rem; }
+    &:hover { border-color: var(--indigo, #4f46e5); color: var(--indigo, #4f46e5); background: #eef2ff; }
+  }
+}
+ 
 
 // ─────────────────────────────────────────────
 //  Preview card

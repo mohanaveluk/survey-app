@@ -21,6 +21,8 @@ import { AboutUsComponent } from './features/about/about-us.component';
 import { HelpCenterComponent } from './features/help/help-center.component';
 import { ChatWidgetComponent } from './features/chat/chat-widget.component';
 import { VoterPulseDocsComponent } from './features/document/voter-pulse-docs.component';
+import { BlogComponent } from './features/blog/blog.component';
+import { WritePostComponent } from './features/blog/write-post.component';
 
 export const routes: Routes = [
   { path: '', component: Homev2Component },
@@ -45,6 +47,9 @@ export const routes: Routes = [
   { path: 'help', component: HelpCenterComponent },
   { path: 'chat', component: ChatWidgetComponent },
   { path: 'docs', component: VoterPulseDocsComponent },
+  { path: 'blog', component: BlogComponent },
+  { path: 'blog/write', component: WritePostComponent },
+  { path: 'blog/write/:id', component: WritePostComponent },
   
   { path: 'auth/verifyemail/:userGuid/:verificationCode', component: VerifyEmailComponent }
 ];

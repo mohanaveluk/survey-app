@@ -1,0 +1,495 @@
+<div class="blog-page" [class.dark]="darkMode">
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <header class="blog-hero">
+    <div class="hero-grain"></div>
+    <div class="hero-orbs">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <mat-icon>how_to_vote</mat-icon>
+        <span>Voter-Pulse Community Blog</span>
+      </div>
+      <h1 class="hero-title">
+        Democracy starts with<br>
+        <span class="hero-accent">a conversation.</span>
+      </h1>
+      <p class="hero-sub">
+        Insights, tutorials, and discussions about election surveys,
+        public opinion, and the pulse of democracy — written for organisers and voters alike.
+      </p>
+
+      <!-- Search -->
+      <div class="hero-search" [class.focused]="searchFocused">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input #searchEl
+               type="text"
+               placeholder="Search articles, topics, or tags…"
+               [(ngModel)]="searchQuery"
+               (input)="onSearch()"
+               (focus)="searchFocused = true"
+               (blur)="searchFocused = false">
+        <button *ngIf="searchQuery" class="search-clear" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-n">{{ stats.totalPosts }}</span>
+          <span class="stat-l">Articles</span>
+        </div>
+        <div class="stat-dot"></div>
+        <div class="hero-stat">
+          <span class="stat-n">{{ stats.totalComments }}</span>
+          <span class="stat-l">Comments</span>
+        </div>
+        <div class="stat-dot"></div>
+        <div class="hero-stat">
+          <span class="stat-n">{{ stats.totalLikes }}</span>
+          <span class="stat-l">Reactions</span>
+        </div>
+        <div class="stat-dot"></div>
+        <div class="hero-stat">
+          <span class="stat-n">{{ stats.totalReaders }}</span>
+          <span class="stat-l">Readers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark mode toggle -->
+    <button class="dark-toggle" (click)="darkMode = !darkMode" [matTooltip]="darkMode ? 'Light mode' : 'Dark mode'">
+      <mat-icon>{{ darkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       CATEGORY FILTER BAR
+  ══════════════════════════════════════ -->
+  <nav class="cat-bar">
+    <div class="cat-inner">
+      <button *ngFor="let cat of categories"
+              class="cat-chip"
+              [class.active]="activeCategory === cat.id"
+              (click)="setCategory(cat.id)">
+        <mat-icon>{{ cat.icon }}</mat-icon>
+        {{ cat.label }}
+        <span class="chip-count">{{ cat.count }}</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       MAIN LAYOUT
+  ══════════════════════════════════════ -->
+  <div class="blog-layout">
+
+    <!-- LEFT — Main content -->
+    <main class="blog-main">
+
+      <!-- Sort + count bar -->
+      <div class="results-bar">
+        <span class="results-count">
+          {{ filteredPosts.length }} article{{ filteredPosts.length !== 1 ? 's' : '' }}
+          <ng-container *ngIf="activeCategory !== 'all'"> in <strong>{{ activeCategoryLabel }}</strong></ng-container>
+          <ng-container *ngIf="searchQuery"> matching "<strong>{{ searchQuery }}</strong>"</ng-container>
+        </span>
+        <div class="sort-wrap">
+          <span class="sort-label">Sort by</span>
+          <select [(ngModel)]="sortBy" (change)="applySortFilter()">
+            <option value="newest">Newest first</option>
+            <option value="popular">Most popular</option>
+            <option value="discussed">Most discussed</option>
+            <option value="trending">Trending</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- No results -->
+      <div class="no-results" *ngIf="filteredPosts.length === 0 && !loading">
+        <mat-icon>search_off</mat-icon>
+        <h3>No articles found</h3>
+        <p>Try a different keyword or browse all categories.</p>
+        <button class="btn-ghost" (click)="clearSearch(); setCategory('all')">Browse all articles</button>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-grid" *ngIf="loading">
+        <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+      </div>
+
+      <!-- Featured post (first/top) -->
+      <div class="featured-post" *ngIf="featuredPost && !loading && !searchQuery">
+        <div class="featured-badge">
+          <mat-icon>star</mat-icon> Featured Article
+        </div>
+        <div class="featured-inner" (click)="openPost(featuredPost)">
+          <div class="featured-meta">
+            <span class="post-cat" [ngClass]="'cat-' + featuredPost.category">{{ featuredPost.categoryLabel }}</span>
+            <span class="post-date">{{ featuredPost.publishedAt | date:'MMM d, y' }}</span>
+            <span class="post-read">{{ featuredPost.readTime }} min read</span>
+          </div>
+          <h2 class="featured-title">{{ featuredPost.title }}</h2>
+          <p class="featured-excerpt">{{ featuredPost.excerpt }}</p>
+          <div class="featured-footer">
+            <div class="author-row">
+              <div class="author-avatar" [style.background]="featuredPost.author.avatarColor">
+                {{ featuredPost.author.initials }}
+              </div>
+              <div class="author-info">
+                <span class="author-name">{{ featuredPost.author.name }}</span>
+                <span class="author-role">{{ featuredPost.author.role }}</span>
+              </div>
+            </div>
+            <div class="post-actions">
+              <button class="action-btn" (click)="$event.stopPropagation(); toggleLike(featuredPost)">
+                <mat-icon [class.liked]="featuredPost.liked">{{ featuredPost.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+                {{ featuredPost.likeCount }}
+              </button>
+              <button class="action-btn" (click)="$event.stopPropagation(); openPost(featuredPost)">
+                <mat-icon>chat_bubble_outline</mat-icon>
+                {{ featuredPost.commentCount }}
+              </button>
+              <button class="action-btn" (click)="$event.stopPropagation(); sharePost(featuredPost)">
+                <mat-icon>share</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="featured-tags">
+          <span *ngFor="let tag of featuredPost.tags" class="tag" (click)="searchByTag(tag)">#{{ tag }}</span>
+        </div>
+      </div>
+
+      <!-- Post grid -->
+      <div class="post-grid" *ngIf="!loading">
+        <article class="post-card"
+                 *ngFor="let post of displayedPosts; let i = index"
+                 [style.animation-delay]="(i * 0.05) + 's'"
+                 (click)="openPost(post)">
+
+          <div class="card-header">
+            <span class="post-cat" [ngClass]="'cat-' + post.category">{{ post.categoryLabel }}</span>
+            <span class="post-trending" *ngIf="post.trending">
+              <mat-icon>trending_up</mat-icon> Trending
+            </span>
+          </div>
+
+          <h3 class="card-title">{{ post.title }}</h3>
+          <p class="card-excerpt">{{ post.excerpt }}</p>
+
+          <div class="card-tags">
+            <span *ngFor="let tag of post.tags.slice(0,3)"
+                  class="tag" (click)="$event.stopPropagation(); searchByTag(tag)">#{{ tag }}</span>
+          </div>
+
+          <div class="card-footer">
+            <div class="author-row compact">
+              <div class="author-avatar sm" [style.background]="post.author.avatarColor">
+                {{ post.author.initials }}
+              </div>
+              <div>
+                <span class="author-name sm">{{ post.author.name }}</span>
+                <span class="post-meta-row">
+                  {{ post.publishedAt | date:'MMM d' }} · {{ post.readTime }} min read
+                </span>
+              </div>
+            </div>
+            <div class="card-stats">
+              <button class="action-btn sm" (click)="$event.stopPropagation(); toggleLike(post)">
+                <mat-icon [class.liked]="post.liked">{{ post.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+                {{ post.likeCount }}
+              </button>
+              <button class="action-btn sm">
+                <mat-icon>chat_bubble_outline</mat-icon>
+                {{ post.commentCount }}
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Load more -->
+      <div class="load-more-wrap" *ngIf="hasMore && !loading">
+        <button class="btn-load-more" (click)="loadMore()" [class.loading]="loadingMore">
+          <mat-icon *ngIf="!loadingMore">expand_more</mat-icon>
+          <span>{{ loadingMore ? 'Loading…' : 'Load more articles' }}</span>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- RIGHT — Sidebar -->
+    <aside class="blog-sidebar">
+
+      <!-- Ask a Question -->
+      <div class="sidebar-card ask-card">
+        <div class="ask-header">
+          <mat-icon>help_outline</mat-icon>
+          <h3>Ask the Community</h3>
+        </div>
+        <p>Have a question about election surveys, party setup, or OTP voting? Ask here!</p>
+        <div class="ask-form">
+          <textarea [(ngModel)]="newQuestion"
+                    placeholder="Type your question about Voter-Pulse…"
+                    rows="3"
+                    maxlength="500"
+                    (focus)="askFocused = true"
+                    (blur)="askFocused = false"
+                    [class.focused]="askFocused">
+          </textarea>
+          <div class="ask-footer">
+            <span class="char-count">{{ newQuestion.length }}/500</span>
+            <div class="ask-actions">
+              <input type="text" [(ngModel)]="askerName"
+                     placeholder="Your name (optional)" class="name-input">
+              <button class="btn-ask"
+                      [disabled]="!newQuestion.trim()"
+                      (click)="submitQuestion()">
+                <mat-icon>send</mat-icon>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popular Q&A -->
+      <div class="sidebar-card qa-card">
+        <div class="sidebar-section-header">
+          <mat-icon>question_answer</mat-icon>
+          <h3>Popular Q&amp;A</h3>
+        </div>
+        <div class="qa-list">
+          <div *ngFor="let qa of popularQA" class="qa-item" (click)="openQA(qa)">
+            <div class="qa-question">
+              <mat-icon class="qa-icon">help</mat-icon>
+              <span>{{ qa.question }}</span>
+            </div>
+            <div class="qa-preview" *ngIf="qa.expanded">
+              <p>{{ qa.answer }}</p>
+              <div class="qa-meta">
+                <span><mat-icon>thumb_up</mat-icon> {{ qa.helpfulCount }} helpful</span>
+                <button class="btn-helpful" (click)="$event.stopPropagation(); markHelpful(qa)">
+                  {{ qa.markedHelpful ? 'Marked helpful' : 'Mark helpful' }}
+                </button>
+              </div>
+            </div>
+            <div class="qa-footer">
+              <span class="qa-category cat-{{ qa.category }}">{{ qa.categoryLabel }}</span>
+              <mat-icon>{{ qa.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </div>
+          </div>
+        </div>
+        <button class="btn-ghost-sm" routerLink="/help">View all FAQs →</button>
+      </div>
+
+      <!-- Trending Tags -->
+      <div class="sidebar-card tags-card">
+        <div class="sidebar-section-header">
+          <mat-icon>tag</mat-icon>
+          <h3>Trending Topics</h3>
+        </div>
+        <div class="tags-cloud">
+          <button *ngFor="let tag of trendingTags"
+                  class="tag-cloud-btn"
+                  [class.active]="searchQuery === tag.label"
+                  (click)="searchByTag(tag)"
+                  [style.font-size]="tag.size + 'px'">
+            #{{ tag.label }}
+            <span class="tag-count">{{ tag.count }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="sidebar-card newsletter-card">
+        <div class="nl-icon">
+          <mat-icon>mark_email_unread</mat-icon>
+        </div>
+        <h3>Stay in the Loop</h3>
+        <p>Get the latest election insights and platform updates delivered to your inbox.</p>
+        <div class="nl-form" *ngIf="!nlSubscribed">
+          <input type="email" [(ngModel)]="nlEmail" placeholder="you@email.com" class="nl-input">
+          <button class="btn-subscribe" (click)="subscribe()" [disabled]="!nlEmail">
+            Subscribe
+          </button>
+        </div>
+        <div class="nl-success" *ngIf="nlSubscribed">
+          <mat-icon>check_circle</mat-icon>
+          <span>You're subscribed! Welcome to the community.</span>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       POST DETAIL DRAWER
+  ══════════════════════════════════════ -->
+  <div class="post-overlay" [class.open]="!!selectedPost" (click)="closePost()"></div>
+  <div class="post-drawer" [class.open]="!!selectedPost" *ngIf="selectedPost">
+    <div class="drawer-inner">
+
+      <!-- Drawer header -->
+      <div class="drawer-toolbar">
+        <div class="drawer-meta">
+          <span class="post-cat" [ngClass]="'cat-' + selectedPost.category">{{ selectedPost.categoryLabel }}</span>
+          <span class="post-date">{{ selectedPost.publishedAt | date:'MMMM d, y' }}</span>
+          <span class="post-read">{{ selectedPost.readTime }} min read</span>
+        </div>
+        <div class="drawer-actions">
+          <button class="action-btn" (click)="toggleLike(selectedPost)">
+            <mat-icon [class.liked]="selectedPost.liked">{{ selectedPost.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+            {{ selectedPost.likeCount }}
+          </button>
+          <button class="action-btn" (click)="sharePost(selectedPost)">
+            <mat-icon>share</mat-icon>
+          </button>
+          <button class="drawer-close" (click)="closePost()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Post content -->
+      <div class="drawer-content">
+        <div class="post-tags">
+          <span *ngFor="let tag of selectedPost.tags" class="tag">#{{ tag }}</span>
+        </div>
+        <h1 class="post-title">{{ selectedPost.title }}</h1>
+
+        <div class="post-author-row">
+          <div class="author-avatar" [style.background]="selectedPost.author.avatarColor">
+            {{ selectedPost.author.initials }}
+          </div>
+          <div class="author-info">
+            <span class="author-name">{{ selectedPost.author.name }}</span>
+            <span class="author-role">{{ selectedPost.author.role }}</span>
+          </div>
+        </div>
+
+        <div class="post-body" [innerHTML]="selectedPost.contentHtml"></div>
+
+        <!-- Reaction bar -->
+        <div class="reaction-bar">
+          <span class="reaction-label">Was this helpful?</span>
+          <button class="reaction-btn" [class.active]="selectedPost.liked" (click)="toggleLike(selectedPost)">
+            <mat-icon>thumb_up</mat-icon>
+            <span>Helpful</span>
+          </button>
+          <button class="reaction-btn" (click)="sharePost(selectedPost)">
+            <mat-icon>share</mat-icon>
+            <span>Share</span>
+          </button>
+          <button class="reaction-btn" routerLink="/help">
+            <mat-icon>help_outline</mat-icon>
+            <span>More FAQs</span>
+          </button>
+        </div>
+
+        <!-- Related posts -->
+        <div class="related-section" *ngIf="relatedPosts.length">
+          <h3 class="section-h3">Related Articles</h3>
+          <div class="related-grid">
+            <div *ngFor="let r of relatedPosts" class="related-card" (click)="openPost(r)">
+              <span class="post-cat" [ngClass]="'cat-' + r.category">{{ r.categoryLabel }}</span>
+              <h4>{{ r.title }}</h4>
+              <span class="related-read">{{ r.readTime }} min read</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments-section">
+          <h3 class="section-h3">
+            <mat-icon>chat_bubble_outline</mat-icon>
+            Comments ({{ selectedPost.commentCount }})
+          </h3>
+
+          <!-- Add comment -->
+          <div class="add-comment">
+            <div class="comment-input-wrap" [class.focused]="commentFocused">
+              <textarea [(ngModel)]="newComment"
+                        placeholder="Share your thoughts, questions, or experiences…"
+                        rows="3"
+                        (focus)="commentFocused = true"
+                        (blur)="commentFocused = false">
+              </textarea>
+            </div>
+            <div class="comment-meta-row">
+              <input type="text" [(ngModel)]="commenterName" placeholder="Your name (optional)" class="name-input">
+              <button class="btn-comment"
+                      [disabled]="!newComment.trim()"
+                      (click)="submitComment()">
+                <mat-icon>send</mat-icon>
+                Post Comment
+              </button>
+            </div>
+          </div>
+
+          <!-- Comment list -->
+          <div class="comment-list">
+            <div *ngFor="let c of postComments" class="comment-item" [class.pinned]="c.pinned">
+              <div class="comment-avatar" [style.background]="c.avatarColor">{{ c.initials }}</div>
+              <div class="comment-body">
+                <div class="comment-header">
+                  <strong class="commenter-name">{{ c.name }}</strong>
+                  <span class="comment-pin" *ngIf="c.pinned">
+                    <mat-icon>push_pin</mat-icon> Pinned
+                  </span>
+                  <span class="comment-date">{{ c.createdAt | date:'MMM d, y' }}</span>
+                </div>
+                <p class="comment-text">{{ c.text }}</p>
+                <div class="comment-actions">
+                  <button class="inline-btn" (click)="likeComment(c)">
+                    <mat-icon [class.liked]="c.liked">{{ c.liked ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
+                    {{ c.likeCount }}
+                  </button>
+                  <button class="inline-btn" (click)="replyToComment(c)">
+                    <mat-icon>reply</mat-icon> Reply
+                  </button>
+                </div>
+
+                <!-- Replies -->
+                <div class="replies" *ngIf="c.replies?.length">
+                  <div *ngFor="let r of c.replies" class="reply-item">
+                    <div class="comment-avatar xs" [style.background]="r.avatarColor">{{ r.initials }}</div>
+                    <div class="comment-body">
+                      <div class="comment-header">
+                        <strong class="commenter-name">{{ r.name }}</strong>
+                        <span class="comment-date">{{ r.createdAt | date:'MMM d' }}</span>
+                      </div>
+                      <p class="comment-text">{{ r.text }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Reply input -->
+                <div class="reply-input" *ngIf="replyingTo === c.id">
+                  <textarea [(ngModel)]="replyText" placeholder="Write a reply…" rows="2"></textarea>
+                  <div class="reply-actions">
+                    <button class="btn-ghost-sm" (click)="replyingTo = null">Cancel</button>
+                    <button class="btn-reply" [disabled]="!replyText.trim()" (click)="submitReply(c)">Reply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="no-comments" *ngIf="postComments.length === 0">
+              <mat-icon>chat_bubble_outline</mat-icon>
+              <p>Be the first to comment on this article!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

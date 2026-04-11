@@ -2,10 +2,12 @@ import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDete
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharedModule } from '../../../shared/shared.module';
-import { Party } from '../../../shared/models/survey.model';
+import { LibraryImage, Party } from '../../../shared/models/survey.model';
 import { PartyService } from '../../../shared/services/party.service';
+import { map } from 'rxjs';
+import { Country } from '../../../shared/models/party.models';
 
-export type LogoSource = 'local' | 'url' | 'gdrive';
+export type LogoSource = 'local' | 'url' | 'gdrive' | 'library';
 
 const MAX_FILE_SIZE_MB  = 2;
 const ALLOWED_MIME_TYPES = [
@@ -48,6 +50,20 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
   // Drag & drop
   isDragOver = false;
 
+  // ── Image library state ────────────────────────────────────
+  libraryImages: LibraryImage[] = [];
+  filteredLibraryImages: LibraryImage[] = [];
+  libraryLoading = false;
+  libraryError = '';
+  librarySearch = '';
+  libSearchFocused = false;
+  selectedLibraryName = '';
+  
+   // ── Country state ───────────────────────────────────────────────────────
+  countries:             Country[] = [];   // passed in via MAT_DIALOG_DATA
+  filteredDialogCountries: Country[] = [];
+  dialogCountrySearch    = '';
+  
   private objectUrl: string | null = null; // kept for revokeObjectURL on destroy
   /** Snapshot for Discard Changes */
   private originalValues: Partial<Party> = {};
@@ -58,7 +74,7 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PartyDialogComponent>,
     private partySerive: PartyService,
     private cd:          ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: Party | null,
+    @Inject(MAT_DIALOG_DATA) public data: { party: Party, countries: Country[] } | null,
   ) {
     this.partyForm = this.fb.group({
       name:        ['', [Validators.required, Validators.minLength(2)]],
@@ -66,18 +82,21 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
       contestant_name: [''],
       color:       ['#1976d2'],
       logo_url:    [''],
+      countryId: [this.data?.party?.countryId ?? ''],
     });
   }
 
   ngOnInit(): void {
+    this.countries              = this.data?.countries ?? [];
+    this.filteredDialogCountries = [...this.countries];
     if (this.data) {
       this.isEditMode = true;
-      this.partyForm.patchValue(this.data);
-      this.selectedColor = this.data.color || '#1976d2';
+      this.partyForm.patchValue(this.data.party);
+      this.selectedColor = this.data.party.color || '#1976d2';
 
       // Pre-populate logo if editing
-      if (this.data.logo_url) {
-        this.logoPreviewUrl = this.data.logo_url;
+      if (this.data.party.logo_url) {
+        this.logoPreviewUrl = this.data.party.logo_url;
         this.logoSource     = 'url';
         this.urlImageValid  = true;
       }
@@ -88,6 +107,17 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
     // Free blob URL memory
     if (this.objectUrl) URL.revokeObjectURL(this.objectUrl);
   }
+
+  // ── Filter helper ────────────────────────────────────────────────────────
+  filterDialogCountries(): void {
+    const q = (this.dialogCountrySearch ?? '').toLowerCase().trim();
+    this.filteredDialogCountries = q
+      ? this.countries.filter(c =>
+          c.name.toLowerCase().includes(q) ||
+          (c.isoCode ?? '').toLowerCase().includes(q)
+        )
+      : [...this.countries];
+  }  
 
   // ── Color ─────────────────────────────────────────────────────────────────
 
@@ -101,9 +131,33 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
   setLogoSource(source: LogoSource): void {
     this.logoSource = source;
     this.logoError  = '';
+   if (source === 'library' && this.libraryImages.length === 0 && !this.libraryLoading) {
+     this.loadLibrary();
+   }    
     // Don't clear preview when switching tabs — user keeps their image
   }
 
+  loadLibrary(): void {
+    this.libraryLoading = true;
+    this.libraryError = '';
+
+    this.partySerive.getAllLogoImages().pipe(
+      //map((images: { imageUrl: string }[]) => images.map(img => img.imageUrl))
+    ).subscribe({
+      next: (urls: any) => {
+        this.libraryImages = this.buildLibraryItems(urls);
+        this.filteredLibraryImages = [...this.libraryImages];
+        this.libraryLoading = false;
+        this.cd.detectChanges();
+      },
+      error: (err: any) => {
+        this.libraryError = err?.error?.message ?? 'Failed to load the image library. Please retry.';
+        this.libraryLoading = false;
+        this.cd.detectChanges();
+      },
+    });
+  }
+  
   // ── LOCAL FILE ────────────────────────────────────────────────────────────
 
   onLocalFileSelected(event: Event): void {
@@ -278,5 +332,68 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
     }
 
     this.dialogRef.close(result);
+  }
+
+  // Convert raw URL strings → LibraryImage objects with a human-readable name
+  private buildLibraryItems(urls: string[]): any[] {
+    return urls.map(url => ({
+      url,
+      name: this.deriveNameFromUrl(url),
+      broken: false,
+    }));
+  }
+ 
+  // Extract a readable name from the URL:
+  //   "https://example.com/logos/party-alpha.png" → "party-alpha"
+  //   "https://img.icons8.com/.../(1200/beta.j..."  → "beta"
+  private deriveNameFromUrl(url: string): string {
+    try {
+      const pathname = new URL(url).pathname;
+      const filename = pathname.split('/').filter(Boolean).pop() ?? url;
+      return filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    } catch {
+      // Not a well-formed URL — use last segment of the string
+      return url.split('/').pop()?.replace(/\.[^.]+$/, '') ?? url;
+    }
+  }
+ 
+  // ── Search filtering ──────────────────────────────────────────────────
+ 
+  filterLibrary(): void {
+    const q = (this.librarySearch ?? '').toLowerCase().trim();
+    if (!q) {
+      this.filteredLibraryImages = [...this.libraryImages];
+      return;
+    }
+    this.filteredLibraryImages = this.libraryImages.filter(img =>
+      img.name.toLowerCase().includes(q) ||
+      img.url.toLowerCase().includes(q)
+    );
+  }
+ 
+  clearLibrarySearch(): void {
+    this.librarySearch          = '';
+    this.filteredLibraryImages  = [...this.libraryImages];
+  }
+ 
+  // ── Select an image from the library ─────────────────────────────────
+ 
+  selectLibraryImage(img: any): void {
+    this.logoPreviewUrl      = img.url;
+    this.selectedLibraryName = img.name;
+    // Keep logo_url form control in sync so it gets submitted
+    // this.partyForm.get('logo_url')?.setValue(img.url);
+  }
+ 
+  // ── Handle broken thumbnails ──────────────────────────────────────────
+ 
+  onLibThumbError(img: any): void {
+    img.broken = true;
+  }
+ 
+  // ── TrackBy for *ngFor performance ───────────────────────────────────
+ 
+  trackByUrl(_: number, img: any): string {
+    return img.url;
   }
 }

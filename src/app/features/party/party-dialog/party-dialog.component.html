@@ -31,6 +31,40 @@
       <mat-icon matPrefix>person</mat-icon>
     </mat-form-field>
 
+    <!-- Country selection -->
+<!-- Country -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Country <span class="opt-tag">optional</span></mat-label>
+      <mat-select formControlName="countryId">
+ 
+        <mat-option value="">— None —</mat-option>
+ 
+        <!-- Inline search inside dropdown -->
+        <div class="country-search-wrap">
+          <mat-icon class="cs-icon">search</mat-icon>
+          <input class="country-search-input"
+                 type="text"
+                 placeholder="Type to search…"
+                 [(ngModel)]="dialogCountrySearch"
+                 [ngModelOptions]="{ standalone: true }"
+                 (ngModelChange)="filterDialogCountries()"
+                 (click)="$event.stopPropagation()">
+        </div>
+ 
+        <mat-option *ngFor="let c of filteredDialogCountries" [value]="c.id">
+          <span class="country-option">
+            <span class="country-flag-code">{{ c.isoCode }}</span>
+            {{ c.name }}
+          </span>
+        </mat-option>
+ 
+        <mat-option *ngIf="filteredDialogCountries.length === 0" disabled>
+          No countries match "{{ dialogCountrySearch }}"
+        </mat-option>
+      </mat-select>
+      <mat-icon matPrefix>public</mat-icon>
+    </mat-form-field>
+    
     <!-- ── Color selection (unchanged) ── -->
     <div class="color-selection">
       <label>Party Color</label>
@@ -78,6 +112,13 @@
           <mat-icon>link</mat-icon>
           Online URL
         </button>
+        <button type="button" class="source-tab"
+                [class.active]="logoSource === 'library'"
+                (click)="setLogoSource('library')">
+          <mat-icon>photo_library</mat-icon>
+          Image Library
+          <span class="lib-badge" *ngIf="libraryImages.length > 0">{{ libraryImages.length }}</span>
+        </button>        
         <!-- <button type="button"
                 class="source-tab"
                 [class.active]="logoSource === 'gdrive'"
@@ -154,6 +195,125 @@
           </p>
         </div>
       </div>
+
+      <!-- ══════════════════════════════════════════
+           IMAGE LIBRARY TAB
+      ══════════════════════════════════════════ -->
+      <div class="logo-input-area" *ngIf="logoSource === 'library'">
+ 
+        <!-- Loading -->
+        <div class="lib-loading" *ngIf="libraryLoading">
+          <mat-spinner diameter="32"></mat-spinner>
+          <span>Loading image library…</span>
+        </div>
+ 
+        <!-- Error -->
+        <div class="lib-state-box" *ngIf="!libraryLoading && libraryError">
+          <mat-icon class="lib-state-icon error-icon">cloud_off</mat-icon>
+          <p class="lib-state-title">Could not load library</p>
+          <p class="lib-state-sub">{{ libraryError }}</p>
+          <button type="button" mat-stroked-button class="lib-action-btn" (click)="loadLibrary()">
+            <mat-icon>refresh</mat-icon> Retry
+          </button>
+        </div>
+ 
+        <!-- Loaded content -->
+        <ng-container *ngIf="!libraryLoading && !libraryError">
+ 
+          <!-- ── Search + count toolbar ── -->
+          <div class="lib-toolbar">
+            <div class="lib-search-wrap" [class.focused]="libSearchFocused">
+              <mat-icon class="lib-search-icon">search</mat-icon>
+              <input class="lib-search-input"
+                     type="text"
+                     placeholder="Search images by name…"
+                     [(ngModel)]="librarySearch"
+                     [ngModelOptions]="{ standalone: true }"
+                     (ngModelChange)="filterLibrary()"
+                     (focus)="libSearchFocused = true"
+                     (blur)="libSearchFocused = false">
+              <button *ngIf="librarySearch"
+                      type="button"
+                      class="lib-search-clear"
+                      (click)="clearLibrarySearch()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <span class="lib-count">
+              {{ filteredLibraryImages.length }}
+              of {{ libraryImages.length }}
+            </span>
+          </div>
+ 
+          <!-- Empty library -->
+          <div class="lib-state-box" *ngIf="libraryImages.length === 0">
+            <mat-icon class="lib-state-icon">image_not_supported</mat-icon>
+            <p class="lib-state-title">Library is empty</p>
+            <p class="lib-state-sub">
+              Upload party logos using <strong>Local File</strong> or <strong>Online URL</strong>.
+              They will appear here for reuse across all parties.
+            </p>
+          </div>
+ 
+          <!-- No search results -->
+          <div class="lib-state-box lib-no-results"
+               *ngIf="libraryImages.length > 0 && filteredLibraryImages.length === 0">
+            <mat-icon class="lib-state-icon">search_off</mat-icon>
+            <p class="lib-state-title">No images match "{{ librarySearch }}"</p>
+            <button type="button" class="lib-clear-link" (click)="clearLibrarySearch()">Clear search</button>
+          </div>
+ 
+          <!-- ── Image grid ── -->
+          <div class="lib-grid" *ngIf="filteredLibraryImages.length > 0">
+            <button *ngFor="let img of filteredLibraryImages; trackBy: trackByUrl"
+                    type="button"
+                    class="lib-tile"
+                    [class.lib-tile-selected]="logoPreviewUrl === img.url"
+                    (click)="selectLibraryImage(img)"
+                    [title]="img.name">
+ 
+              <!-- Thumbnail container -->
+              <div class="lib-thumb-wrap">
+                <img *ngIf="!img.broken"
+                     [src]="img.url"
+                     [alt]="img.name"
+                     class="lib-thumb"
+                     loading="lazy"
+                     (error)="onLibThumbError(img)">
+ 
+                <!-- Broken image placeholder -->
+                <div class="lib-broken" *ngIf="img.broken">
+                  <mat-icon>broken_image</mat-icon>
+                </div>
+ 
+                <!-- Selected tick overlay -->
+                <div class="lib-tick" *ngIf="logoPreviewUrl === img.url">
+                  <mat-icon>check_circle</mat-icon>
+                </div>
+              </div>
+ 
+              <!-- Name label -->
+              <span class="lib-name">{{ img.name }}</span>
+            </button>
+          </div>
+ 
+          <!-- ── Selected image strip ── -->
+          <div class="lib-selected-strip" *ngIf="logoSource === 'library' && logoPreviewUrl">
+            <mat-icon class="strip-check">check_circle</mat-icon>
+            <img [src]="logoPreviewUrl" class="strip-img" alt="selected">
+            <div class="strip-info">
+              <span class="strip-name">{{ selectedLibraryName }}</span>
+              <span class="strip-hint">Selected from library</span>
+            </div>
+            <button type="button" class="strip-change"
+                    (click)="logoPreviewUrl = ''; selectedLibraryName = ''">
+              <mat-icon>swap_horiz</mat-icon> Change
+            </button>
+          </div>
+ 
+        </ng-container>
+      </div>
+      <!-- ── end library tab ── -->
 
       <!-- ── GOOGLE DRIVE ── -->
       <div class="logo-input-area" *ngIf="logoSource === 'gdrive'">

@@ -89,7 +89,7 @@ export class PartyDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.countries              = this.data?.countries ?? [];
     this.filteredDialogCountries = [...this.countries];
-    if (this.data) {
+    if (this.data?.party) {
       this.isEditMode = true;
       this.partyForm.patchValue(this.data.party);
       this.selectedColor = this.data.party.color || '#1976d2';
